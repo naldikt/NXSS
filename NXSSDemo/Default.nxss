@@ -1,0 +1,14 @@
+
+
+$naldi : 5;
+
+AssetCell {
+    background-color: #0A0A0A;
+    
+}
+
+$ardo:6;
+
+HomeBackground {
+    color: red;
+}
