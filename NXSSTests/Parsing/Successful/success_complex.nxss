@@ -1,0 +1,34 @@
+
+$primaryColor: red;
+$secondaryColor: black;
+
+$primaryFont: NapsterX;
+
+@mixin CircleButton() {
+    corner-radius: circle;
+}
+
+@mixin CircleBlueButton() {
+    @include   CircleButton();
+    $bg: blue;
+    background-color: $bg;
+}
+
+@mixin RedButton() {
+    background-color: red;
+}
+
+PrimaryButton {
+    $borderWidth: 5;
+    @include CircleButton();
+    background-color: white;
+    border-width: $borderWidth;
+}
+
+SecondaryButton {
+    font-color: $secondaryColor;
+    @include CircleButton();
+    @include CircleBlueButton();
+    @include RedButton();
+    
+}

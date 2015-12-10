@@ -1,0 +1,14 @@
+$font-size: 5;
+
+BlueButton {
+    corner-radius:circle;
+    font-size : $font-size;
+}
+
+$font-name: font;
+
+CircleButton {
+    $bgColor: white;
+    background-color: $bgColor;
+    font-name: $font-name;
+}

@@ -1,0 +1,28 @@
+
+
+Button:normal {
+    background-color:red;
+    type: normal;
+}
+
+Button:selected {
+    type: selected;
+}
+
+Button:highlighted {
+    type: highlighted;
+}
+
+Button:disabled {
+    type: disabled;
+}
+
+
+Label {
+    background-color: black;
+    type: normal;
+}
+
+Label:selected {
+    type:selected;
+}

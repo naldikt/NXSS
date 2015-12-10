@@ -1,14 +1,16 @@
 
-
-$naldi : 5;
-
-AssetCell {
-    background-color: #0A0A0A;
-    
+@mixin ItalicFont($fontSize) {
+    font-family: TrebuchetMS;
+    font-style: Italic;
+    font-size: $fontSize;
 }
 
-$ardo:6;
+.RedBackground {
+    @include ItalicFont(14);
+    background-color: red;
+}
 
-HomeBackground {
-    color: red;
+.BlueCircle {
+    background-color: blue;
+    corner-radius: circle;
 }

@@ -1,0 +1,28 @@
+
+.BaseClass {
+    background-color: red;
+    font-color:red;
+    border-color: red;
+}
+
+.ChildClass {
+    @extend .BaseClass;
+    corner-radius: 1;
+}
+
+UILabel {
+    @extend .BaseClass;
+    background-color: blue;
+}
+
+@mixin PrimaryFont($font-size) {
+    font-size:  $font-size;
+    font-name: NapsterXFont;
+}
+
+MixedGrandChildElement {
+    @include PrimaryFont(9);
+    @extend .ChildClass;
+    border-color: green;
+}
+

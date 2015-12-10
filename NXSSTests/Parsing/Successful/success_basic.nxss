@@ -1,0 +1,8 @@
+BlueButton {
+    font-name: blue;
+}
+
+.BlueCircleButton {
+    font-name: blue;
+    corner-radius: circle;
+}
