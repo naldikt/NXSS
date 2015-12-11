@@ -23,7 +23,6 @@
 		202FA14A1BC0959D00E91CF3 /* FailureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202FA1491BC0959D00E91CF3 /* FailureTests.swift */; };
 		202FA1861BC09CDE00E91CF3 /* success_basic.nxss in Resources */ = {isa = PBXBuildFile; fileRef = 202FA1851BC09CDE00E91CF3 /* success_basic.nxss */; };
 		20524F6A1C19835700A09136 /* DefaultX_nui.nxss in Resources */ = {isa = PBXBuildFile; fileRef = 20524F691C19835700A09136 /* DefaultX_nui.nxss */; };
-		20524F6C1C1A812300A09136 /* NSMutableString+Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20524F6B1C1A812300A09136 /* NSMutableString+Core.swift */; };
 		205CBE891BF9881200A04047 /* Dictionary+Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205CBE881BF9881200A04047 /* Dictionary+Core.swift */; };
 		2068B8061BC0AACD005317B5 /* success_include.nxss in Resources */ = {isa = PBXBuildFile; fileRef = 2068B8051BC0AACD005317B5 /* success_include.nxss */; };
 		2068B8081BC0B112005317B5 /* success_variables.nxss in Resources */ = {isa = PBXBuildFile; fileRef = 2068B8071BC0B112005317B5 /* success_variables.nxss */; };
@@ -133,7 +132,6 @@
 		202FA1491BC0959D00E91CF3 /* FailureTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FailureTests.swift; sourceTree = "<group>"; };
 		202FA1851BC09CDE00E91CF3 /* success_basic.nxss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = success_basic.nxss; sourceTree = "<group>"; };
 		20524F691C19835700A09136 /* DefaultX_nui.nxss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DefaultX_nui.nxss; sourceTree = "<group>"; };
-		20524F6B1C1A812300A09136 /* NSMutableString+Core.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableString+Core.swift"; sourceTree = "<group>"; };
 		205CBE881BF9881200A04047 /* Dictionary+Core.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Core.swift"; sourceTree = "<group>"; };
 		2068B8051BC0AACD005317B5 /* success_include.nxss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = success_include.nxss; sourceTree = "<group>"; };
 		2068B8071BC0B112005317B5 /* success_variables.nxss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = success_variables.nxss; sourceTree = "<group>"; };
@@ -361,7 +359,6 @@
 			children = (
 				20958DE11BCB61A700C456A5 /* String+Core.swift */,
 				205CBE881BF9881200A04047 /* Dictionary+Core.swift */,
-				20524F6B1C1A812300A09136 /* NSMutableString+Core.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -656,7 +653,6 @@
 				20958DF11BCB61A700C456A5 /* Applicator.swift in Sources */,
 				20958DFC1BCB61A700C456A5 /* CompiledRuleSet.swift in Sources */,
 				20A0D1521C13FE4F00DB4065 /* RuleSetBlock.swift in Sources */,
-				20524F6C1C1A812300A09136 /* NSMutableString+Core.swift in Sources */,
 				205CBE891BF9881200A04047 /* Dictionary+Core.swift in Sources */,
 				20958DF81BCB61A700C456A5 /* UIView+NXSS.swift in Sources */,
 				2068B8261BC0BDA8005317B5 /* NXSS.swift in Sources */,

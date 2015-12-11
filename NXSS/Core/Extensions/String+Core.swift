@@ -15,10 +15,6 @@ extension String {
         return self[self.startIndex.advancedBy(i)]
     }
     
-    subscript (i: Int) -> String {
-        return String(self[i])
-    }
-    
     func substringFromIndex(index:Int) -> String {
         return self.substringFromIndex(self.startIndex.advancedBy(index))
     }
@@ -35,7 +31,7 @@ extension String {
         
     }
     
-    var last : String? {
+    var last : Character? {
         if self.characters.count > 0 {
             return self[self.characters.count-1]
         } else {
@@ -43,10 +39,10 @@ extension String {
         }
     }
     
-    mutating func removeLast() -> String? {
+    mutating func removeLast() -> Character? {
         if self.characters.count > 0 {
             let lastIndex = self.characters.count-1
-            let s : String = self[lastIndex]
+            let s : Character = self[lastIndex]
             self = self.substringToIndex(self.startIndex.advancedBy(lastIndex))
             return s
         } else {
