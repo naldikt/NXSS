@@ -108,170 +108,198 @@ class Parser {
     private func traverse() throws -> [String:CompiledRuleSet] {
 
         var ryleSets : [String:CompiledRuleSet] = Dictionary()  // ret val
-
-        var curBuffer : String.CharacterView = String.CharacterView()
-        curBuffer.reserveCapacity(300)
-        
         var skip = false
-        var lastS:Character?
+        var lastS:unichar?
         var curLineNum = 1  // line num starts from 1-based
         
-        let chars = self.fileContent.characters
-        for s : Character in chars {
-            
-            if skip {
-                
-                // Check for Close comment
-                if let lastS = lastS where s == "/" && "\(lastS)" == "*" {
-                    skip = false
-                }
-                continue
-                
-            } else if s == " " {
-                
-                // We don't need empty spaces.
-                continue
-                
-            } else if s == "\n" {
-                
-                curLineNum++
-                continue
-                
+        let unichar_forwardSlash = "/".characterAtIndex(0)
+        let unichar_asterisk = "*".characterAtIndex(0)
+        let unichar_space = " ".characterAtIndex(0)
+        let unichar_newLine = "\n".characterAtIndex(0)
+        let unichar_semiColon = ";".characterAtIndex(0)
+        let unichar_bracketOpen = "{".characterAtIndex(0)
+        let unichar_bracketClose = "}".characterAtIndex(0)
+        
+        
+        let bufferLength = 1000  // play with this value as neded
+        var curBuffer : [unichar] = []
+        curBuffer.reserveCapacity(bufferLength)
+        
+        let tempBuffer = UnsafeMutablePointer<unichar>.alloc(bufferLength)
+        
+        let inputNSString = fileContent as NSString
+        
+        var lastRange : Int = 0
+        
+        repeat {
+        
+            var rangeLength = bufferLength
+            if lastRange + rangeLength >= fileContent.characters.count {
+                rangeLength = fileContent.characters.count - lastRange
             }
-
-            // Start of Context
-            if s == "{" {
-                
+            let realRange = inputNSString.rangeOfComposedCharacterSequencesForRange(NSMakeRange( lastRange , rangeLength ) )
+            inputNSString.getCharacters(tempBuffer, range:  realRange)
+            lastRange = lastRange + rangeLength
             
-                // Figure out whether what kind of header this is
-                let blockHeader = try BlockHeader.parse(String(curBuffer))
-                switch blockHeader {
-
-                case .Mixin(let selector, let args):
-
-                    blockQueue.push(
-                        MixinBlock(selector:selector,argNames:args,parentBlock:blockQueue.peek())
-                    )
-
-                case .Class(let selector,let pseudoClass):
-
-                    blockQueue.push(
-                        RuleSetBlock(selector:selector,selectorType:.Class, pseudoClass: pseudoClass,parentBlock:blockQueue.peek())
-                    )
+            for i in (0..<realRange.length) {
+                let s : unichar = tempBuffer[i]
+                
+                if skip {
                     
-                case .Element(let selector,let pseudoClass):
-
-                    blockQueue.push(
-                        RuleSetBlock(selector:selector,selectorType:.Element, pseudoClass: pseudoClass,parentBlock:blockQueue.peek())
-                    )
+                    // Check for Close comment
+                    if let lastS = lastS where s == unichar_forwardSlash && lastS == unichar_asterisk {
+                        skip = false
+                    }
+                    continue
+                    
+                } else if s == unichar_space {
+                    
+                    // We don't need empty spaces.
+                    continue
+                    
+                } else if s == unichar_newLine {
+                    
+                    curLineNum++
+                    continue
+                    
                 }
-            
-                curBuffer.removeAll(keepCapacity: true)
-                                
-                
-            // End of Context
-            } else if s == "}" {
-                
-                if curBuffer.count > 0 {
-                    assert(false,"You forgot to apply semi-colon to your last line.")
-                }
-                // By now curBuffer is an empty string
-            
-                let oldContext = blockQueue.pop()
-                if let oldContext = oldContext as? MixinBlock {
-                    
-                    let styleMixin : CompiledMixin = try oldContext.compile()
-                    mixins[styleMixin.selector] = styleMixin
+
+                // Start of Context
+                if s == unichar_bracketOpen {
                     
                 
-                } else if let oldContext = oldContext as? RuleSetBlock {
-                
-                    let styleClass : CompiledRuleSet = try oldContext.compile()
-                    ryleSets[styleClass.compiledKey] = styleClass
-                
-                } else {
-                    assert(false,"Should never have gone here. Fatal logic error.")
-                }
-                
-            }	 
-                    
-            // End of Line
-            else if s == ";" {
-                
-                let (type,key,value) = try KeyValueParser.parse( String(curBuffer) )
-                
-                let curBlock = blockQueue.peek()
-                switch type {
-                case .Declaration, .VariableDeclaration:
-                    
-                    curBlock.addDeclaration(key,value: value)
-                
-                case .Include:
-                    
-                    let (selector,argVals) = try FunctionHeader.parse(value)
+                    // Figure out whether what kind of header this is
+                    let blockHeader = try BlockHeader.parse(String(curBuffer))
+                    switch blockHeader {
+
+                    case .Mixin(let selector, let args):
+
+                        blockQueue.push(
+                            MixinBlock(selector:selector,argNames:args,parentBlock:blockQueue.peek())
+                        )
+
+                    case .Class(let selector,let pseudoClass):
+
+                        blockQueue.push(
+                            RuleSetBlock(selector:selector,selectorType:.Class, pseudoClass: pseudoClass,parentBlock:blockQueue.peek())
+                        )
                         
-                    guard let mixin = mixins[selector] else {
-                        throw NXSSError.Require(msg: "Cannot find mixin named \(selector)", statement: value, line:curLineNum)
+                    case .Element(let selector,let pseudoClass):
+
+                        blockQueue.push(
+                            RuleSetBlock(selector:selector,selectorType:.Element, pseudoClass: pseudoClass,parentBlock:blockQueue.peek())
+                        )
+                    }
+                
+                    curBuffer.removeAll(keepCapacity: true)
+                                    
+                    
+                // End of Context
+                } else if s == unichar_bracketClose {
+                    
+                    if curBuffer.count > 0 {
+                        assert(false,"You forgot to apply semi-colon to your last line.")
+                    }
+                    // By now curBuffer is an empty string
+                
+                    let oldContext = blockQueue.pop()
+                    if let oldContext = oldContext as? MixinBlock {
+                        
+                        let styleMixin : CompiledMixin = try oldContext.compile()
+                        mixins[styleMixin.selector] = styleMixin
+                        
+                    
+                    } else if let oldContext = oldContext as? RuleSetBlock {
+                    
+                        let styleClass : CompiledRuleSet = try oldContext.compile()
+                        ryleSets[styleClass.compiledKey] = styleClass
+                    
+                    } else {
+                        assert(false,"Should never have gone here. Fatal logic error.")
                     }
                     
-                    curBlock.addDeclarations(
-                        mixin.resolveArguments(argVals)
+                }	 
+                        
+                // End of Line
+                else if s == unichar_semiColon {
+                    
+                    let (type,key,value) = try KeyValueParser.parse(
+                        NSString(characters: &curBuffer, length: realRange.length) as String
                     )
-
-                case .Extend(let selectorType):
                     
-                    var selector:String?
-                    var pseudoClass:PseudoClass?
-                
-                    // We're going to extend from another class.
-                    switch try BlockHeader.parse(value) {
-                    case .Class(let selector_, let pseudoClass_):
-                        selector = selector_
-                        pseudoClass = pseudoClass_
+                    let curBlock = blockQueue.peek()
+                    switch type {
+                    case .Declaration, .VariableDeclaration:
                         
-                    case .Element(let selector_, let pseudoClass_):
-                        selector = selector_
-                        pseudoClass = pseudoClass_
-                        
-                    default:
-                        break
-                    }
+                        curBlock.addDeclaration(key,value: value)
                     
-                    if let selector = selector ,   pseudoClass = pseudoClass {
+                    case .Include:
                         
-                        let compiledKey = CompiledRuleSet.getCompiledKey(selector,selectorType: selectorType, pseudoClass: pseudoClass)
-                        
-                        guard let baseStyle = ryleSets[compiledKey] else {
-                            NSLog("ruleSets \(ryleSets)")
-                            throw NXSSError.Require(msg: "Cannot find class/element to extend from with name \(value)", statement: value, line:curLineNum)
+                        let (selector,argVals) = try FunctionHeader.parse(value)
+                            
+                        guard let mixin = mixins[selector] else {
+                            throw NXSSError.Require(msg: "Cannot find mixin named \(selector)", statement: value, line:curLineNum)
                         }
                         
-                        curBlock.addDeclarations(baseStyle.declarations)
+                        curBlock.addDeclarations(
+                            mixin.resolveArguments(argVals)
+                        )
+
+                    case .Extend(let selectorType):
                         
-                    } else {
-                        throw NXSSError.Parse(msg: "This extend does not contain Class or Element: \(value)", statement: value, line:curLineNum)
-                    }
+                        var selector:String?
+                        var pseudoClass:PseudoClass?
                     
+                        // We're going to extend from another class.
+                        switch try BlockHeader.parse(value) {
+                        case .Class(let selector_, let pseudoClass_):
+                            selector = selector_
+                            pseudoClass = pseudoClass_
+                            
+                        case .Element(let selector_, let pseudoClass_):
+                            selector = selector_
+                            pseudoClass = pseudoClass_
+                            
+                        default:
+                            break
+                        }
+                        
+                        if let selector = selector ,   pseudoClass = pseudoClass {
+                            
+                            let compiledKey = CompiledRuleSet.getCompiledKey(selector,selectorType: selectorType, pseudoClass: pseudoClass)
+                            
+                            guard let baseStyle = ryleSets[compiledKey] else {
+                                NSLog("ruleSets \(ryleSets)")
+                                throw NXSSError.Require(msg: "Cannot find class/element to extend from with name \(value)", statement: value, line:curLineNum)
+                            }
+                            
+                            curBlock.addDeclarations(baseStyle.declarations)
+                            
+                        } else {
+                            throw NXSSError.Parse(msg: "This extend does not contain Class or Element: \(value)", statement: value, line:curLineNum)
+                        }
+                        
+                    }
+                
+                    curBuffer.removeAll(keepCapacity: true)
+                    
+                    
+                // Check for Open Comment
+                } else if let last = curBuffer.last where s == unichar_asterisk && last == unichar_forwardSlash {
+                    
+                    curBuffer.removeLast()
+                    skip = true
+                    
+                
+                } else {
+                    
+                    curBuffer.append(s)
                 }
-            
-                curBuffer.removeAll(keepCapacity: true)
-                
-                
-            // Check for Open Comment
-            } else if let last = curBuffer.last where s == "*" && last == "/" {
-                
-                curBuffer.removeLast()
-                skip = true
                 
             
-            } else {
-                
-                curBuffer.append(s)
+                lastS = s
             }
-            
-        
-            lastS = s
-        }
+        } while( lastRange < fileContent.characters.count )
         
         return ryleSets
             
