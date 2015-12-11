@@ -18,9 +18,7 @@ class Parser {
         let filePath = Parser.pathForFile(fileName, bundle:bundle)
         let data = NSData(contentsOfFile:filePath!)
         assert(data != nil , "Could not find file \(filePath). Ensure it exists, and use NXSS.pathForFile() to generate the path.")
-        let string = NSString(data: data!, encoding: NSUTF8StringEncoding)! as String
-        
-        self.stringQueue = StringQueue(string:string)
+        self.fileContent = NSString(data: data!, encoding: NSUTF8StringEncoding)! as String
         blockQueue.push(Block())
     }
     
@@ -66,7 +64,7 @@ class Parser {
     
     // MARK: - Private
     
-    let stringQueue : StringQueue
+    let fileContent : String
     
     private var mixins : [String:CompiledMixin] = Dictionary()		// mixinName => StyleMixin
     
@@ -110,31 +108,43 @@ class Parser {
     private func traverse() throws -> [String:CompiledRuleSet] {
 
         var ryleSets : [String:CompiledRuleSet] = Dictionary()  // ret val
-        var curBuffer : String = ""
+
+        var curBuffer : String.CharacterView = String.CharacterView()
+        curBuffer.reserveCapacity(300)
+        
         var skip = false
-        var lastS:String?
+        var lastS:Character?
         var curLineNum = 1  // line num starts from 1-based
         
-        while stringQueue.hasNext() {
-            let s = stringQueue.pop()
-            
-            if s == "\n" {
-                curLineNum++
-            }
+        let chars = self.fileContent.characters
+        for s : Character in chars {
             
             if skip {
+                
                 // Check for Close comment
-                if let lastS = lastS where s == "/" && lastS == "*" {
+                if let lastS = lastS where s == "/" && "\(lastS)" == "*" {
                     skip = false
                 }
                 continue
+                
+            } else if s == " " {
+                
+                // We don't need empty spaces.
+                continue
+                
+            } else if s == "\n" {
+                
+                curLineNum++
+                continue
+                
             }
 
             // Start of Context
             if s == "{" {
+                
             
                 // Figure out whether what kind of header this is
-                let blockHeader = try BlockHeader.parse(curBuffer)
+                let blockHeader = try BlockHeader.parse(String(curBuffer))
                 switch blockHeader {
 
                 case .Mixin(let selector, let args):
@@ -156,14 +166,13 @@ class Parser {
                     )
                 }
             
-                curBuffer = ""
-                
+                curBuffer.removeAll(keepCapacity: true)
+                                
                 
             // End of Context
             } else if s == "}" {
-            
-                curBuffer = curBuffer.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-                if curBuffer.characters.count > 0 {
+                
+                if curBuffer.count > 0 {
                     assert(false,"You forgot to apply semi-colon to your last line.")
                 }
                 // By now curBuffer is an empty string
@@ -184,13 +193,12 @@ class Parser {
                     assert(false,"Should never have gone here. Fatal logic error.")
                 }
                 
-                
             }	 
                     
             // End of Line
             else if s == ";" {
                 
-                let (type,key,value) = try KeyValueParser.parse( curBuffer )
+                let (type,key,value) = try KeyValueParser.parse( String(curBuffer) )
                 
                 let curBlock = blockQueue.peek()
                 switch type {
@@ -246,8 +254,8 @@ class Parser {
                     
                 }
             
-                curBuffer = ""
-            
+                curBuffer.removeAll(keepCapacity: true)
+                
                 
             // Check for Open Comment
             } else if let last = curBuffer.last where s == "*" && last == "/" {
@@ -258,7 +266,7 @@ class Parser {
             
             } else {
                 
-                curBuffer += s
+                curBuffer.append(s)
             }
             
         

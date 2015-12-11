@@ -26,8 +26,14 @@ public class NXSS {
         Parse the file with the given name and the bundle they're in.
     */
     public func useFile( fileName : String , bundle : NSBundle? = nil ) {
+        
+        let startTime = NSDate()
+        
         let parser = Parser(fileName:fileName, bundle:bundle)
         self.ruleSets = try! parser.parse()
+        
+        let diff = NSDate().timeIntervalSince1970 - startTime.timeIntervalSince1970
+        NSLog("Parsing Time [\(fileName)] = \(diff) seconds")
     }
     
 

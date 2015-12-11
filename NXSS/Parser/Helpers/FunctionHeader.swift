@@ -31,25 +31,26 @@ class FunctionHeader {
     */
     static func parse(input:String) throws -> (name:String,args:[String]) {
         
-        var buf = ""
+        var curBuffer : String.CharacterView = String.CharacterView()
+        curBuffer.reserveCapacity(100)
+        
         var name : String?   // e.g. ".foo:selected"
         var args : [String] = []
         
-        let inputQueue = StringQueue(string: input)
         var numParenthesis : Int = 0
-        
-        while inputQueue.hasNext() {
-            let s = inputQueue.pop()
+
+        for s in input.characters {
             
             if s == "(" {
                 
                 if numParenthesis == 0 {
                     // First opening parenthesis! buf is the name.
-                    name = buf
-                    buf = ""
+                    name = String(curBuffer)
+                    curBuffer.removeAll(keepCapacity: true)
+
                 } else {
                     // This is opening parentesis of an arg. Let's just append to buf.
-                    buf += s
+                    curBuffer.append(s)
                 }
                 numParenthesis++
                 
@@ -58,16 +59,17 @@ class FunctionHeader {
                 numParenthesis--
                 if numParenthesis == 0 {
                     // We're back to normal. Let's bail.
-                    if buf != "" {
+                    let string = String(curBuffer)
+                    if string != "" {
                         // This is to handle case e.g. "foo()"
-                        args.append(buf)
-                        buf = ""
+                        args.append(string)
+                        curBuffer.removeAll(keepCapacity: true)
                     }
                     break
                     
                 } else {
                     // This is close parenthesis of an arg. Let's just append to buf
-                    buf += s
+                    curBuffer.append(s)
                 }
                 
             } else if s == "," {
@@ -75,22 +77,22 @@ class FunctionHeader {
                 assert( numParenthesis > 0 , "There should not be a comma before first open parenthesis or after last close parenthesis.")
                 if numParenthesis == 1 {
                     // We know this is a real arg
-                    args.append(buf)
-                    buf = ""
+                    args.append(String(curBuffer))
+                    curBuffer.removeAll(keepCapacity: true)
                 } else {
                     // Okay this is part of an arg. Let's just append to buf
-                    buf += s
+                    curBuffer.append(s)
                 }
                 
             } else {
                 
-                buf += s
+                curBuffer.append(s)
                 
             }
         }
         
-        if buf.characters.count > 0 && name == nil {
-            name = buf
+        if curBuffer.count > 0 && name == nil {
+            name = String(curBuffer)
         }
         
         args = args.map { $0.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) }
