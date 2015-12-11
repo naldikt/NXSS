@@ -1,0 +1,1667 @@
+/*
+ 
+ Before you add a new style in, please look around and see if there's any existing style you can reuse.
+ If you're unsure please ask your fellow coworkers.
+ 
+ */
+
+/* MARK: - Shared Variables */
+
+/**
+ App wide background color for dark sections
+ rgb(49,54,61) = #31363d
+ */
+$sectionBackgroundColor: rgb(49,54,61);
+$sectionBackgroundColorSemiTransparent: rgba(49,54,61,0.5);
+
+/**
+ A color with enough contrast to section background as to allow it to create separator views
+ */
+$sectionSeparatorColor: rgb(74,79,84);
+
+$sectionTextColor: rgb(230,230,230);
+
+/**
+ App wide background color for light sections
+ */
+$sectionLightBackgroundColor: #FFFFFF;
+
+$listBackgroundColor: rgb(214,215,217);
+/**
+ The color of text and buttons that indicate a tappable item
+ */
+$actionHighlightColor: rgb(0,226,255);
+
+/**
+ The action highlight color on light screens
+ */
+$actionHighlightColorLight:rgb(0,176,199);
+
+/**
+ Non-prominent metadata text color
+ */
+$contextualColor: rgb(131,134,139);
+
+$primaryTextColor: rgb(51,57,67);
+$primaryTextColorSemiTransparent: rgba(51,57,67,.7);
+
+$goldColor: #E0B300;
+
+$darkTextColor: rgb(133,143,147);
+$profileLabelColor: rgb(221,223,226);
+$miniPlayerBackgroundColor: rgb(39,41,50);
+
+
+/**
+ MTX Color
+ */
+$MTXColor: #E0B300;
+
+$MTXDialogColor: #0EA4F7;
+
+$MTXModeFreeColor: $MTXColor;
+$MTXModeAdFreeColor: #FD5244;
+$MTXModePremiumColor: #1CDCFE;
+
+/*MARK: - Classes*/
+
+/**
+ Common attributes for dark sections of the app (Channel Metadata, Profile, Asset Screens etc.)
+ */
+DarkSection{
+    
+    background-color: $sectionBackgroundColor;
+}
+
+/**
+ 1pt views that create separate sections in a view
+ */
+DarkSectionSeparator {
+    
+    background-color: $sectionSeparatorColor;
+}
+
+/**
+ Common attributes for light sections of the app (FSP, MiniPlayer, Collection etc.)
+ Currently used for:
+ • FSP background
+ */
+LightSection {
+    
+    background-color: $sectionLightBackgroundColor;
+}
+
+/**
+ Light gray background behind list views (collection/table views)
+ */
+ListViewBackground {
+    background-color: $listBackgroundColor;
+}
+
+LightSectionSeparator {
+    
+    background-color: rgb(131,134,139);
+}
+
+/**
+ Dark sections that contain the play and shuffle buttons for track lists
+ */
+ActionSection {
+    background-color: rgb(32,36,42);
+}
+
+ActionSectionGradient {
+    background-color-top: clear;
+    background-color-bottom: rgba(32,36,42,50);
+}
+
+/**
+ Dark sections that contain the play and shuffle buttons for track lists
+ */
+ActionSection {
+    background-color: rgb(32,36,42);
+}
+
+ActionSectionGradient {
+    background-color-top: rgba(32,36,42,0);
+    background-color-bottom: rgba(32,36,42,255);
+}
+
+/**
+ Gray border around sections
+ */
+SectionBorder {
+    background-color: rgba(131,134,139,0.5);
+}
+
+/**
+ Overlay Background
+ */
+ModalBackground{
+    background-color: #1A1D21;
+}
+
+
+/**
+ For screens displaying indented table or collection views
+ */
+CollectionSection {
+    
+    background-color: rgba(242,242,242,1.0);
+}
+
+/* MARK: - Buttons */
+
+/**
+ Common button style for items such as Follow, Favorite, & Subscribe
+ */
+ActionButton {
+    corner-radius: 2;
+    border-width: 1;
+    border-color: $actionHighlightColor;
+    font-color: $actionHighlightColor;
+    font-name: BrandonText-Bold;
+    font-size: 15;
+}
+
+/**
+ A full action color button
+ */
+ActionButton_Light {
+    
+    font-color: #FFFFFF;
+    background-color: $actionHighlightColorLight;
+}
+
+/**
+ A full action white button
+ */
+ActionButton_White {
+    font-color: white;
+    corner-radius: 2;
+    border-width: 1;
+    border-color: rgba(255,255,255,150);
+    font-name: BrandonText-Bold;
+    font-size: 15;
+}
+
+/**
+  Check button on Add Tracks to Playlist screen
+ */
+CheckButton {
+    font-color: $sectionTextColor;
+    font-color-selected: $actionHighlightColor;
+}
+
+
+/**
+ Chevron button on Add Tracks to Playlist screen
+ */
+ChevronButton {
+    font-color: $sectionTextColor;
+}
+
+/**
+ "X" button on modal views
+ */
+CloseButton {
+    font-color: white;
+    font-name: icomoon;
+    font-size: 24;
+}
+
+/**
+ Chevron Down for FSP
+ */
+
+CloseButtonFSP {
+    font-color: black;
+    font-name: NapsterXFont;
+    font-size: 24;
+}
+
+/**
+ Action buttons relating to credits such as the "Got It!" button on the help screen
+ */
+CreditActionButton {
+    font-color: $MTXColor;
+    font-name: AvenirNext-DemiBold;
+    font-size: 15;
+    border-width: 1;
+    corner-radius: 2;
+    border-color: $contextualColor;
+}
+
+
+DarkLowContrastIconButton {
+    font-name: icomoon;
+    background-color: rgb(112,112,112);
+    font-color: rgb(212,212,212);
+}
+
+/**
+
+ Use for:
+ • Favorite button in metadata sections such as the playlist screen
+ */
+FavoriteButtonSmall {
+    font-name: NapsterXFont;
+    font-size: 30;
+    font-color: $contextualColor;
+    font-color-selected: $actionHighlightColor;
+}
+
+/**
+ Use for:
+ • Mini player Favorite button (Normal and Selected) state
+ */
+FavoriteButtonLarge {
+    font-name: NapsterXFont;
+    font-size: 36;
+    font-color: rgb(203,203,203);
+    font-color-selected: rgb(203,203,203);
+}
+
+/**
+ Use for:
+ • FSP Favorite button (Normal and Selected) state
+ */
+FavoriteButtonFSP {
+    font-name: NapsterXFont;
+    font-size: 38;
+    font-color: rgb(203,203,203);
+    font-color-selected: rgb(255,107,90);
+}
+
+/**
+ Used for circular "?" buttons like on the flyout menu
+ */
+HelpButton {
+    border-color: $contextualColor;
+    font-color: $contextualColor;
+    border-width: 1;
+    corner-radius: 9;
+}
+
+/**
+ Navigation buttons such as "Save" and "Done"
+ */
+NavigationActionButton {
+    
+    font-color: $actionHighlightColor;
+    font-name: BrandonText-Medium;
+}
+
+NavigationWhiteActionButton {
+    
+    font-color: white;
+    font-name: BrandonText-Medium;
+    font-color-disabled: rgba(255,255,255,150);
+    font-size: 18;
+}
+
+/**
+ Play button across the app.
+ */
+PlayButton {
+    font-name: icomoon;
+    font-color: black;
+}
+
+/**
+ Right arrow (actually a button with arrow as text).
+ Use for:
+ • Facewall right arrow.
+ • TitleCell
+ Blue-ish buttons in track list headers for playing & shuffling.
+ */
+PlayTrackListButton {
+    font-name: icomoon;
+    font-color: $actionHighlightColor;
+}
+
+PlayTrackListButtonBackground {
+    corner-radius: 22;
+    border-width: 2;
+    border-color: rgba(0,226,255,160);
+}
+
+/**
+ Circle with an X in it
+ Used for:
+ • Playlist Tracks Mini-bar
+ */
+RemoveButton {
+    corner-radius:14;
+    border-width: 1;
+    border-color: rgba(200,200,200,255);
+}
+
+/**
+    Right arrow (actually a button with arrow as text).
+    Use for:
+    • Facewall right arrow.
+    • TitleCell
+ */
+RightArrow {
+    background-color: clear;
+    font-color: $contextualColor;
+    font-name: icomoon;
+}
+
+/**
+ Used for toggle buttons such as the more/less button on artist/album screens
+ */
+ToggleButtonText {
+    font-name: AvenirNext-BoldItalic;
+    font-color: $primaryTextColorSemiTransparent;
+}
+
+TabBarButtonNewPlaylist {
+    font-color: rgb(0, 153, 255);
+    font-color-highlighted: rgb(0, 153, 255);
+    font-color-selected: rgb(49, 54, 61);
+    
+}
+
+TabBarButtonOthers {
+    font-color: rgba(49, 54, 61, 0.24);
+    font-color-highlighted: rgba(49, 54, 61, 0.56);
+    font-color-selected: rgb(49, 54, 61);
+}
+
+/** MARK: - Controls */
+
+ActionSwitch {
+    
+    on-tint-color: $actionHighlightColor;
+    tint-color: $contextualColor;
+}
+
+/* MARK: - Text */
+
+/**
+ Common text style for tappable items such as User Names
+ */
+ActionText {
+    font-size: 18;
+    font-color: $actionHighlightColor;
+    font-name: AvenirNext-DemiBold;
+}
+
+ActionIcon_Inverted {
+    font-color: #FFFFFF;
+    font-name: icomoon;
+}
+ActionText_Inverted {
+    
+    font-color: #FFFFFF;
+    font-name: AvenirNext-DemiBold;
+}
+
+DarkSectionText {
+    
+    font-name: BrandonText-Medium;
+    font-color:$sectionTextColor;
+}
+
+ActionSectionText {
+    
+    font-name: BrandonText-Medium;
+    font-color: rgb(248,248,248);
+}
+
+ActionSectionTextLevel2 {
+    
+    font-name: BrandonText-Medium;
+    font-color: rgb(230,230,230);
+}
+
+ActionSectionTextLevel3 {
+    
+    font-name: BrandonText-Medium;
+    font-color: rgb(200,200,200);
+}
+
+/**
+ Blue-green text used for the count labels in cells such as Collection and User Profile
+ */
+CellCountText {
+    font-name: BrandonText-Bold;
+    font-color: rgb(44,227,206);
+}
+
+/**
+ Used for displaying non prominent metadata
+ */
+ContextualText {
+    font-name: BrandonText-Bold;
+    font-size: 15;
+    font-color:$contextualColor;
+}
+
+/**
+ Icons using the contextual color (e.g. disclosure indicators)
+ */
+ContextualIcon {
+    
+    font-name: icomoon;
+    font-color: $contextualColor;
+}
+
+/**
+
+ MiniPlayer & FSP Track Title text
+
+ Counts on the metadata sections (e.g. "x tracks" and playlist duration on playlist screen)
+ */
+MetadataContextualText {
+    font-name: BrandonText-Medium;
+    font-size: 12;
+    font-color: white;
+}
+
+/**
+ Title on the metadata sections (e.g. playlist name on playlist screen)
+ */
+MetadataTitleText {
+    font-name: BrandonText-Bold;
+    font-size: 24;
+    font-color: white;
+}
+
+/**
+ FSP Track Title text
+ */
+FSPTrackText {
+    font-name: BrandonText-Bold;
+    font-size: 17;
+    font-color: black;
+}
+
+/**
+ FSP Artist text
+ */
+FSPArtistText {
+    font-name: AvenirNext-Medium;
+    font-size: 13;
+    font-color: rgba(0,0,0, .5);
+}
+
+/**
+    MiniPlayer & FSP Track Title text
+ */
+PlayerTrackText {
+    font-name: BrandonText-Bold;
+    font-size: 15;
+    font-color: black;
+}
+
+/**
+ MiniPlayer & FSP Artist text
+ */
+PlayerArtistText {
+    font-name: AvenirNext-Medium;
+    font-size: 11;
+    font-color: rgba(0,0,0, .5);
+}
+
+/**
+ MiniPlayer & FSP Album text
+ */
+PlayerAlbumText {
+    font-name: AvenirNext-Italic;
+    font-size: 11;
+    font-color: $contextualColor;
+}
+
+/**
+ Used as the main content title text such as the album name on the album screen
+ */
+TitleText {
+    font-name: BrandonText-Bold;
+    font-color: $primaryTextColor;
+}
+
+/**
+ Used as the main content subtitle such as the artist name on the album screen */
+SubTitleText {
+    font-name: AvenirNextCondensed-Medium;
+    font-color: $primaryTextColor;
+}
+
+/**
+ Used as tertiary text such as the description text on the album screen
+ */
+DescriptionText {
+    font-name: AvenirNextCondensed-Medium;
+    font-color: $primaryTextColorSemiTransparent;
+}
+
+/**
+ Used for long blocks of text like artist bios, album reviews
+ */
+ParagraphText {
+    font-name: AvenirNext-Medium;
+    font-color: $primaryTextColor;
+}
+
+/**
+ Used for the icon on collection view headers such as artist albums, etc.
+ */
+SectionHeaderIconText {
+    font-color: $primaryTextColor;
+    font-name: icomoon;
+    font-size: 68;
+}
+
+/**
+ Credit (coin) in text.
+ */
+CreditText {
+    font-color: $goldColor;
+}
+
+/**
+ Specifically used for navBar.
+ Credit (coin) in text.
+ */
+NavBarCreditText {
+    font-name: AvenirNextCondensed-DemiBold;
+    font-size: 9;
+    font-color: white;
+}
+
+NavBarCreditTextFSP {
+    font-name: AvenirNextCondensed-DemiBold;
+    font-size: 9;
+    font-color: #9B9DA0;
+}
+
+AdPlayerLabel {
+    font-name: AvenirNextCondensed-DemiBold;
+    font-color: $sectionBackgroundColorSemiTransparent;
+    font-size: 9;
+}
+
+AdTakeOverLabel {
+    font-name: AvenirNext-Medium;
+    font-color: $sectionBackgroundColorSemiTransparent;
+    font-size: 12;
+}
+
+/* MARK: - Icons */
+
+ActionIcon {
+    font-name: icomoon;
+    border-color: $actionHighlightColor;
+    font-color: $actionHighlightColor;
+}
+
+/**
+ The star button on the tuner screen 
+ */
+
+FavoriteActionLabel {
+    border-color: #177C8D;
+    border-width:2;
+    background-color: #272B33;
+    corner-radius: 18;
+    font-color: $actionHighlightColor;
+    font-size: 14;
+}
+
+FavoriteActionIcon {
+    font-color: $actionHighlightColor;
+}
+
+NavBarCoinIcon {
+    font-color:$goldColor;
+    font-name:  NapsterXFont;
+    font-size: 17;
+    text-align: center;
+    background-color: clear;
+}
+
+
+CoinIcon {
+    border-width: 2;
+    border-color: #ffffff;
+}
+
+
+/* MARK: - Cells */
+
+/**
+ Our standard collection view cell styles
+ */
+CollectionViewCell {
+    background-color: #FFFFFF;
+}
+
+CollectionViewHeader {
+    font-color: rgba(0,0,0,0.5);
+    font-name: BrandonText-Medium;
+    font-size: 12;
+}
+
+CollectionViewTitle {
+    font-color: $primaryTextColor;
+    font-name: BrandonText-Medium;
+}
+
+CollectionViewSubTitle {
+    font-color: rgba(0,0,0,0.5);
+    font-name: BrandonText-Regular;
+    font-size: 12;
+}
+CollectionViewSubTitleIcon {
+    font-color: rgba(0,0,0,0.5);
+    font-name: NapsterXFont;
+    font-size: 16;
+}
+
+CollectionSectionTitle {
+    
+    font-name: AvenirNext-Medium;
+    font-color: rgba(0,0,0,0.5);
+}
+
+CollectionSectionView {
+    background-color: #F2F2F2;
+}
+
+CellSelectedView {
+    background-color: $listBackgroundColor;
+}
+
+CellAccessoryButton {
+    font-color: rgba(0,0,0,76);
+    font-name: NapsterXFont;
+}
+
+CellPlaylistStarButton {
+    font-name: NapsterXFont;
+    font-size: 18;
+    
+}
+
+/* MARK: - Tuner Channels */
+
+
+ChannelUsernameText {
+    font-color: white;
+    font-name: BrandonText-Bold;
+}
+
+ChannelSubscribers {
+    font-name:AvenirNext-DemiBold;
+    font-size: 11;
+    font-color: $contextualColor;
+    text-align: right;
+}
+
+ChannelNameTitle {
+    font-name:BrandonText-Bold;
+    font-style: Bold;
+    font-size:  20;
+}
+
+/* MARK: - MTXStore */
+
+MTXStoreTitle{
+    font-color: white;
+    font-name: AvenirNext-Bold;
+}
+
+MTXStoreSubTitle{
+    font-name: AvenirNext-DemiBold;
+    font-color: white;
+}
+
+MTXCollectionViewHeaderTitle{
+    font-name: AvenirNext-DemiBoldItalic;
+    font-color: $MTXColor;
+}
+
+MTXCollectionViewTitle {
+    font-color: white;
+    font-name: AvenirNext-Bold;
+}
+
+MTXCollectionViewAccessoryTitle {
+    font-color: white;
+    font-name: AvenirNext;
+}
+
+MTXDialogButton {
+    corner-radius: 2;
+    border-width: 1;
+    border-color: white;
+    background-color: $MTXDialogColor;
+    font-color: white;
+    font-name: BrandonText-Medium;
+    font-size: 16;
+    title-insets: 5 32;
+}
+
+MTXActionButton {
+    corner-radius: 2;
+    border-width: 1;
+    border-color: $MTXColor;
+    font-color: $MTXColor;
+    font-name: BrandonText-Bold;
+    font-size: 15;
+}
+
+MTXActionButton_Borderless {
+    font-color: $MTXColor;
+    font-name: BrandonText-Bold;
+    font-size: 15;
+    border-color: clear;
+}
+
+
+MTXIconText{
+    font-color: $MTXColor;
+    font-name: icomoon;
+}
+
+/* MARK: - MagicTag */
+
+MagicTagWordBox {
+    background-color: white;
+    corner-radius: 2;
+}
+
+MagicTagLabel {
+    font-color: white;
+    font-name: BrandonText-Bold;
+    font-size: 11;
+}
+
+/* MARK: - Avatar */
+
+/**
+ The circular user avatar image
+ 
+ $discussion You must also set layer.masksToBounds = true on the images runtime attributes
+ */
+MemberAvatarSmall {
+    
+    border-color: #FFFFFF;
+    border-width: 2;
+    
+}
+
+/* MARK: - Others */
+
+/**
+ A class for invisible buttons that provide a tap area to a large area of content on a screen.
+ This class will allow the button to become visible when tapped.
+ 
+ */
+BackgroundButton {
+    
+    background-color-normal: clear;
+    background-color-highlighted: rgba(255,255,255,.5);
+    corner-radius: 5;
+}
+
+/**
+ Blue cell above track lists with play action
+ */
+PlayActionCell {
+    corner-radius: 2;
+    background-color: #00B0C7;
+}
+
+
+/**
+ This is temporary.
+ We don't have final Mockup from Design for FSP, hence I'm doing my best to make FSP white without direction.
+ At some point we need to remove this.
+ */
+FacewallBorderView {
+    background-color: rgba(131,134,139,0.5);
+}
+
+
+
+
+/*MARK: -*/
+
+
+/*
+ MARK: Asset Screens
+ */
+AssetView {
+    background-color: rgb(0,24,35);
+}
+
+AssetSection {
+    background-color: $sectionBackgroundColor;
+}
+
+AssetTopDivider {
+    background-color: rgb(35,39,50);
+}
+
+AssetBottomDivider {
+    background-color: #000000;
+}
+
+
+AssetTitle {
+    font-color: #ffffff;
+    font-name: BrandonText-Medium;
+    font-size: 23;
+}
+
+AssetTitleContainer {
+    background-color-top: rgba(255,255,255, 175);
+    background-color-bottom: rgb(255,255,255);
+}
+
+AssetDescription {
+    font-name: AvenirNext-Medium;
+    font-color: #ffffff;
+    font-size: 14;
+}
+
+AssetDescriptionToggleButton {
+    font-name: AvenirNext-BoldItalic;
+    font-color: rgba(255,255,255,76);
+    font-size: 12;
+}
+
+AssetSectionHeaderTitle {
+    font-name: AvenirNext-DemiBold;
+    font-color: #ffffff;
+    font-size: 16;
+}
+
+AssetSectionHeaderSubtitle {
+    font-name: AvenirNextCondensed-Medium;
+    font-color: $darkTextColor;
+    font-size: 12;
+}
+
+ArtistButtonAlbumScreen {
+    font-name: AvenirNextCondensed-Medium;
+    font-size: 17;
+    font-color: rgba(255,255,255,230);
+}
+
+AlbumDescriptionLabel {
+    font-name: AvenirNextCondensed-Medium;
+    font-size: 15;
+    font-color: rgba(255,255,255,178);
+}
+
+AssetSectionHeaderIcon {
+    font-color: #ffffff;
+    font-name: icomoon;
+    font-size: 68;
+}
+
+AssetCollectionCellTitle {
+    font-name: AvenirNext-Medium;
+    font-size: 15;
+    font-color: #E4E5E8;
+}
+
+AssetCollectionCellSubtitle {
+    font-name: AvenirNextCondensed-Medium;
+    font-size: 12;
+    font-color: $darkTextColor;
+}
+
+TrackCellTitle {
+    font-name: AvenirNext-DemiBold;
+    font-color: rgb(228,229,232);
+    font-size: 15;
+}
+
+TrackCellSubtitle {
+    font-name: AvenirNextCondensed-Medium;
+    font-color: $darkTextColor;
+    font-size: 13;
+}
+
+TrackCellImage {
+    width: 50;
+    height: 50;
+}
+
+TrackCellIndexLabel {
+    font-name: AvenirNextCondensed-DemiBold;
+    font-color: rgba(255,255,255,127);
+    font-size: 14;
+}
+
+TrackCellDownloadIcon {
+    font-name: icomoon;
+    font-size: 28;
+    font-color: rgba(120, 120, 120, 127);
+}
+
+TrackCellDownloadIconComplete {
+    font-name: icomoon;
+    font-size: 18;
+    font-color: rgba(30,138,202,255);
+}
+
+ExplicitLabel {
+    font-color: #ffffff;
+    font-name: AvenirNextCondensed-MediumItalic;
+    font-size: 14;
+    background-color: rgba(0,0,0,89);
+}
+
+NewReleaseView {
+    background-color: #008AFF;
+}
+
+NewReleaseLabel {
+    font-color: #ffffff;
+    font-name: AvenirNextCondensed-DemiBoldItalic;
+    font-size: 13;
+}
+
+FavoriteButtonLabel {
+    font-size: 37;
+    font-name: NapsterXFont;
+    font-color: #115BA0;
+    text-align: center;
+}
+
+FavoriteCountLabel {
+    font-color: $darkTextColor;
+    font-size: 14;
+    font-name: AvenirNextCondensed-DemiBold;
+}
+
+FavoriteStarSmall {
+    font-color: $darkTextColor;
+    font-name: NapsterXFont;
+    font-size: 22;
+}
+
+LargePlayButton {
+    background-color: rgba(0,0,0,80);
+    corner-radius: 40;
+    border-width:4;
+    border-color: rgba(255,255,255,160);
+}
+
+SmallPlayButton {
+    background-color: rgba(0,0,0,80);
+    corner-radius: 18;
+    border-width:2;
+    border-color: rgba(255,255,255,255);
+}
+
+FullScreenAdPlayButton {
+    corner-radius: 20;
+    border-width:2;
+    border-color: rgba(255,255,255,125);
+}
+
+GenresCollectionView {
+    background-color: rgba(25,29,40,255);
+}
+
+GenreCellLabel {
+    background-color: #0B7FC2;
+    font-name: AvenirNextCondensed-BoldItalic;
+    font-color: #ffffff;
+    font-size: 13;
+}
+
+UserImageAssetScreen {
+    background-color: rgba(0,0,0,0);
+    corner-radius:18;
+}
+
+AssetContentFilterTitleView {
+    background-color: #1F232E;
+}
+
+AssetContentFilterTitleLabel {
+    font-color: #ffffff;
+    font-name: BrandonText-Medium;
+    font-size: 19;
+}
+
+AssetContentFilterContainer {
+    background-color: rgb(0,52,87,204);
+}
+
+FilterCell {
+    background-color: rgba(49,54,61,255);
+}
+
+FilterCellExpanded {
+    background-color: rgba(118,120,126,255);
+}
+
+FilterCellText {
+    font-color:#ffffff;
+    text-align:center;
+    font-name:BrandonText-Medium;
+}
+
+/*
+ MARK: Home
+ */
+HomeView {
+    background-color: #000000;
+}
+
+HomeTagPlaceholderText {
+    font-name: AvenirNext-Medium;
+    font-size: 14;
+    font-color: rgba(222,223,224,0.5);
+}
+
+UserProfileButton {
+    corner-radius: 16;
+    border-color: #FFFFFF;
+    border-width: 2;
+}
+
+HomeCellTitleLabel {
+    font-name: BrandonText-Bold;
+    font-size: 20;
+    font-color: rgb(243,245,248);
+}
+
+HomeCellSecondaryLabel {
+    font-name: AvenirNext-DemiBold;
+    font-size: 14;
+    font-color: rgba(255,255,255,204);
+}
+
+HomeCellTertiaryLabel {
+    
+    /*
+     nk - font configuration does not play well with UILabel's attributed label.
+     It caused the attributes to be dropped.
+     Let's shut it off for now, until we really need it.
+     */
+    /*    font-name: AvenirNext-Regular;*/
+    /*    font-size: 14;*/
+    
+    font-color: rgba(255,255,255,204);
+}
+
+HomeCellPlayButton {
+    font-name: icomoon;
+    font-size: 74;
+    font-color: #ffffff;
+}
+
+HomeFollowLabel {
+    font-name: NapsterXFont;
+    font-size: 15;
+    corner-radius: 7.5;
+    background-color: white;
+}
+
+/*
+ MARK: Root & Navigation Bar
+ */
+RootView {
+    background-color: #000000;
+}
+
+BackgroundView {
+    background-color: rgb(0,24,35);
+}
+
+NavBarGradientBackground {
+    background-color-top: rgba(0,0,0,127);
+    background-color-bottom: rgba(0,0,0,0);
+}
+
+CreditsLabel {
+    font-color: #ffffff;
+    font-name: HelveticaNeue-Bold;
+    font-size: 10;
+}
+
+CoinOutline {
+    border-width: 1;
+    border-color: #ffffff;
+}
+
+MiniCoin {
+    background-color: rgb(43,213,169);
+    corner-radius: 3.5;
+}
+
+BackButton {
+    font-name: skyway-monorail;
+    font-size: 24;
+    font-color: rgb(241,242,244);
+}
+
+CloseButton {
+    font-name: icomoon;
+    font-size: 30;
+    font-color: #ffffff;
+}
+
+SearchButton {
+    font-name: icomoon;
+    font-size: 34;
+    font-color: #ffffff;
+}
+
+
+/*
+ MARK: Player
+ */
+
+
+FullScreenPlayerTimeElapsedLabel {
+    font-name: AvenirNextCondensed-Medium;
+    font-size: 11;
+    font-color: rgb(96,102,113);
+}
+
+FullScreenPlayerTimeRemainingLabel {
+    font-name: AvenirNextCondensed-Medium;
+    font-size: 11;
+    font-color: rgb(96,102,113);
+}
+
+FullScreenPlayerProgressView {
+    progress-tint-color: rgb(35,37,44);
+    track-tint-color: rgb(213,214,215);
+}
+
+FullScreenPlayerControlButtonRestColor {
+    font-color: #25282F;
+}
+
+FullScreenPlayerControlButtonWhiteColor {
+    font-color: rgba(255,255,255,255);
+}
+
+FullScreenPlayerAccessoryButton {
+    font-name: NapsterXFont;
+    font-size: 36;
+    font-color: rgb(203,203,203);
+}
+
+FullScreenPlayerAdLabel {
+    font-name: AvenirNext-Regular;
+    font-size: 14;
+    font-color: rgb(179,179,179);
+}
+
+FullScreenPlayerAdDurationLabel {
+    font-name: AvenirNext-Regular;
+    font-size: 14;
+    font-color: #ffffff;
+}
+
+FullScreenPlayerAdControlContainer {
+}
+
+
+FullScreenPlayerSectionView {
+    background-color: clear;
+}
+
+PlayerControlButtonBackgroundHighlight {
+    background-color: $contextualColor;
+}
+
+PlayerControlButton {
+    font-size: 30;
+    font-color: #000000;
+}
+
+MiniPlayerView {
+    background-color: #FFFFFF;
+}
+
+MiniPlayerPlayButton {
+    border-color: rgb(203,203,203);
+    border-width: 2;
+    corner-radius: 22;
+    font-color: #000000;
+}
+
+/*
+ MARK: Search
+ */
+
+CancelButton {
+    font-color: rgba(200,200,200,150);
+    font-size:16;
+    font-name: icomoon;
+}
+
+SearchTagPlaceholderText {
+    font-name: AvenirNext-Medium;
+/*    font-color: rgba(0,0,0,0.5);*/
+font-color:$primaryTextColor;
+    font-size: 14;
+}
+
+
+/*
+ MARK: Tag
+ */
+
+TagSearchButton {
+    border-color: rgb(15,164,247);
+    border-width: 1;
+    corner-radius: 2;
+}
+
+TagSearchLabel {
+    font-color: rgb(15,164,247);
+    font-name: BrandonText-Bold;
+    font-size: 11;
+}
+
+TagSearchIconLabel {
+    font-color: rgb(15,164,247);
+    font-name: NapsterXFont;
+    font-size: 30;
+}
+
+TagPlaylistCellButton {
+   border-color: white;
+   border-width: 1;
+   corner-radius: 2;
+}
+
+TagPlaylistCellLabel {
+    font-color: white;
+    font-name: BrandonText-Bold;
+    font-size: 9;
+}
+
+TagPlaylistCellIconLabel {
+    font-color: white;
+    font-name: NapsterXFont;
+    font-size: 30;
+}
+
+TagHomeCell {
+    border-color: rgb(15,164,247);
+    background-color: rgb(15,164,247);
+    border-width: 1;
+    corner-radius: 2;
+}
+
+
+TagHomeLabel {
+    font-color: white;
+    font-name: BrandonText-Bold;
+    font-size: 11;
+}
+
+TagHomeLabelCancel {
+    font-color:white;
+    font-size:11;
+}
+
+TagTrackPickerLabel {
+    font-color: rgb(15,164,247);
+    font-name: BrandonText-Bold;
+    font-size: 11;
+}
+
+TagTrackPickerLabelSelected {
+    font-color: white;
+    font-name: BrandonText-Bold;
+    font-size: 11;
+}
+
+TagTrackPickerButton {
+    background-color: clear;
+    border-color: rgb(15,164,247);
+    border-width: 1;
+    corner-radius: 2;
+}
+
+TagTrackPickerButtonSelected {
+    background-color: rgb(15,164,247);
+    border-color: rgb(15,164,247);
+    border-width: 1;
+    corner-radius: 2;
+}
+
+
+/*
+ MARK: User Profile
+ */
+
+UserProfileView {
+    background-color: $listBackgroundColor; /* dark theme: rgb(22,26,36);*/
+}
+
+UserProfileImage {
+    corner-radius: 24;
+    border-color: #FFFFFF;
+    border-width: 2;
+}
+
+UserProfileErrorXLabel {
+    font-name: skyway-monorail;
+    font-size: 300;
+    font-color: $profileLabelColor;
+}
+
+UserProfileErrorDescriptionLabel {
+    font-name: AvenirNext-DemiBold;
+    font-size: 24;
+    font-color: #ffffff;
+}
+
+UserProfileErrorTryAgainButton {
+    font-name: AvenirNext-DemiBold;
+    font-size: 21;
+    font-color: rgb(22,144,245);
+}
+
+
+/*
+ MARK: User Profile List
+ */
+
+UserProfileListBackButton {
+    font-name: skyway-monorail;
+    font-size: 30;
+    font-color: #ffffff;
+    corner-radius: 22;
+}
+
+UserProfileListCountLabel {
+    font-name: AvenirNext-Medium;
+    font-size: 16;
+    font-color: rgb(152,159,171);
+}
+
+UserProfileListCellView {
+    background-color: #FFFFFF; /*dark theme: rgb(35,41,51); */
+}
+
+UserProfileListCellAlternateView {
+    background-color: rgb(18,20,27);
+}
+
+UserProfileListCellImage {
+    corner-radius: 25;
+}
+
+UserProfileListCellTitleLabel {
+    font-name: AvenirNext-Medium;
+    font-size: 15;
+    font-color: $primaryTextColor; /* dark theme: rgb(228,229,232);*/
+}
+
+
+UserProfileListCellScreenNameLabel {
+    font-name: AvenirNext-Medium;
+    font-size: 12;
+    font-color: $primaryTextColor; /*dark theme: rgb(133,143,147); */
+}
+
+UserProfileListCellDateLabel {
+    font-name: AvenirNextCondensed-Medium;
+    font-size: 12;
+    font-color: rgb(81,88,97 );
+}
+
+UserProfileListTableHeaderView {
+    background-color: $sectionBackgroundColor;
+}
+
+/*
+ MARK: Follow / Unfollow Button
+ */
+
+FollowButtonLabel {
+    font-size: 30;
+    font-name: icomoon;
+    font-color: rgb(28,117,190);
+    text-align: center;
+}
+
+UnfollowButtonLabel {
+    font-size: 30;
+    font-name: icomoon;
+    font-color: white;
+    text-align: center;
+}
+
+FollowButton {
+    border-width: 3;
+    border-color: rgb(21,80,108);
+    background-color: clear;
+}
+
+UnfollowButton {
+    border-width: 0;
+    background-color: rgb(28,117,190);
+}
+
+/*
+ MARK: RootSidebarMenuItemView
+ */
+
+RootSidebarMenuItemViewButton {
+    font-color: white;
+    font-name: BrandonText-Bold;
+    font-size: 20;
+}
+
+RootSidebarMenuViewUserLabel {
+    font-color: white;
+    font-name: BrandonText-Bold;
+    font-size: 16;
+}
+
+RootSidebarMenuViewUserIcon {
+    corner-radius: 22;
+    border-color: black;
+    border-width: 2;
+}
+
+/*
+ MARK: NavigationContainerView
+ */
+
+NavigationContainerViewMenuIcon {
+    font-name: NapsterXFont;
+    font-color: white;
+    font-size: 30;
+}
+
+/*
+ MARK: Track Menu
+ */
+
+TrackMenuCellLabel {
+    font-name: AvenirNext-Medium;
+    font-size: 18;
+    font-color: rgb(255,255,255);
+}
+
+/*
+ MARK: User Profile Edit
+ */
+
+UserProfileEditFieldInstLabel {
+    font-name: AvenirNext-Regular;
+    font-color: rgba(255,255,255,.4);
+    font-size: 12;
+}
+
+FavoritesFilterContainerView {
+    corner-radius:20;
+}
+
+/*
+ MARK: Settings View
+ */
+
+SettingsViewLabel {
+    font-name: AvenirNext-Medium;
+    font-size: 18;
+    font-color: rgb(255,255,255);
+}
+
+/*
+ MARK: NavigationController
+ */
+
+NavigationBar {
+    /* nk - Do not put background-color here, or it will mess up the status bar color. */
+    
+    /* This controls the color of the bar & status bar */
+    bar-tint-color: $sectionBackgroundColor;
+    
+    /* This is "tint-color". Controls the icons on the bar. */
+    background-tint-color: white;
+    
+    font-color: #FFFFFF;
+    font-name: BrandonText-Medium;
+    font-size: 19;
+    
+}
+
+FullPlayerNavigationBar {
+    /* This controls the color of the bar & status bar */
+    bar-tint-color: white;
+    
+    /* This is "tint-color". Controls the icons on the bar. */
+    background-tint-color: black;
+}
+
+FullPlayerNavigationTitleLabel {
+    font-color: #9B9DA0;
+    font-name: BrandonText-Medium;
+    font-size: 11;
+}
+
+FullPlayerNavigationSubtitleLabel {
+    font-color: black;
+    font-name: BrandonText-Medium;
+    font-size: 15;
+}
+
+/*
+ MARK: Toast
+ */
+
+ToastTitle {
+    font-name: AvenirNextCondensed-DemiBold;
+    font-size: 14;
+    font-color: #FFFFFF;
+}
+
+ToastCredits {
+    font-name: AvenirNextCondensed-DemiBold;
+    font-size: 14;
+    font-color: rgb(254, 199, 7);
+    
+}
+
+ToastTitleLarge {
+    font-name: AvenirNext-DemiBold;
+    font-size: 18;
+}
+
+ToastSubtitle {
+    font-name: AvenirNext-DemiBold;
+    font-size: 13;
+    font-color: rgba(142,142,142,.6);
+}
+
+/*
+ MARK: Add Songs to Playlist, Search Title
+*/
+
+SearchNavTopLabel{
+    font-color: rgb(179,179,179);
+    font-name: BrandonText-Medium;
+    font-size: 13;
+}
+
+SearchNavBottomLabel{
+    font-color: #FFFFFF;
+    font-name: BrandonText-Medium;
+    font-size: 19;
+}
+
+/*
+MARK: - SearchPlaylistAssetTracks
+*/
+
+SearchPlaylistAssetTracks_HeaderPrimaryLabel{
+    font-color: rgba(0,0,0,0.5);
+    font-name: BrandonText-Bold;
+    font-size: 15;
+}
+
+SearchPlaylistAssetTracks_HeaderSecondaryLabel{
+    font-color: rgba(0,0,0,0.5);
+    font-name: BrandonText-Medium;
+    font-size: 15;
+}
+
+/*
+MARK: - MTX Mode
+*/
+
+MTXMode_Text{
+    font-color: rgb(179,179,179);
+    font-name: BrandonText-Medium;
+    font-size: 13;
+}
+
+MTXMode_Free{
+    font-color: $MTXColor;
+}
+
+MTXMode_AdFree{
+    font-color: $MTXModeAdFreeColor;
+}
+
+MTXMode_Premium{
+    font-color: $MTXModePremiumColor;
+}
+
+MTXMode_AdFreeDisabled{
+    font-color: rgb(130,60,57);
+}
+
+MTXMode_PremiumDisabled{
+    font-color: rgb(16,132,152);
+}
+
+/*
+MARK: - TrackPickerDefaultFooterView
+*/
+
+TrackPickerDefaultFooterView_Label {
+    font-color: rgba(0,0,0,0.5);
+    font-name: BrandonText-Medium;
+    font-size: 15;
+}
+
+TrackPickerDefaultFooterView_CenterButton {
+    font-color: rgb(28,117,190);
+    font-name: BrandonText-Medium;
+    font-size: 15;
+}
+

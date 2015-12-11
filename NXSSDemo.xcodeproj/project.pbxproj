@@ -22,6 +22,8 @@
 		202FA1461BC0954C00E91CF3 /* SuccessfulTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202FA1451BC0954C00E91CF3 /* SuccessfulTests.swift */; };
 		202FA14A1BC0959D00E91CF3 /* FailureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202FA1491BC0959D00E91CF3 /* FailureTests.swift */; };
 		202FA1861BC09CDE00E91CF3 /* success_basic.nxss in Resources */ = {isa = PBXBuildFile; fileRef = 202FA1851BC09CDE00E91CF3 /* success_basic.nxss */; };
+		20524F6A1C19835700A09136 /* DefaultX_nui.nxss in Resources */ = {isa = PBXBuildFile; fileRef = 20524F691C19835700A09136 /* DefaultX_nui.nxss */; };
+		20524F6C1C1A812300A09136 /* NSMutableString+Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20524F6B1C1A812300A09136 /* NSMutableString+Core.swift */; };
 		205CBE891BF9881200A04047 /* Dictionary+Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205CBE881BF9881200A04047 /* Dictionary+Core.swift */; };
 		2068B8061BC0AACD005317B5 /* success_include.nxss in Resources */ = {isa = PBXBuildFile; fileRef = 2068B8051BC0AACD005317B5 /* success_include.nxss */; };
 		2068B8081BC0B112005317B5 /* success_variables.nxss in Resources */ = {isa = PBXBuildFile; fileRef = 2068B8071BC0B112005317B5 /* success_variables.nxss */; };
@@ -44,7 +46,6 @@
 		20958E001BCB61A700C456A5 /* BlockHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20958DEB1BCB61A700C456A5 /* BlockHeader.swift */; };
 		20958E021BCB61A700C456A5 /* KeyValueParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20958DED1BCB61A700C456A5 /* KeyValueParser.swift */; };
 		20958E031BCB61A700C456A5 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20958DEE1BCB61A700C456A5 /* Queue.swift */; };
-		20958E041BCB61A700C456A5 /* StringQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20958DEF1BCB61A700C456A5 /* StringQueue.swift */; };
 		20958E051BCB61A700C456A5 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20958DF01BCB61A700C456A5 /* Parser.swift */; };
 		20A0D14A1C13F68C00DB4065 /* SelectorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A0D1491C13F68C00DB4065 /* SelectorType.swift */; };
 		20A0D14C1C13F87900DB4065 /* Declarations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A0D14B1C13F87900DB4065 /* Declarations.swift */; };
@@ -131,6 +132,8 @@
 		202FA1451BC0954C00E91CF3 /* SuccessfulTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuccessfulTests.swift; sourceTree = "<group>"; };
 		202FA1491BC0959D00E91CF3 /* FailureTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FailureTests.swift; sourceTree = "<group>"; };
 		202FA1851BC09CDE00E91CF3 /* success_basic.nxss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = success_basic.nxss; sourceTree = "<group>"; };
+		20524F691C19835700A09136 /* DefaultX_nui.nxss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DefaultX_nui.nxss; sourceTree = "<group>"; };
+		20524F6B1C1A812300A09136 /* NSMutableString+Core.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableString+Core.swift"; sourceTree = "<group>"; };
 		205CBE881BF9881200A04047 /* Dictionary+Core.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Core.swift"; sourceTree = "<group>"; };
 		2068B8051BC0AACD005317B5 /* success_include.nxss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = success_include.nxss; sourceTree = "<group>"; };
 		2068B8071BC0B112005317B5 /* success_variables.nxss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = success_variables.nxss; sourceTree = "<group>"; };
@@ -155,7 +158,6 @@
 		20958DEB1BCB61A700C456A5 /* BlockHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockHeader.swift; sourceTree = "<group>"; };
 		20958DED1BCB61A700C456A5 /* KeyValueParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyValueParser.swift; sourceTree = "<group>"; };
 		20958DEE1BCB61A700C456A5 /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
-		20958DEF1BCB61A700C456A5 /* StringQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringQueue.swift; sourceTree = "<group>"; };
 		20958DF01BCB61A700C456A5 /* Parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		20A0D1491C13F68C00DB4065 /* SelectorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectorType.swift; sourceTree = "<group>"; };
 		20A0D14B1C13F87900DB4065 /* Declarations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Declarations.swift; sourceTree = "<group>"; };
@@ -236,6 +238,7 @@
 		202FA0C71BC093B800E91CF3 /* NXSSDemo */ = {
 			isa = PBXGroup;
 			children = (
+				20524F691C19835700A09136 /* DefaultX_nui.nxss */,
 				202FA1421BC0942900E91CF3 /* Default.nxss */,
 				202FA0C81BC093B800E91CF3 /* AppDelegate.swift */,
 				202FA0CA1BC093B800E91CF3 /* ViewController.swift */,
@@ -358,6 +361,7 @@
 			children = (
 				20958DE11BCB61A700C456A5 /* String+Core.swift */,
 				205CBE881BF9881200A04047 /* Dictionary+Core.swift */,
+				20524F6B1C1A812300A09136 /* NSMutableString+Core.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -380,7 +384,6 @@
 				20F7D11C1BF1DD8C007A192D /* PseudoClass.swift */,
 				20958DEE1BCB61A700C456A5 /* Queue.swift */,
 				20A0D1491C13F68C00DB4065 /* SelectorType.swift */,
-				20958DEF1BCB61A700C456A5 /* StringQueue.swift */,
 				20A0D14D1C13FE4F00DB4065 /* Block */,
 				20958DE41BCB61A700C456A5 /* Compiled */,
 				20A814E61C193D9D006694D9 /* FunctionHeader.swift */,
@@ -569,6 +572,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20524F6A1C19835700A09136 /* DefaultX_nui.nxss in Resources */,
 				202FA0D31BC093B800E91CF3 /* LaunchScreen.storyboard in Resources */,
 				202FA0D01BC093B800E91CF3 /* Assets.xcassets in Resources */,
 				202FA0CE1BC093B800E91CF3 /* Main.storyboard in Resources */,
@@ -648,11 +652,11 @@
 				20A0D14C1C13F87900DB4065 /* Declarations.swift in Sources */,
 				20958DF31BCB61A700C456A5 /* CAGradientLayer+Applicator.swift in Sources */,
 				20A0D1531C13FE4F00DB4065 /* MixinBlock.swift in Sources */,
-				20958E041BCB61A700C456A5 /* StringQueue.swift in Sources */,
 				20958DF71BCB61A700C456A5 /* UILabel+NXSS.swift in Sources */,
 				20958DF11BCB61A700C456A5 /* Applicator.swift in Sources */,
 				20958DFC1BCB61A700C456A5 /* CompiledRuleSet.swift in Sources */,
 				20A0D1521C13FE4F00DB4065 /* RuleSetBlock.swift in Sources */,
+				20524F6C1C1A812300A09136 /* NSMutableString+Core.swift in Sources */,
 				205CBE891BF9881200A04047 /* Dictionary+Core.swift in Sources */,
 				20958DF81BCB61A700C456A5 /* UIView+NXSS.swift in Sources */,
 				2068B8261BC0BDA8005317B5 /* NXSS.swift in Sources */,

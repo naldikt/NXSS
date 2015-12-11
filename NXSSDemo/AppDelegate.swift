@@ -18,7 +18,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
-        NXSS.sharedInstance.useFile("Default")
+//        NXSS.sharedInstance.useFile("Default")
+        
+        NSLog("Start")
+        NXSS.sharedInstance.useFile("DefaultX_nui")
+        NSLog("End")
         
         return true
     }
