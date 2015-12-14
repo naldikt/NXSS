@@ -1,0 +1,24 @@
+
+UIView {
+    corner-radius:1;
+}
+
+UIControl {
+    border-width:1;
+}
+
+.SButton:normal {
+    background-color:blue;
+}
+
+.SButton:selected {
+    background-color:red;
+}
+
+.SButton:highlighted {
+    background-color:green;
+}
+
+.SButton:disabled {
+    background-color:gray;
+}

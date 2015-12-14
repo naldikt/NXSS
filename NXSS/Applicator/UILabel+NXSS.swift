@@ -11,27 +11,21 @@ import UIKit
 
 extension UILabel {
     
-    override func applyNXSS() {
-        super.applyNXSS()
+    override func applyNXSS_styleClass() throws {
         
-        do {
-            
-            if let declarations = NXSS.sharedInstance.getStyleDeclarations("UILabel", selectorType: .Element) {
-                try applyDeclarations( declarations )
-            }
-            
-            if let nxssClass = nxss, declarations = NXSS.sharedInstance.getStyleDeclarations(nxssClass, selectorType:.Class) {
-                try applyDeclarations( declarations )
-            }
-
-            
-        } catch let error {
-            NSLog("UILabel.applyNXSS failed with error:\n\(error)")
+        try super.applyNXSS_styleClass()
+        
+        if let declarations =  NXSS.sharedInstance.getStyleDeclarations("UILabel", selectorType:.Element) {
+            try applyDeclarations(declarations)
         }
+        
     }
     
     
-    private func applyDeclarations( declarations:Declarations ) throws {
+    override func applyDeclarations( declarations:Declarations ) throws {
+        
+        try super.applyDeclarations(declarations)
+        
         if let fontFamily  = declarations["font-family"] {
             
             var fontStyle:String?

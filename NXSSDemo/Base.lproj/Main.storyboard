@@ -41,16 +41,48 @@
                                     <userDefinedRuntimeAttribute type="string" keyPath="nxss" value="BlueCircle"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x2L-fI-teg">
+                                <rect key="frame" x="7" y="158" width="130" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="SYx-P7-trX"/>
+                                    <constraint firstAttribute="width" constant="130" id="TLj-c7-hKy"/>
+                                </constraints>
+                                <state key="normal" title="Select/Highlight"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="nxss" value="ButtonCls"/>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="buttonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7Rw-wA-MNt"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jBB-iI-AEd">
+                                <rect key="frame" x="20" y="196" width="102" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="102" id="3zI-fr-bI7"/>
+                                    <constraint firstAttribute="height" constant="30" id="vIO-Wc-67j"/>
+                                </constraints>
+                                <state key="normal" title="Disabled"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="nxss" value="ButtonCls"/>
+                                </userDefinedRuntimeAttributes>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="x2L-fI-teg" firstAttribute="top" secondItem="rsu-Nb-NIb" secondAttribute="bottom" constant="8" id="75G-SA-a7X"/>
+                            <constraint firstItem="x2L-fI-teg" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="7" id="80l-Ph-Ciu"/>
                             <constraint firstItem="rsu-Nb-NIb" firstAttribute="top" secondItem="hxW-2v-mvu" secondAttribute="bottom" id="JPX-tR-Mby"/>
                             <constraint firstItem="rsu-Nb-NIb" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Khf-Gp-i8j"/>
                             <constraint firstItem="hxW-2v-mvu" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="PwF-gO-cbz"/>
                             <constraint firstItem="hxW-2v-mvu" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="20" id="hO6-Br-ibO"/>
+                            <constraint firstItem="jBB-iI-AEd" firstAttribute="top" secondItem="x2L-fI-teg" secondAttribute="bottom" constant="8" id="hPW-Zy-KjH"/>
+                            <constraint firstItem="jBB-iI-AEd" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="sab-Ec-7Uv"/>
                         </constraints>
                     </view>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
+                    <connections>
+                        <outlet property="button" destination="x2L-fI-teg" id="qpZ-qQ-z2b"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

@@ -9,10 +9,13 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    @IBOutlet private weak var button: UIButton?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -21,5 +24,10 @@ class ViewController: UIViewController {
     }
 
 
+    // MARK: - Handler
+    
+    @IBAction func buttonTapped(sender:UIButton) {
+        sender.selected = !sender.selected
+    }
 }
 
