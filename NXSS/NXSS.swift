@@ -34,6 +34,7 @@ public class NXSS {
         
         let diff = NSDate().timeIntervalSince1970 - startTime.timeIntervalSince1970
         NSLog("Parsing Time [\(fileName)] = \(diff) seconds")
+        
     }
     
 
@@ -77,7 +78,7 @@ public class NXSS {
     private static var initToken = dispatch_once_t()
     private static var _instance : NXSS?
     
-    private var ruleSets: [String:CompiledRuleSet] = Dictionary()
+    internal var ruleSets: [String:CompiledRuleSet] = Dictionary()
     
     init () {
         Swizzler.swizzle()

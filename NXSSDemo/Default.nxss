@@ -14,3 +14,19 @@
     background-color: blue;
     corner-radius: circle;
 }
+
+.ButtonCls {
+    background-color: blue;
+}
+
+.ButtonCls:selected {
+    background-color: green;
+}
+
+.ButtonCls:highlighted {
+    background-color: red;
+}
+
+.ButtonCls:disabled {
+    background-color: gray;
+}

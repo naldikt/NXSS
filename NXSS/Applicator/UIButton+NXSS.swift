@@ -10,40 +10,41 @@ import Foundation
 import UIKit
 
 extension UIButton {
+
+
     
-    override func applyNXSS() {
-        super.applyNXSS()
+    override func applyNXSS_styleElement() throws {
         
-        do {
+        try super.applyNXSS_styleElement()
+        
+        if let declarations =  NXSS.sharedInstance.getStyleDeclarations("UIButton", selectorType:.Element) {
+            try applyDeclarations(declarations)
+        }
+        
+    }
+    
+
+    
+    override func applyDeclarations( declarations : Declarations ) throws {
+        
+        try super.applyDeclarations(declarations)
+        
+        if let fontFamily : String =  declarations["font-family"] , titleLabel = self.titleLabel {
             
-            // For buttons we need to see the selector
-            // Buttons can support Normal, Selected, Highlighted, Disabled.
-//            
-//            if let nxssClass = nxss, entries = NXSS.sharedInstance.getStyleEntries(nxssClass) {
-//                
-//                if let fontFamily : String =  entries["font-family"] , titleLabel = self.titleLabel {
-//                    
-//                    var fontStyle:String?
-//                    if let fontStyle_ : String =  entries["font-style"] {
-//                        fontStyle = fontStyle_
-//                    }
-//                    
-//                    var fontSize:CGFloat?
-//                    if let fontSize_ : String =  entries["font-size"] {
-//                        fontSize = try fontSize_.toCGFloat()
-//                    }
-//                    
-//                    Applicator.applyFont(titleLabel, fontFamily: fontFamily, fontStyle: fontStyle, fontSize: fontSize)
-//                }
-//                
-//            }
-//            
+            var fontStyle:String?
+            if let fontStyle_ : String =  declarations["font-style"] {
+                fontStyle = fontStyle_
+            }
             
-        } catch let error {
-            NSLog("UILabel.applyNXSS failed with error:\n\(error)")
+            var fontSize:CGFloat?
+            if let fontSize_ : String =  declarations["font-size"] {
+                fontSize = try fontSize_.toCGFloat()
+            }
+            
+            Applicator.applyFont(titleLabel, fontFamily: fontFamily, fontStyle: fontStyle, fontSize: fontSize)
         }
     }
     
-    
-    
+
+
 }

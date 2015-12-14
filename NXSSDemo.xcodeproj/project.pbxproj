@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		2002A05E1BD6146E00B9D29F /* UIButton+NXSS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2002A05D1BD6146E00B9D29F /* UIButton+NXSS.swift */; };
+		2012A8031C1E47B400D38DBE /* NXSSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2012A8021C1E47B400D38DBE /* NXSSView.swift */; };
+		2012A8051C1E4D0700D38DBE /* UIControl+NXSS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2012A8041C1E4D0700D38DBE /* UIControl+NXSS.swift */; };
+		2012A80B1C1E522C00D38DBE /* UIControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2012A80A1C1E522C00D38DBE /* UIControlTests.swift */; };
+		2012A80D1C1E52D700D38DBE /* UIControlTests.nxss in Resources */ = {isa = PBXBuildFile; fileRef = 2012A80C1C1E52D700D38DBE /* UIControlTests.nxss */; };
 		202FA0C91BC093B800E91CF3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202FA0C81BC093B800E91CF3 /* AppDelegate.swift */; };
 		202FA0CB1BC093B800E91CF3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202FA0CA1BC093B800E91CF3 /* ViewController.swift */; };
 		202FA0CE1BC093B800E91CF3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 202FA0CC1BC093B800E91CF3 /* Main.storyboard */; };
@@ -111,6 +115,10 @@
 
 /* Begin PBXFileReference section */
 		2002A05D1BD6146E00B9D29F /* UIButton+NXSS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+NXSS.swift"; sourceTree = "<group>"; };
+		2012A8021C1E47B400D38DBE /* NXSSView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NXSSView.swift; sourceTree = "<group>"; };
+		2012A8041C1E4D0700D38DBE /* UIControl+NXSS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIControl+NXSS.swift"; sourceTree = "<group>"; };
+		2012A80A1C1E522C00D38DBE /* UIControlTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIControlTests.swift; sourceTree = "<group>"; };
+		2012A80C1C1E52D700D38DBE /* UIControlTests.nxss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = UIControlTests.nxss; sourceTree = "<group>"; };
 		202FA0C51BC093B800E91CF3 /* NXSSDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NXSSDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		202FA0C81BC093B800E91CF3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		202FA0CA1BC093B800E91CF3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -209,6 +217,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2012A8061C1E51E500D38DBE /* Applicator */ = {
+			isa = PBXGroup;
+			children = (
+				2012A80A1C1E522C00D38DBE /* UIControlTests.swift */,
+				2012A80C1C1E52D700D38DBE /* UIControlTests.nxss */,
+			);
+			path = Applicator;
+			sourceTree = "<group>";
+		};
 		202FA0BC1BC093B800E91CF3 = {
 			isa = PBXGroup;
 			children = (
@@ -282,6 +299,7 @@
 		202FA10A1BC093CD00E91CF3 /* NXSSTests */ = {
 			isa = PBXGroup;
 			children = (
+				2012A8061C1E51E500D38DBE /* Applicator */,
 				202FA1441BC0953C00E91CF3 /* Parsing */,
 				202FA10D1BC093CD00E91CF3 /* Info.plist */,
 			);
@@ -328,8 +346,10 @@
 				20958DD61BCB61A700C456A5 /* Constants.swift */,
 				20958DD71BCB61A700C456A5 /* Extensions */,
 				20958DDB1BCB61A700C456A5 /* Swizzler.swift */,
+				2012A8021C1E47B400D38DBE /* NXSSView.swift */,
 				20958DDC1BCB61A700C456A5 /* UILabel+NXSS.swift */,
 				2002A05D1BD6146E00B9D29F /* UIButton+NXSS.swift */,
+				2012A8041C1E4D0700D38DBE /* UIControl+NXSS.swift */,
 				20958DDD1BCB61A700C456A5 /* UIView+NXSS.swift */,
 			);
 			path = Applicator;
@@ -604,6 +624,7 @@
 			files = (
 				20F7D11B1BF1DCAE007A192D /* success_selector.nxss in Resources */,
 				2068B8081BC0B112005317B5 /* success_variables.nxss in Resources */,
+				2012A80D1C1E52D700D38DBE /* UIControlTests.nxss in Resources */,
 				202FA1861BC09CDE00E91CF3 /* success_basic.nxss in Resources */,
 				2068B80A1BC0B1BF005317B5 /* success_complex.nxss in Resources */,
 				2076D4AF1BD4C78000C4AF99 /* success_extend.nxss in Resources */,
@@ -648,9 +669,11 @@
 				20958DFA1BCB61A700C456A5 /* String+Core.swift in Sources */,
 				20A0D14C1C13F87900DB4065 /* Declarations.swift in Sources */,
 				20958DF31BCB61A700C456A5 /* CAGradientLayer+Applicator.swift in Sources */,
+				2012A8031C1E47B400D38DBE /* NXSSView.swift in Sources */,
 				20A0D1531C13FE4F00DB4065 /* MixinBlock.swift in Sources */,
 				20958DF71BCB61A700C456A5 /* UILabel+NXSS.swift in Sources */,
 				20958DF11BCB61A700C456A5 /* Applicator.swift in Sources */,
+				2012A8051C1E4D0700D38DBE /* UIControl+NXSS.swift in Sources */,
 				20958DFC1BCB61A700C456A5 /* CompiledRuleSet.swift in Sources */,
 				20A0D1521C13FE4F00DB4065 /* RuleSetBlock.swift in Sources */,
 				205CBE891BF9881200A04047 /* Dictionary+Core.swift in Sources */,
@@ -678,6 +701,7 @@
 			files = (
 				20A814E91C19455C006694D9 /* BlockHeaderTests.swift in Sources */,
 				2088F6B91BC4C0E900036ABD /* FunctionHeaderTests.swift in Sources */,
+				2012A80B1C1E522C00D38DBE /* UIControlTests.swift in Sources */,
 				202FA14A1BC0959D00E91CF3 /* FailureTests.swift in Sources */,
 				202FA1461BC0954C00E91CF3 /* SuccessfulTests.swift in Sources */,
 			);

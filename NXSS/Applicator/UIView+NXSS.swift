@@ -9,25 +9,67 @@
 import Foundation
 import UIKit
 
-extension UIView {
+extension UIView : NXSSView {
     
-    func applyNXSS() {
+    public func applyNXSS() {
         do {
             
-            if let declarations =  NXSS.sharedInstance.getStyleDeclarations("UIView", selectorType:.Element) {
-                try applyDeclarations(declarations)
-            }
-
-            if let nxssClass = nxss, declarations = NXSS.sharedInstance.getStyleDeclarations(nxssClass, selectorType:.Class) {
-                try applyDeclarations(declarations)
-            }
+            try applyNXSS_styleElement()
+            try applyNXSS_styleClass()
             
+
         } catch let error {
             NSLog("UIView.applyNXSS failed with error:\n\(error)")
         }
     }
- 
     
+}
+
+extension UIView : NXSSViewApplicator {
+    
+    internal func applyNXSS_styleElement() throws {
+        if let declarations =  NXSS.sharedInstance.getStyleDeclarations("UIView", selectorType:.Element) {
+            try applyDeclarations(declarations)
+        }
+    }
+    
+    internal func applyNXSS_styleClass() throws  {
+        if let nxssClass = nxss, declarations = NXSS.sharedInstance.getStyleDeclarations(nxssClass, selectorType:.Class) {
+            try applyDeclarations(declarations)
+        }
+    }
+    
+    internal func applyDeclarations( declarations : Declarations ) throws {
+        
+        if let backgroundColor  = declarations["background-color"] {
+            try Applicator.applyBackgroundColor(self, color: backgroundColor)
+        }
+        
+        if let borderColor  =  declarations["border-color"] {
+            try Applicator.applyBorderColor( layer , color: borderColor)
+        }
+        
+        if let borderWidth  =  declarations["border-width"] {
+            try Applicator.applyBorderWidth( layer , number: borderWidth )
+        }
+        
+        if let cornerRadius =  declarations["corner-radius"] {
+            if cornerRadius == "circle" {
+                nxssFrameCircle = true
+                Applicator.applyCornerRadiusCircle( layer )
+            } else {
+                nxssFrameCircle = false
+                try Applicator.applyCornerRadius( layer , number: cornerRadius )
+            }
+        }
+        
+    }
+}
+
+
+extension UIView  {
+
+
     // MARK: - Protected
     
     var nxss_frame : CGRect {
@@ -89,33 +131,5 @@ extension UIView {
         get {
             return (objc_getAssociatedObject(self, &NXSS_FrameCircle) as? Bool) ?? false
         }
-    }
-    
-    // MARK: - Private
-    
-    private func applyDeclarations( declarations : Declarations ) throws {
-        
-        if let backgroundColor  = declarations["background-color"] {
-            try Applicator.applyBackgroundColor(self, color: backgroundColor)
-        }
-        
-        if let borderColor  =  declarations["border-color"] {
-            try Applicator.applyBorderColor( layer , color: borderColor)
-        }
-        
-        if let borderWidth  =  declarations["border-width"] {
-            try Applicator.applyBorderWidth( layer , number: borderWidth )
-        }
-        
-        if let cornerRadius =  declarations["corner-radius"] {
-            if cornerRadius == "circle" {
-                nxssFrameCircle = true
-                Applicator.applyCornerRadiusCircle( layer )
-            } else {
-                nxssFrameCircle = false
-                try Applicator.applyCornerRadius( layer , number: cornerRadius )
-            }
-        }
-        
     }
 }

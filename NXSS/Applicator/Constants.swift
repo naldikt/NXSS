@@ -10,8 +10,13 @@ import Foundation
 
 var NXSS_IsAppliedKey : UInt8 = 0
 var NXSS_ClassNameKey : UInt8 = 0
+var NXSS_StatesObserverApplied : UInt8 = 0
+
 var NXSS_LinearGradientKey : UInt8 = 0
 var NXSS_FrameCircle : UInt8 = 0
 var NXSS_FontFamily : UInt8 = 0
 var NXSS_FontStyle : UInt8 = 0
 var NXSS_FontSize : UInt8 = 0
+
+
+
