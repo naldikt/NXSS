@@ -90,7 +90,7 @@ class Block {
 		for (k,v) in declarations {
 			if v[0] == "$" {
                 guard let valueOfVariable = getDeclarationValue(v) else {
-                    throw NXSSError.Require(msg: "Trying to resolve value of variable but cannot find it.", statement: "\(k)=\(v)", line:nil)
+                    throw NXSSError.Require(msg: "Trying to resolve value of variable but cannot find it.", statement: "\(k):\(v)", line:nil)
                 }
 				ret[k] = valueOfVariable
 			} else if k[0] != "$" {

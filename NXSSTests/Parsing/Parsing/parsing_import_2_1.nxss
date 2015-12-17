@@ -1,0 +1,3 @@
+RichButton {
+    background-color: $richColor;
+}

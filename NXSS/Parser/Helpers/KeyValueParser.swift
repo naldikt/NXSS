@@ -13,6 +13,7 @@ enum KeyValueType {
 	case VariableDeclaration           //	key => value is "$varName" => "rgb(255,255,255,1)"
 	case Include                        //  key => value is "@include" => "...". Always includes mixin.
     case Extend(selectorType:SelectorType)     //  key => value is  "@extend" => "...". Can extend any rule set.
+    case Import                         //  key => value is "@import" => FileName. FileName should be without the extension.
 }
 
 class KeyValueParser {
@@ -53,6 +54,14 @@ class KeyValueParser {
             } else {
                 return (.Extend(selectorType:.Element),k,v)
             }
+            
+        } else if s.hasPrefix("@import") {
+            
+            // We're going to add a faux ":" so the logic below can work.
+            s.insert(":", atIndex: "@import".endIndex)
+            let (k,v) = try parseKeyVal(s)
+
+            return (.Import,k,v)
             
         } else {
             

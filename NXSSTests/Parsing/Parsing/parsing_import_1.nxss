@@ -1,0 +1,6 @@
+$naldiColor:naldi;
+$andrewColor:andrew;
+
+.BlueCloneButton {
+    @extend BlueButton;
+}

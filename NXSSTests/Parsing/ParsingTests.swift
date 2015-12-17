@@ -33,7 +33,7 @@ class SuccessfulTests: XCTestCase {
     }
     
     func testBasic() {
-        test("success_basic.nxss",
+        test("parsing_basic.nxss",
             outputDict: [
                 "BlueButton" : [
                     "font-name" : "blue"
@@ -46,7 +46,7 @@ class SuccessfulTests: XCTestCase {
     }
     
     func testInclude() {
-        test("success_include.nxss",
+        test("parsing_include.nxss",
             outputDict: [
                 "BlueCircleButton" : [
                     "background-color" : "white",
@@ -59,7 +59,7 @@ class SuccessfulTests: XCTestCase {
     
     
     func testExtend() {
-        test("success_extend.nxss",
+        test("parsing_extend.nxss",
             outputDict: [
                 ".BaseClass": [
                     "background-color":"red",
@@ -90,7 +90,7 @@ class SuccessfulTests: XCTestCase {
     }
 
     func testVariables() {
-        test("success_variables.nxss",
+        test("parsing_variables.nxss",
             outputDict: [
                 "BlueButton" : [
                     "font-size":"5",
@@ -105,7 +105,7 @@ class SuccessfulTests: XCTestCase {
     
     func testComplex() {
         // This will also test Multiple Overrides
-        test("success_complex.nxss",
+        test("parsing_complex.nxss",
             outputDict: [
                 "PrimaryButton" : [
                     "corner-radius":"circle",
@@ -121,7 +121,7 @@ class SuccessfulTests: XCTestCase {
     }
     
     func testSelector() {
-        test("success_selector.nxss",
+        test("parsing_selector.nxss",
             outputDict: [
                 "Button:normal" : [
                     "background-color":"red",
@@ -146,6 +146,32 @@ class SuccessfulTests: XCTestCase {
                 "Label:selected" : [
                     "background-color":"black",
                     "type":"selected"
+                ]
+            ])
+    }
+    
+    func testImport() {
+        test("parsing_import.nxss",
+            outputDict: [
+                "BlueButton:normal" : [
+                    "corner-radius":"circle",
+                    "background-color":"blue"
+                ],
+                ".BlueCloneButton:normal" : [
+                    "corner-radius":"circle",
+                    "background-color":"blue"
+                ],
+                "NaldiButton:normal" : [
+                    "background-color":"naldi"
+                ],
+                "NaldiCloneButton:normal" : [
+                    "background-color":"naldi"
+                ],
+                "AndrewButton:normal" : [
+                    "background-color":"andrew"
+                ],
+                "RichColor:normal":[
+                    "background-color":"rich"
                 ]
             ])
     }
