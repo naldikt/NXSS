@@ -12,28 +12,51 @@ class Parser {
     
     let fileName : String
     
-    init( fileName : String , bundle : NSBundle? = nil ) {
+    /**
+        - parameters:
+            - fileName
+            - bundle    
+            - parentParser     Used internally during "import" to keep track of existing context and ruleSets.
+
+    */
+    init( fileName : String , bundle : NSBundle? = nil , parentParser : Parser? = nil ) {
         
         self.fileName = fileName
+        self.fileBundle = bundle
+        
         let filePath = Parser.pathForFile(fileName, bundle:bundle)
         let data = NSData(contentsOfFile:filePath!)
         assert(data != nil , "Could not find file \(filePath). Ensure it exists, and use NXSS.pathForFile() to generate the path.")
         self.fileContent = NSString(data: data!, encoding: NSUTF8StringEncoding)! as String
-        blockQueue.push(Block())
+        
+        if let blockQueue = parentParser?.blockQueue {
+            self.blockQueue = blockQueue
+        } else {
+            // If it's not passed, create a new one.
+            self.blockQueue = Queue()
+            self.blockQueue.push(Block())
+        }
+        
+        if let ruleSets = parentParser?.ruleSets {
+            self.ruleSets = ruleSets
+        } else {
+            // If it's not passed, create a new one.
+            self.ruleSets = Dictionary()
+        }
     }
     
 
 	/**
 		Parses the input string.
-		:return:	dictionary
+		:return:	The ruleSet.
 				String => Name of the style class.
 				StyleClass => Parsed, compiled entries.
 	*/
 	func parse() throws -> [String:CompiledRuleSet] {
         do {
             
-            let ret = try traverse()
-            return ret
+            try traverse()
+            return self.ruleSets
             
         } catch let error as NXSSError {
             
@@ -64,7 +87,13 @@ class Parser {
     
     // MARK: - Private
     
-    let fileContent : String
+    private var blockQueue : Queue<Block>
+    
+    private var ruleSets : [String:CompiledRuleSet]
+    
+    private let fileContent : String
+    
+    private let fileBundle : NSBundle?
     
     private var mixins : [String:CompiledMixin] = Dictionary()		// mixinName => StyleMixin
     
@@ -103,11 +132,8 @@ class Parser {
     
     // MARK: - State Machine
     
-    private let blockQueue : Queue<Block> = Queue()
     
     private func traverse() throws -> [String:CompiledRuleSet] {
-
-        var ryleSets : [String:CompiledRuleSet] = Dictionary()  // ret val
 
         var curBuffer : String.CharacterView = String.CharacterView()
         curBuffer.reserveCapacity(300)
@@ -173,7 +199,7 @@ class Parser {
             } else if s == "}" {
                 
                 if curBuffer.count > 0 {
-                    assert(false,"You forgot to apply semi-colon to your last line.")
+                    throw NXSSError.Parse(msg: "You forgot to apply semi-colon to your last line.", statement: String(curBuffer), line: curLineNum)
                 }
                 // By now curBuffer is an empty string
             
@@ -187,7 +213,7 @@ class Parser {
                 } else if let oldContext = oldContext as? RuleSetBlock {
                 
                     let styleClass : CompiledRuleSet = try oldContext.compile()
-                    ryleSets[styleClass.compiledKey] = styleClass
+                    ruleSets[styleClass.compiledKey] = styleClass
                 
                 } else {
                     assert(false,"Should never have gone here. Fatal logic error.")
@@ -198,69 +224,13 @@ class Parser {
             // End of Line
             else if s == ";" {
                 
-                let (type,key,value) = try KeyValueParser.parse( String(curBuffer) )
-                
-                let curBlock = blockQueue.peek()
-                switch type {
-                case .Declaration, .VariableDeclaration:
-                    
-                    curBlock.addDeclaration(key,value: value)
-                
-                case .Include:
-                    
-                    let (selector,argVals) = try FunctionHeader.parse(value)
-                        
-                    guard let mixin = mixins[selector] else {
-                        throw NXSSError.Require(msg: "Cannot find mixin named \(selector)", statement: value, line:curLineNum)
-                    }
-                    
-                    curBlock.addDeclarations(
-                        mixin.resolveArguments(argVals)
-                    )
+                try processLine(&curBuffer, ruleSets: &ruleSets, curLineNum:  curLineNum)
 
-                case .Extend(let selectorType):
-                    
-                    var selector:String?
-                    var pseudoClass:PseudoClass?
-                
-                    // We're going to extend from another class.
-                    switch try BlockHeader.parse(value) {
-                    case .Class(let selector_, let pseudoClass_):
-                        selector = selector_
-                        pseudoClass = pseudoClass_
-                        
-                    case .Element(let selector_, let pseudoClass_):
-                        selector = selector_
-                        pseudoClass = pseudoClass_
-                        
-                    default:
-                        break
-                    }
-                    
-                    if let selector = selector ,   pseudoClass = pseudoClass {
-                        
-                        let compiledKey = CompiledRuleSet.getCompiledKey(selector,selectorType: selectorType, pseudoClass: pseudoClass)
-                        
-                        guard let baseStyle = ryleSets[compiledKey] else {
-                            NSLog("ruleSets \(ryleSets)")
-                            throw NXSSError.Require(msg: "Cannot find class/element to extend from with name \(value)", statement: value, line:curLineNum)
-                        }
-                        
-                        curBlock.addDeclarations(baseStyle.declarations)
-                        
-                    } else {
-                        throw NXSSError.Parse(msg: "This extend does not contain Class or Element: \(value)", statement: value, line:curLineNum)
-                    }
-                    
-                }
-            
-                curBuffer.removeAll(keepCapacity: true)
-                
                 
             // Check for Open Comment
             } else if let last = curBuffer.last where s == "*" && last == "/" {
                 
-                curBuffer.removeLast()
+                curBuffer.removeLast()  // remove the saved "/", since we're going to ignore that.
                 skip = true
                 
             
@@ -273,8 +243,83 @@ class Parser {
             lastS = s
         }
         
-        return ryleSets
+        return ruleSets
             
+    }
+    
+    private func processLine(inout curBuffer : String.CharacterView, inout ruleSets : [String:CompiledRuleSet] , curLineNum : Int ) throws {
+        
+        let (type,key,value) = try KeyValueParser.parse( String(curBuffer) )
+        
+        let curBlock = blockQueue.peek()
+        switch type {
+        case .Declaration, .VariableDeclaration:
+            
+            curBlock.addDeclaration(key,value: value)
+            
+        case .Include:
+            
+            let (selector,argVals) = try FunctionHeader.parse(value)
+            
+            guard let mixin = mixins[selector] else {
+                throw NXSSError.Require(msg: "Cannot find mixin named \(selector)", statement: value, line:curLineNum)
+            }
+            
+            curBlock.addDeclarations(
+                mixin.resolveArguments(argVals)
+            )
+            
+        case .Extend(let selectorType):
+            
+            var selector:String?
+            var pseudoClass:PseudoClass?
+            
+            // We're going to extend from another class.
+            switch try BlockHeader.parse(value) {
+            case .Class(let selector_, let pseudoClass_):
+                selector = selector_
+                pseudoClass = pseudoClass_
+                
+            case .Element(let selector_, let pseudoClass_):
+                selector = selector_
+                pseudoClass = pseudoClass_
+                
+            default:
+                break
+            }
+            
+            if let selector = selector ,   pseudoClass = pseudoClass {
+                
+                let compiledKey = CompiledRuleSet.getCompiledKey(selector,selectorType: selectorType, pseudoClass: pseudoClass)
+                
+                guard let baseStyle = ruleSets[compiledKey] else {
+                    NSLog("ruleSets \(ruleSets)")
+                    throw NXSSError.Require(msg: "Cannot find class/element to extend from with name \(value)", statement: value, line:curLineNum)
+                }
+                
+                curBlock.addDeclarations(baseStyle.declarations)
+                
+            } else {
+                throw NXSSError.Parse(msg: "This extend does not contain Class or Element: \(value)", statement: value, line:curLineNum)
+            }
+            
+        case .Import:
+            
+            // Let's start a new parser (recursive)
+            let parser = Parser(fileName: value, bundle: fileBundle , parentParser: self)
+            try parser.parse()
+            
+            // Assign or Override the resulting ruleSet
+            for (k,v) in parser.ruleSets {
+                ruleSets[k] = v
+            }
+            
+            // Assign or Override the Block
+            self.blockQueue = parser.blockQueue
+            
+        }
+        
+        curBuffer.removeAll(keepCapacity: true)
     }
     
 }

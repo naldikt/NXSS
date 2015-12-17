@@ -1,0 +1,14 @@
+$richColor:rich;
+
+BlueButton {
+    corner-radius:circle;
+    background-color:blue;
+}
+
+@import parsing_import_1;
+
+NaldiButton {
+    background-color: $naldiColor;
+}
+
+@import parsing_import_2;
