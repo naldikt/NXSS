@@ -18,8 +18,9 @@ class Swizzler {
         
         xImp( UIView.self , methodName: "didMoveToWindow" )
         xImp( UIView.self , methodName: "frame" )
-        xImp( UILabel.self , methodName: "didMoveToWindow" )
         
+        // Why do I need this? Without this though things don't go well.
+        xImp( UILabel.self , methodName: "didMoveToWindow" )
     }
     
     

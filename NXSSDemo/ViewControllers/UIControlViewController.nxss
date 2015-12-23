@@ -1,0 +1,17 @@
+
+
+.controlButton:disabled {
+    background-color:gray;
+}
+
+.controlButton:normal {
+    background-color:orange;
+}
+
+.controlButton:selected {
+    background-color:green;
+}
+
+.controlButton:highlighted {
+    background-color:blue;
+}

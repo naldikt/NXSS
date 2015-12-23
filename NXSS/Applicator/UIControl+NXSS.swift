@@ -12,20 +12,8 @@ import UIKit
 extension UIControl {
     
     
-    override public func applyNXSS() {
-        
-        if !nxssStatesObserverApplied {
-            nxssStatesObserverApplied = true
-            
-            // We'll apply this only once.
-            self.addObserver(self, forKeyPath: "highlighted", options: [.New,.Old] , context: nil)
-            self.addObserver(self, forKeyPath: "selected", options: [.New,.Old], context: nil)
-            self.addObserver(self, forKeyPath: "enabled", options: [.New,.Old], context: nil)
-        }
-        
-        super.applyNXSS()
-        
-    }
+    // MARK: - Private
+    
     
     override func applyNXSS_styleElement() throws {
         
@@ -42,32 +30,48 @@ extension UIControl {
         
         if highlighted {
             
-//            NSLog("Apply Highlighted")
+            NSLog("Apply Highlighted")
             try applyClassDeclarationsWithPseudoClass(.Highlighted)
             
         } else if selected {
             
-//            NSLog("Apply Selected")
+            NSLog("Apply Selected")
             try applyClassDeclarationsWithPseudoClass(.Selected)
             
         } else if !enabled {
             
-//            NSLog("Apply Enabled")
+            NSLog("Apply Enabled")
             try applyClassDeclarationsWithPseudoClass(.Disabled)
             
         } else {
             
             // Normal
-//            NSLog("Apply Normal")
+            NSLog("Apply Normal")
             try applyClassDeclarationsWithPseudoClass(.Normal)
             
         }
         
     }
     
+    
+    
+    override func nxss_didMoveToWindow() {
+        super.nxss_didMoveToWindow()
+        
+        if window != nil {
+            self.addObserver(self, forKeyPath: "highlighted", options: [.New,.Old] , context: nil)
+            self.addObserver(self, forKeyPath: "selected", options: [.New,.Old], context: nil)
+            self.addObserver(self, forKeyPath: "enabled", options: [.New,.Old], context: nil)
+        } else {
+            self.removeObserver(self, forKeyPath: "highlighted")
+            self.removeObserver(self, forKeyPath: "selected")
+            self.removeObserver(self, forKeyPath: "enabled")
+        }
+    }
+    
     private func applyClassDeclarationsWithPseudoClass( pseudoClass : PseudoClass ) throws {
 
-        if let nxssClass = nxss, declarations = NXSS.sharedInstance.getStyleDeclarations(nxssClass, selectorType: .Class, pseudoClass: pseudoClass) {
+        if let nxssClass = nxssClass, declarations = NXSS.sharedInstance.getStyleDeclarations(nxssClass, selectorType: .Class, pseudoClass: pseudoClass) {
             try applyDeclarations(declarations)
         }
         
@@ -83,14 +87,5 @@ extension UIControl {
         }
     }
     
-    
-    private var nxssStatesObserverApplied : Bool {
-        set {
-            objc_setAssociatedObject(self, &NXSS_StatesObserverApplied, newValue, .OBJC_ASSOCIATION_ASSIGN)
-        }
-        get {
-            return (objc_getAssociatedObject(self, &NXSS_StatesObserverApplied) as? Bool) ?? false
-        }
-    }
     
 }

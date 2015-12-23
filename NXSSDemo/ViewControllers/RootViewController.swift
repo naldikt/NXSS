@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  RootViewController.swift
 //  NXSSDemo
 //
 //  Created by Nalditya Kusuma on 10/3/15.
@@ -8,9 +8,8 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class RootViewController: UITableViewController  {
     
-    @IBOutlet private weak var button: UIButton?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,11 +22,6 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-
-    // MARK: - Handler
-    
-    @IBAction func buttonTapped(sender:UIButton) {
-        sender.selected = !sender.selected
-    }
+ 
 }
 

@@ -1,0 +1,347 @@
+@font-face {
+	font-family: 'NapsterXFont';
+	src:url('fonts/NapsterXFont.eot?y4jpk5');
+	src:url('fonts/NapsterXFont.eot?y4jpk5#iefix') format('embedded-opentype'),
+		url('fonts/NapsterXFont.ttf?y4jpk5') format('truetype'),
+		url('fonts/NapsterXFont.woff?y4jpk5') format('woff'),
+		url('fonts/NapsterXFont.svg?y4jpk5#NapsterXFont') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+	font-family: 'NapsterXFont';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-diamond-lg-bg-nopadding:before {
+	content: "\e107";
+}
+.icon-mtx-down-chevron-nopadding:before {
+	content: "\e106";
+}
+.icon-diamond-lg-shine_nopadding:before {
+	content: "\e105";
+}
+.icon-diamond-lg-shine-bg:before {
+	content: "\e104";
+}
+.icon-diamond-lg-shine:before {
+	content: "\e103";
+}
+.icon-coin-lg:before {
+	content: "\e102";
+}
+.icon-add-free-lg-bg:before {
+	content: "\e101";
+}
+.icon-add-free-lg:before {
+	content: "\e100";
+}
+.icon-diamond-lg-bg:before {
+	content: "\e099";
+}
+.icon-diamond-lg:before {
+	content: "\e098";
+}
+.icon-mtx-down-chevron:before {
+	content: "\e097";
+}
+.icon-shine:before {
+	content: "\e096";
+}
+.icon-music-tag-burst:before {
+	content: "\e095";
+}
+.icon-napx-lg-bg:before {
+	content: "\e094";
+}
+.icon-napx-lg:before {
+	content: "\e093";
+}
+.icon-plus:before {
+	content: "\e092";
+}
+.icon-addtag:before {
+	content: "\e091";
+}
+.icon-addsong:before {
+	content: "\e090";
+}
+.icon-info:before {
+	content: "\e089";
+}
+.icon-private:before {
+	content: "\e088";
+}
+.icon-public:before {
+	content: "\e087";
+}
+.icon-envelope:before {
+	content: "\e086";
+}
+.icon-actionbutton:before {
+	content: "\e085";
+}
+.icon-activity:before {
+	content: "\e084";
+}
+.icon-home:before {
+	content: "\e083";
+}
+.icon-profile:before {
+	content: "\e082";
+}
+.icon-filter_mine:before {
+	content: "\e081";
+}
+.icon-filter_recent:before {
+	content: "\e080";
+}
+.icon-filter_starred:before {
+	content: "\e079";
+}
+.icon-tags_input:before {
+	content: "\e078";
+}
+.icon-create_playlist:before {
+	content: "\e077";
+}
+.icon-share_2:before {
+	content: "\e076";
+}
+.icon-search_add:before {
+	content: "\e075";
+}
+.icon-search_two:before {
+	content: "\e074";
+}
+.icon-songrow_grip:before {
+	content: "\e073";
+}
+.icon-edit_playlist:before {
+	content: "\e072";
+}
+.icon-circle_check:before {
+	content: "\e071";
+}
+.icon-circle_plus:before {
+	content: "\e070";
+}
+.icon-circle_x:before {
+	content: "\e069";
+}
+.icon-downloaded_2:before {
+	content: "\e068";
+}
+.icon-downloaded_1:before {
+	content: "\e067";
+}
+.icon-download_2:before {
+	content: "\e066";
+}
+.icon-download_1:before {
+	content: "\e065";
+}
+.icon-coin_stack_xlarge:before {
+	content: "\e064";
+}
+.icon-coin_stack_large:before {
+	content: "\e063";
+}
+.icon-coin_stack_medium:before {
+	content: "\e062";
+}
+.icon-coin_stack_small:before {
+	content: "\e061";
+}
+.icon-bolt_fill:before {
+	content: "\e060";
+}
+.icon-bolt_outline:before {
+	content: "\e059";
+}
+.icon-coin_3:before {
+	content: "\e058";
+}
+.icon-coin_2:before {
+	content: "\e057";
+}
+.icon-coin:before {
+	content: "\e056";
+}
+.icon-hamburger:before {
+	content: "\e055";
+}
+.icon-download:before {
+	content: "\e054";
+}
+.icon-chevron_left:before {
+	content: "\e040";
+}
+.icon-go_to_artist:before {
+	content: "\e053";
+}
+.icon-coin_outline:before {
+	content: "\e052";
+}
+.icon-play_header_2:before {
+	content: "\e051";
+}
+.icon-track_outline:before {
+	content: "\e050";
+}
+.icon-track:before {
+	content: "\e049";
+}
+.icon-chevron_up:before {
+	content: "\e048";
+}
+.icon-check:before {
+	content: "\e047";
+}
+.icon-play_3:before {
+	content: "\e046";
+}
+.icon-repeat_all:before {
+	content: "\e045";
+}
+.icon-repeat_current:before {
+	content: "\e044";
+}
+.icon-shuffle:before {
+	content: "\e043";
+}
+.icon-favorite_outline:before {
+	content: "\e042";
+}
+.icon-more_h:before {
+	content: "\e041";
+}
+.icon-camera:before {
+	content: "\e039";
+}
+.icon-close:before {
+	content: "\e038";
+}
+.icon-filter_following:before {
+	content: "\e037";
+}
+.icon-coin_2_nospace:before {
+	content: "\e036";
+}
+.icon-location:before {
+	content: "\e035";
+}
+.icon-next:before {
+	content: "\e034";
+}
+.icon-pause:before {
+	content: "\e033";
+}
+.icon-play_2:before {
+	content: "\e032";
+}
+.icon-previous:before {
+	content: "\e031";
+}
+.icon-settings:before {
+	content: "\e030";
+}
+.icon-list_options:before {
+	content: "\e029";
+}
+.icon-chevron_down:before {
+	content: "\e028";
+}
+.icon-chevron_right:before {
+	content: "\e027";
+}
+.icon-favorite_large:before {
+	content: "\e026";
+}
+.icon-favorite_small:before {
+	content: "\e025";
+}
+.icon-play_header:before {
+	content: "\e024";
+}
+.icon-record_header:before {
+	content: "\e023";
+}
+.icon-similar_artists_header:before {
+	content: "\e022";
+}
+.icon-following:before {
+	content: "\e021";
+}
+.icon-follow_12:before {
+	content: "\e020";
+}
+.icon-follow_11:before {
+	content: "\e019";
+}
+.icon-follow_10:before {
+	content: "\e018";
+}
+.icon-follow_9:before {
+	content: "\e017";
+}
+.icon-follow_8:before {
+	content: "\e016";
+}
+.icon-follow_7:before {
+	content: "\e015";
+}
+.icon-follow_6:before {
+	content: "\e014";
+}
+.icon-follow_5:before {
+	content: "\e013";
+}
+.icon-follow_4:before {
+	content: "\e012";
+}
+.icon-follow_3:before {
+	content: "\e011";
+}
+.icon-follow_2:before {
+	content: "\e010";
+}
+.icon-follow:before {
+	content: "\e009";
+}
+.icon-charts:before {
+	content: "\e008";
+}
+.icon-edit:before {
+	content: "\e007";
+}
+.icon-list_view:before {
+	content: "\e006";
+}
+.icon-listening_now:before {
+	content: "\e005";
+}
+.icon-menu:before {
+	content: "\e004";
+}
+.icon-play:before {
+	content: "\e003";
+}
+.icon-search:before {
+	content: "\e002";
+}
+.icon-share:before {
+	content: "\e001";
+}
+

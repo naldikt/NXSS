@@ -1,0 +1,19 @@
+
+.labelFontFamily {
+    font-family: AvenirNext-DemiBoldItalic;
+}
+
+.labelFontFamilyAndStyle {
+    font-family: AvenirNext;
+    font-style: DemiBoldItalic;
+}
+
+.labelFontFamilySize {
+    font-family: AvenirNext-DemiBoldItalic;
+    font-size:11;
+}
+
+.icon-plus {
+    font-family: NapsterXFont;
+    string: ;
+}
