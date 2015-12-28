@@ -49,6 +49,22 @@ extension UIButton {
             self.titleLabel?.textColor = try UIColor.fromNXSS(color)
         }
         
+        if let textAlign = declarations["text-align"] {
+            
+            var align : UIControlContentHorizontalAlignment = .Center
+            
+            switch textAlign {
+            case "left": align = .Left
+            case "right": align = .Right
+            case "center": align = .Center
+            case "fill": align = .Fill
+            default:
+                throw NXSSError.Parse(msg: "UIButton.applyDeclarations: text-align has invalid value.", statement: "text-align:\(textAlign)", line: nil)
+            }
+            
+            self.contentHorizontalAlignment = align
+        }
+        
         if let string = declarations["string"] {
             self.titleLabel?.text = string
         }

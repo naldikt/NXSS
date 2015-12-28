@@ -321,11 +321,24 @@ Highlighted: Blue Selected: Green</string>
                                                     <color key="titleColor" red="0.56789996519999997" green="1" blue="0.68350516029999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KJT-kw-GQY">
+                                                <rect key="frame" x="5" y="363" width="127" height="45"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="127" id="RtD-6e-l6w"/>
+                                                    <constraint firstAttribute="height" constant="45" id="oEc-WK-soN"/>
+                                                </constraints>
+                                                <state key="normal" title="Centered"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="nxssClass" value="control-centered"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="1cI-ZW-IGK" firstAttribute="top" secondItem="h31-jL-dWe" secondAttribute="bottom" constant="5" id="4F1-0B-xCB"/>
+                                            <constraint firstItem="KJT-kw-GQY" firstAttribute="top" secondItem="vFg-2n-y6V" secondAttribute="bottom" constant="5" id="Igx-U2-jKR"/>
                                             <constraint firstItem="h31-jL-dWe" firstAttribute="leading" secondItem="B4o-dh-EkH" secondAttribute="leading" constant="5" id="KGF-gj-LuA"/>
+                                            <constraint firstItem="KJT-kw-GQY" firstAttribute="leading" secondItem="B4o-dh-EkH" secondAttribute="leading" constant="5" id="L8x-y8-V2y"/>
                                             <constraint firstItem="h31-jL-dWe" firstAttribute="top" secondItem="B4o-dh-EkH" secondAttribute="top" constant="5" id="Nnm-Oz-ojq"/>
                                             <constraint firstItem="vFg-2n-y6V" firstAttribute="top" secondItem="1cI-ZW-IGK" secondAttribute="bottom" constant="5" id="Nsa-z8-RHu"/>
                                             <constraint firstItem="vFg-2n-y6V" firstAttribute="leading" secondItem="B4o-dh-EkH" secondAttribute="leading" constant="5" id="gVx-6Z-af0"/>
@@ -458,9 +471,22 @@ Highlighted: Blue Selected: Green</string>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="nxssClass" value="icon-plus"/>
                                                 </userDefinedRuntimeAttributes>
                                             </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Center-Aligned" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9X3-0y-zZ2">
+                                                <rect key="frame" x="5" y="335" width="300" height="50"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="300" id="6OE-aW-EiO"/>
+                                                    <constraint firstAttribute="height" constant="50" id="T0Q-nt-rvT"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="nxssClass" value="label-center-align"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </label>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
+                                            <constraint firstItem="9X3-0y-zZ2" firstAttribute="top" secondItem="WJH-ts-adZ" secondAttribute="bottom" constant="5" id="Gpp-Ls-bvb"/>
                                             <constraint firstItem="QeD-o8-vzc" firstAttribute="top" secondItem="HGF-kB-4cr" secondAttribute="bottom" constant="5" id="IkW-Qw-DIj"/>
                                             <constraint firstItem="DSx-rA-vQk" firstAttribute="top" secondItem="p6L-dO-TZP" secondAttribute="top" constant="5" id="SEo-Nq-61P"/>
                                             <constraint firstItem="WJH-ts-adZ" firstAttribute="leading" secondItem="p6L-dO-TZP" secondAttribute="leading" constant="5" id="Sb7-u4-Z1s"/>
@@ -468,6 +494,7 @@ Highlighted: Blue Selected: Green</string>
                                             <constraint firstItem="QeD-o8-vzc" firstAttribute="top" secondItem="DSx-rA-vQk" secondAttribute="bottom" constant="5" id="UTp-d2-BTZ"/>
                                             <constraint firstItem="QeD-o8-vzc" firstAttribute="leading" secondItem="p6L-dO-TZP" secondAttribute="leading" constant="5" id="WSR-lK-BUL"/>
                                             <constraint firstItem="DSx-rA-vQk" firstAttribute="leading" secondItem="p6L-dO-TZP" secondAttribute="leading" constant="5" id="Yeh-cy-pNg"/>
+                                            <constraint firstItem="9X3-0y-zZ2" firstAttribute="leading" secondItem="p6L-dO-TZP" secondAttribute="leading" constant="5" id="Zwn-0T-A2v"/>
                                             <constraint firstItem="HGF-kB-4cr" firstAttribute="leading" secondItem="p6L-dO-TZP" secondAttribute="leading" constant="5" id="aJ7-Lh-WJ8"/>
                                             <constraint firstItem="CWc-Ql-gny" firstAttribute="top" secondItem="HGF-kB-4cr" secondAttribute="bottom" constant="5" id="cWg-j2-HvB"/>
                                             <constraint firstItem="CWc-Ql-gny" firstAttribute="top" secondItem="QeD-o8-vzc" secondAttribute="bottom" constant="5" id="esX-SC-4ud"/>
