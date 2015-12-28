@@ -11,6 +11,16 @@ import UIKit
 
 extension UIView : NXSSView {
     
+    // The class name. Set by xibs.
+    public var nxssClass : String? {
+        set {
+            objc_setAssociatedObject(self, &NXSS_ClassNameKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+        get {
+            return objc_getAssociatedObject(self, &NXSS_ClassNameKey) as? String
+        }
+    }
+    
     public func applyNXSS() {
         do {
             
@@ -27,19 +37,19 @@ extension UIView : NXSSView {
 
 extension UIView : NXSSViewApplicator {
     
-    internal func applyNXSS_styleElement() throws {
+    func applyNXSS_styleElement() throws {
         if let declarations =  NXSS.sharedInstance.getStyleDeclarations("UIView", selectorType:.Element) {
             try applyDeclarations(declarations)
         }
     }
     
-    internal func applyNXSS_styleClass() throws  {
-        if let nxssClass = nxss, declarations = NXSS.sharedInstance.getStyleDeclarations(nxssClass, selectorType:.Class) {
+    func applyNXSS_styleClass() throws  {
+        if let nxssClass = nxssClass, declarations = NXSS.sharedInstance.getStyleDeclarations(nxssClass, selectorType:.Class) {
             try applyDeclarations(declarations)
         }
     }
     
-    internal func applyDeclarations( declarations : Declarations ) throws {
+    func applyDeclarations( declarations : Declarations ) throws {
         
         if let backgroundColor  = declarations["background-color"] {
             try Applicator.applyBackgroundColor(self, color: backgroundColor)
@@ -101,16 +111,6 @@ extension UIView  {
         }
         get {
             return (objc_getAssociatedObject(self, &NXSS_IsAppliedKey) as? Bool) ?? false
-        }
-    }
-    
-    // The class name. Set by xibs.
-    var nxss : String? {
-        set {
-            objc_setAssociatedObject(self, &NXSS_ClassNameKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-        get {
-            return objc_getAssociatedObject(self, &NXSS_ClassNameKey) as? String
         }
     }
     

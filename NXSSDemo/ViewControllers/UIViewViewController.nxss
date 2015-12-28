@@ -1,0 +1,21 @@
+
+.backgroundColorRed {
+    background-color:red;
+}
+
+.borderColorGreen3 {
+    border-color:green;
+    border-width:3;
+}
+
+.cornerRadius10 {
+    @extend .borderColorGreen3;
+    corner-radius:10;
+}
+
+.cornerRadiusCircle {
+    background-color:blue;
+    corner-radius:circle;
+    border-width:3;
+    border-color:gray;
+}

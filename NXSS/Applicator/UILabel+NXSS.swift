@@ -21,7 +21,7 @@ extension UILabel {
         
     }
     
-    
+
     override func applyDeclarations( declarations:Declarations ) throws {
         
         try super.applyDeclarations(declarations)
@@ -40,5 +40,14 @@ extension UILabel {
             
             Applicator.applyFont(self,fontFamily:fontFamily,fontStyle:fontStyle,fontSize:fontSize)
         }
+        
+        if let color = declarations["color"] {
+            self.textColor = try UIColor.fromNXSS(color)
+        }
+        
+        if let string = declarations["string"] {
+            self.text = string
+        }
+        
     }
 }

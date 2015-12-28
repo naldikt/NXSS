@@ -31,6 +31,7 @@ class Applicator {
     }
     
     
+    
     // MARK: - UILabel
     
     class func applyFont( label : UILabel , fontFamily:String, fontStyle:String?, fontSize:CGFloat?) {

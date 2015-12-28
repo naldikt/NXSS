@@ -11,7 +11,6 @@ import UIKit
 
 extension UIButton {
 
-
     
     override func applyNXSS_styleElement() throws {
         
@@ -29,6 +28,8 @@ extension UIButton {
         
         try super.applyDeclarations(declarations)
         
+        self.titleLabel?.backgroundColor = UIColor.clearColor()
+        
         if let fontFamily : String =  declarations["font-family"] , titleLabel = self.titleLabel {
             
             var fontStyle:String?
@@ -42,6 +43,14 @@ extension UIButton {
             }
             
             Applicator.applyFont(titleLabel, fontFamily: fontFamily, fontStyle: fontStyle, fontSize: fontSize)
+        }
+        
+        if let color = declarations["color"] {
+            self.titleLabel?.textColor = try UIColor.fromNXSS(color)
+        }
+        
+        if let string = declarations["string"] {
+            self.titleLabel?.text = string
         }
     }
     

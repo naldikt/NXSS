@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         NSLog("Start")
 //        NXSS.sharedInstance.useFile("DefaultX_nui")
-        NXSS.sharedInstance.useFile("Default")        
+        NXSS.sharedInstance.useFile("Main")        
         NSLog("End")
         
         return true
