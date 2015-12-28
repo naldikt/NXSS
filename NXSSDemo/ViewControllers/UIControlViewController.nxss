@@ -15,3 +15,8 @@
 .controlButton:highlighted {
     background-color:blue;
 }
+
+.control-centered {
+    background-color: gray;
+    text-align:center;
+}

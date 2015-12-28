@@ -17,3 +17,7 @@
     font-family: NapsterXFont;
     string: ;
 }
+
+.label-center-align {
+    text-align: center;
+}
