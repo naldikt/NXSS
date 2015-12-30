@@ -111,19 +111,19 @@ extension UIView  {
     }
     
     func nxss_didMoveToWindow() {
-        if window != nil && !nxssApplied {
+        if window != nil && !nxssAppliedOnViewLoaded {
             applyNXSS()
-            nxssApplied = true
+            nxssAppliedOnViewLoaded = true
         }
         self.nxss_didMoveToWindow()
     }
     
-    var nxssApplied : Bool {
+    var nxssAppliedOnViewLoaded : Bool {
         set {
-            objc_setAssociatedObject(self, &NXSS_IsAppliedKey, newValue, .OBJC_ASSOCIATION_ASSIGN)
+            objc_setAssociatedObject(self, &NXSS_IsAppliedOnViewLoadedKey, newValue, .OBJC_ASSOCIATION_ASSIGN)
         }
         get {
-            return (objc_getAssociatedObject(self, &NXSS_IsAppliedKey) as? Bool) ?? false
+            return (objc_getAssociatedObject(self, &NXSS_IsAppliedOnViewLoadedKey) as? Bool) ?? false
         }
     }
     

@@ -8,7 +8,7 @@
 
 import Foundation
 
-var NXSS_IsAppliedKey : UInt8 = 0
+var NXSS_IsAppliedOnViewLoadedKey : UInt8 = 0
 var NXSS_ClassNameKey : UInt8 = 0
 
 var NXSS_LinearGradientKey : UInt8 = 0
