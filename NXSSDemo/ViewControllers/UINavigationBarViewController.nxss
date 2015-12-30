@@ -1,0 +1,10 @@
+
+.uinavigationbar-bar {
+    bar-tint-color:red;
+    tint-color:white;
+}
+
+.uinavigationbar-close-button {
+    font-family: NapsterXFont;
+    string: ;
+}

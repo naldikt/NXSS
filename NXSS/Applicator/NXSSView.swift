@@ -22,7 +22,5 @@ internal protocol NXSSViewApplicator {
     
     /** Style using the styleClass */
     func applyNXSS_styleClass() throws
-    
-    /** Given a set of declarations, apply it. */
-    func applyDeclarations( declarations : Declarations ) throws
+
 }

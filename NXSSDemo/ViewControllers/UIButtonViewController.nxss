@@ -1,1 +1,16 @@
- 
+
+.uibutton-title-change:normal {
+    string:normal;
+}
+
+.uibutton-title-change:highlighted {
+    string:highlighted;
+}
+
+.uibutton-title-change:selected {
+    string:selected;
+}
+
+.uibutton-title-change:disabled {
+    string: disabled;
+}

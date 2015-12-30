@@ -1,8 +1,16 @@
 
 
+/** Global **/
+
+UINavigationBar {
+    bar-tint-color:gray;
+    tint-color:black;
+}
+
+
 @import RootViewController;
 @import UIButtonViewController;
 @import UIControlViewController;
 @import UILabelViewController;
 @import UIViewViewController;
-
+@import UINavigationBarViewController;

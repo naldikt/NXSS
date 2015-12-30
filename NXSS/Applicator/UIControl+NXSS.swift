@@ -12,48 +12,50 @@ import UIKit
 extension UIControl {
     
     
-    // MARK: - Private
     
+    // MARK: - Private
     
     override func applyNXSS_styleElement() throws {
         
         try super.applyNXSS_styleElement()
         
         if let declarations =  NXSS.sharedInstance.getStyleDeclarations("UIControl", selectorType:.Element) {
-            try applyDeclarations(declarations)
+            // We'll assume this is for Normal. In the future it may make sense to actually add state ability to elements.
+            try applyDeclarations(declarations , forPseudoClass : .Normal)
         }
         
     }
     
-    /** Override how UIView does this. */
     override func applyNXSS_styleClass() throws {
         
-        if highlighted {
+        try super.applyNXSS_styleClass()
+        
+        if let declarations = nxssGetClassDeclarations(nxssCurrentPseudoClass) {
+            try applyDeclarations(declarations, forPseudoClass: nxssCurrentPseudoClass)
+        }
+
+    }
+    
+    /** This is called when state has changed. */
+    private func applyDeclarations( declarations : Declarations , forPseudoClass pseudoClass : PseudoClass )  throws {
+        
+        if let textAlign = declarations["text-align"] {
             
-            NSLog("Apply Highlighted")
-            try applyClassDeclarationsWithPseudoClass(.Highlighted)
+            var align : UIControlContentHorizontalAlignment = .Center
             
-        } else if selected {
+            switch textAlign {
+            case "left": align = .Left
+            case "right": align = .Right
+            case "center": align = .Center
+            case "fill": align = .Fill
+            default:
+                throw NXSSError.Parse(msg: "UIButton.applyDeclarations: text-align has invalid value.", statement: "text-align:\(textAlign)", line: nil)
+            }
             
-            NSLog("Apply Selected")
-            try applyClassDeclarationsWithPseudoClass(.Selected)
-            
-        } else if !enabled {
-            
-            NSLog("Apply Enabled")
-            try applyClassDeclarationsWithPseudoClass(.Disabled)
-            
-        } else {
-            
-            // Normal
-            NSLog("Apply Normal")
-            try applyClassDeclarationsWithPseudoClass(.Normal)
-            
+            self.contentHorizontalAlignment = align
         }
         
     }
-    
-    
     
     override func nxss_didMoveToWindow() {
         super.nxss_didMoveToWindow()
@@ -69,14 +71,8 @@ extension UIControl {
         }
     }
     
-    private func applyClassDeclarationsWithPseudoClass( pseudoClass : PseudoClass ) throws {
 
-        if let nxssClass = nxssClass, declarations = NXSS.sharedInstance.getStyleDeclarations(nxssClass, selectorType: .Class, pseudoClass: pseudoClass) {
-            try applyDeclarations(declarations)
-        }
-        
-    }
-    
+
     public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         
         if let change = change, old = change["old"] as? Bool, new = change["new"] as? Bool where

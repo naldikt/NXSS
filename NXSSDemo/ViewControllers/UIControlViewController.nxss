@@ -1,22 +1,23 @@
 
 
-.controlButton:disabled {
+.control-button:disabled {
     background-color:gray;
 }
 
-.controlButton:normal {
+.control-button:normal {
     background-color:orange;
 }
 
-.controlButton:selected {
+.control-button:selected {
     background-color:green;
 }
 
-.controlButton:highlighted {
+.control-button:highlighted {
     background-color:blue;
 }
 
 .control-centered {
     background-color: gray;
     text-align:center;
+    color: white;
 }
