@@ -34,6 +34,30 @@ extension UINavigationBar {
 
     private func applyDeclarations( declarations:Declarations ) throws {
         
+        if let fontFamily : String =  declarations["font-family"], fontSize_ : String =  declarations["font-size"] {
+            
+            var fontStyle:String?
+            if let fontStyle_ : String =  declarations["font-style"] {
+                fontStyle = fontStyle_
+            }
+            
+            let fontSize = try fontSize_.toCGFloat()
+            
+            let attrs = try Applicator.textFontAttributes(fontFamily, fontStyle:fontStyle, fontSize:fontSize)
+            var titleTextAttrs = titleTextAttributes ?? Dictionary()
+            titleTextAttrs += attrs
+            titleTextAttributes = titleTextAttrs
+        }
+
+        if let color = declarations["color"] {
+            let uiColor = try UIColor.fromNXSS(color)
+            
+            let attrs = try Applicator.textColorAttributes(uiColor)
+            var titleTextAttrs = titleTextAttributes ?? Dictionary()
+            titleTextAttrs += attrs
+            titleTextAttributes = titleTextAttrs
+        }
+        
         if let color = declarations["tint-color"] {
             self.tintColor = try UIColor.fromNXSS(color)
         }
@@ -41,6 +65,7 @@ extension UINavigationBar {
         if let color = declarations["bar-tint-color"] {
             self.barTintColor = try UIColor.fromNXSS(color)
         }
+        
     }
     
 }

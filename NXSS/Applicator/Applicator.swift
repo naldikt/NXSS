@@ -40,15 +40,31 @@ class Applicator {
             size = s
         }
         
-        var fontName = "\(fontFamily)"
-        if let fontStyle = fontStyle {
-            fontName += "-" + fontStyle
-        }
+        let fontName = createFontName( fontFamily , fontStyle: fontStyle)
         
         
         let theFont = UIFont(name: fontName, size: size)
         label.font = theFont
     }
+    
+    // MARK: - Fonts
+    
+    class func textFontAttributes( fontFamily:String, fontStyle:String?, fontSize:CGFloat) throws -> [String:AnyObject] {
+        
+        let fontName = createFontName( fontFamily , fontStyle: fontStyle)
+        
+        guard let font = UIFont(name: fontName, size: fontSize) else {
+            throw NXSSError.Require(msg: "Cannot create UIFont", statement: "UIFont(name: \(fontName), size: \(fontSize))", line: nil)
+        }
+        
+        return [NSFontAttributeName:font]
+    }
+    
+    class func textColorAttributes( color : UIColor ) throws -> [String:AnyObject] {
+        return [NSForegroundColorAttributeName: color]
+    }
+    
+
     
     
     // MARK: - CALayer
@@ -114,5 +130,15 @@ class Applicator {
             return .Normal
         }
         
+    }
+    
+    //MARK: - Private
+    
+    private class func createFontName( fontFamily : String , fontStyle:String?) -> String {
+        var fontName = "\(fontFamily)"
+        if let fontStyle = fontStyle {
+            fontName += "-" + fontStyle
+        }
+        return fontName
     }
 }
