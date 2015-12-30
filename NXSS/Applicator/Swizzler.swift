@@ -19,8 +19,6 @@ class Swizzler {
         xImp( UIView.self , methodName: "didMoveToWindow" )
         xImp( UIView.self , methodName: "frame" )
         
-        // Why do I need this? Without this though things don't go well.
-        xImp( UILabel.self , methodName: "didMoveToWindow" )
     }
     
     
@@ -29,7 +27,7 @@ class Swizzler {
         See nxss_methodName implemented in Views folder.
     */
     private class func xImp(  theClass : AnyClass , methodName : String ) {
-    
+            
         let originalSelector = Selector(methodName)
         let swizzledSelector = Selector("nxss_\(methodName)")
         
@@ -37,8 +35,8 @@ class Swizzler {
         let swizzledMethod = class_getInstanceMethod(theClass, swizzledSelector)
         
         
-        if class_addMethod(self, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod)) {
-            class_replaceMethod(self, swizzledSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod))
+        if class_addMethod(theClass, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod)) {
+            class_replaceMethod(theClass, swizzledSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod))
         } else {
             method_exchangeImplementations(originalMethod, swizzledMethod);
         }

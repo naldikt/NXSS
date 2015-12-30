@@ -11,7 +11,6 @@ import UIKit
 
 extension UILabel  {
     
-    
     override func applyNXSS_styleElement() throws {
         
         try super.applyNXSS_styleElement()
@@ -19,8 +18,6 @@ extension UILabel  {
         if let declarations =  NXSS.sharedInstance.getStyleDeclarations("UILabel", selectorType:.Element) {
             try applyLabelDeclarations(declarations)
         }
-        
-        
         
     }
     
@@ -32,7 +29,6 @@ extension UILabel  {
         if let nxssClass = nxssClass, declarations = NXSS.sharedInstance.getStyleDeclarations(nxssClass, selectorType:.Class) {
             try applyLabelDeclarations(declarations)
         }
-
         
     }
 
