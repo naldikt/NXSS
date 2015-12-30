@@ -1,14 +1,14 @@
 
-.labelFontFamily {
+.label-font-family {
     font-family: AvenirNext-DemiBoldItalic;
 }
 
-.labelFontFamilyAndStyle {
+.label-font-family-and-style {
     font-family: AvenirNext;
     font-style: DemiBoldItalic;
 }
 
-.labelFontFamilySize {
+.label-font-family-size {
     font-family: AvenirNext-DemiBoldItalic;
     font-size:11;
 }

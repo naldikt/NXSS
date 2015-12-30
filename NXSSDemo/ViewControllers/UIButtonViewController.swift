@@ -10,5 +10,8 @@ import Foundation
 import UIKit
 
 class UIButtonViewController : UIViewController {
-    
+
+    @IBAction func titleChangeButtonTouchedUpInside(button:UIButton) {
+        button.selected = !button.selected
+    }
 }

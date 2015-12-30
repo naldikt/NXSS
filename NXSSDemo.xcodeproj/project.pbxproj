@@ -70,6 +70,9 @@
 		20BADDE01C2261C900984AE2 /* parsing_import_1.nxss in Resources */ = {isa = PBXBuildFile; fileRef = 20BADDDF1C2261C900984AE2 /* parsing_import_1.nxss */; };
 		20BADDE21C2261D400984AE2 /* parsing_import_2.nxss in Resources */ = {isa = PBXBuildFile; fileRef = 20BADDE11C2261D400984AE2 /* parsing_import_2.nxss */; };
 		20BADDE41C22686300984AE2 /* parsing_import_2_1.nxss in Resources */ = {isa = PBXBuildFile; fileRef = 20BADDE31C22686300984AE2 /* parsing_import_2_1.nxss */; };
+		20BEAF9D1C3258E20059674D /* UINavigationBar+NXSS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BEAF9C1C3258E20059674D /* UINavigationBar+NXSS.swift */; };
+		20BEAF9F1C325ECD0059674D /* UINavigationBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BEAF9E1C325ECD0059674D /* UINavigationBarViewController.swift */; };
+		20BEAFA11C325EDC0059674D /* UINavigationBarViewController.nxss in Resources */ = {isa = PBXBuildFile; fileRef = 20BEAFA01C325EDC0059674D /* UINavigationBarViewController.nxss */; };
 		20F030401C30FFF200AE772F /* demo.css in Resources */ = {isa = PBXBuildFile; fileRef = 20F030351C30FFF200AE772F /* demo.css */; };
 		20F030411C30FFF200AE772F /* demo.js in Resources */ = {isa = PBXBuildFile; fileRef = 20F030361C30FFF200AE772F /* demo.js */; };
 		20F030421C30FFF200AE772F /* demo.html in Resources */ = {isa = PBXBuildFile; fileRef = 20F030371C30FFF200AE772F /* demo.html */; };
@@ -207,6 +210,9 @@
 		20BADDDF1C2261C900984AE2 /* parsing_import_1.nxss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = parsing_import_1.nxss; sourceTree = "<group>"; };
 		20BADDE11C2261D400984AE2 /* parsing_import_2.nxss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = parsing_import_2.nxss; sourceTree = "<group>"; };
 		20BADDE31C22686300984AE2 /* parsing_import_2_1.nxss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = parsing_import_2_1.nxss; sourceTree = "<group>"; };
+		20BEAF9C1C3258E20059674D /* UINavigationBar+NXSS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationBar+NXSS.swift"; sourceTree = "<group>"; };
+		20BEAF9E1C325ECD0059674D /* UINavigationBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UINavigationBarViewController.swift; sourceTree = "<group>"; };
+		20BEAFA01C325EDC0059674D /* UINavigationBarViewController.nxss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = UINavigationBarViewController.nxss; sourceTree = "<group>"; };
 		20F030351C30FFF200AE772F /* demo.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = demo.css; sourceTree = "<group>"; };
 		20F030361C30FFF200AE772F /* demo.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = demo.js; sourceTree = "<group>"; };
 		20F030371C30FFF200AE772F /* demo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = demo.html; sourceTree = "<group>"; };
@@ -274,6 +280,8 @@
 				2010F46A1C2A4C9D00212731 /* UILabelViewController.swift */,
 				2010F46C1C2A4F8600212731 /* UIViewViewController.nxss */,
 				2010F4641C2A4C7D00212731 /* UIViewViewController.swift */,
+				20BEAFA01C325EDC0059674D /* UINavigationBarViewController.nxss */,
+				20BEAF9E1C325ECD0059674D /* UINavigationBarViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -387,10 +395,11 @@
 				20958DD71BCB61A700C456A5 /* Extensions */,
 				20958DDB1BCB61A700C456A5 /* Swizzler.swift */,
 				2012A8021C1E47B400D38DBE /* NXSSView.swift */,
-				20958DDC1BCB61A700C456A5 /* UILabel+NXSS.swift */,
 				2002A05D1BD6146E00B9D29F /* UIButton+NXSS.swift */,
 				2012A8041C1E4D0700D38DBE /* UIControl+NXSS.swift */,
 				20958DDD1BCB61A700C456A5 /* UIView+NXSS.swift */,
+				20958DDC1BCB61A700C456A5 /* UILabel+NXSS.swift */,
+				20BEAF9C1C3258E20059674D /* UINavigationBar+NXSS.swift */,
 			);
 			path = Applicator;
 			sourceTree = "<group>";
@@ -697,6 +706,7 @@
 				20F030461C30FFF200AE772F /* NapsterXFont.woff in Resources */,
 				20F030471C30FFF200AE772F /* Read Me.txt in Resources */,
 				20F030491C30FFF200AE772F /* style.css in Resources */,
+				20BEAFA11C325EDC0059674D /* UINavigationBarViewController.nxss in Resources */,
 				20F030401C30FFF200AE772F /* demo.css in Resources */,
 				2010F46F1C2A4F9000212731 /* UIControlViewController.nxss in Resources */,
 			);
@@ -751,6 +761,7 @@
 				2010F4691C2A4C9100212731 /* UIButtonViewController.swift in Sources */,
 				2010F4631C2A4C0D00212731 /* RootViewController.swift in Sources */,
 				2010F4651C2A4C7D00212731 /* UIViewViewController.swift in Sources */,
+				20BEAF9F1C325ECD0059674D /* UINavigationBarViewController.swift in Sources */,
 				2010F4671C2A4C8900212731 /* UIControlViewController.swift in Sources */,
 				202FA0C91BC093B800E91CF3 /* AppDelegate.swift in Sources */,
 				2010F46B1C2A4C9D00212731 /* UILabelViewController.swift in Sources */,
@@ -790,6 +801,7 @@
 				20958DFC1BCB61A700C456A5 /* CompiledRuleSet.swift in Sources */,
 				20A0D1521C13FE4F00DB4065 /* RuleSetBlock.swift in Sources */,
 				205CBE891BF9881200A04047 /* Dictionary+Core.swift in Sources */,
+				20BEAF9D1C3258E20059674D /* UINavigationBar+NXSS.swift in Sources */,
 				20958DF81BCB61A700C456A5 /* UIView+NXSS.swift in Sources */,
 				2068B8261BC0BDA8005317B5 /* NXSS.swift in Sources */,
 				2002A05E1BD6146E00B9D29F /* UIButton+NXSS.swift in Sources */,

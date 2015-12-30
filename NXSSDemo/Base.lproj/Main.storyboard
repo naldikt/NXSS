@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="kKQ-T0-owI">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -111,6 +112,26 @@
                                             <segue destination="qlX-NY-cP4" kind="show" id="m8o-Vp-Ngw"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Meg-Yf-CAb" style="IBUITableViewCellStyleDefault" id="tbs-Ly-EEz">
+                                        <rect key="frame" x="0.0" y="240" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tbs-Ly-EEz" id="hXu-oI-2c9">
+                                            <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="UINavigationBar" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Meg-Yf-CAb">
+                                                    <rect key="frame" x="15" y="0.0" width="550" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="6A9-vh-nws" kind="presentation" id="OX8-iG-Nf2"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -140,8 +161,8 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="i1x-E4-2xP">
                                 <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" horizontalHuggingPriority="254" horizontalCompressionResistancePriority="755" misplaced="YES" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="472" translatesAutoresizingMaskIntoConstraints="NO" id="D1g-SH-K8D">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
+                                    <view contentMode="scaleToFill" horizontalHuggingPriority="254" horizontalCompressionResistancePriority="755" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="472" translatesAutoresizingMaskIntoConstraints="NO" id="D1g-SH-K8D">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="472"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="background-color:red;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z2g-gK-qsa">
                                                 <rect key="frame" x="5" y="5" width="200" height="42"/>
@@ -153,7 +174,7 @@
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="nxssClass" value="backgroundColorRed"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="nxssClass" value="uiview-background-color-red"/>
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  border-color:green;   border-width:3;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ILr-gD-NbH">
@@ -166,22 +187,22 @@
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="nxssClass" value="borderColorGreen3"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="nxssClass" value="uiview-border-color-green-3"/>
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oxf-SN-k3N">
-                                                <rect key="frame" x="5" y="141" width="250" height="84"/>
+                                                <rect key="frame" x="5" y="141" width="350" height="84"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="84" id="lB5-Cu-4au"/>
-                                                    <constraint firstAttribute="width" constant="250" id="qMk-qw-3a6"/>
+                                                    <constraint firstAttribute="width" constant="350" id="qMk-qw-3a6"/>
                                                 </constraints>
-                                                <string key="text">  @extend .borderColorGreen3;
+                                                <string key="text">  @extend .uiview-border-color-green-3;
   corner-radius:10;</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="nxssClass" value="cornerRadius10"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="nxssClass" value="uiview-corner-radius-10"/>
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FSX-mZ-OmH">
@@ -197,7 +218,7 @@ border-color:gray; (subview clipped)</string>
                                                 <color key="textColor" red="0.56789996519999997" green="1" blue="0.68350516029999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="nxssClass" value="cornerRadiusCircle"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="nxssClass" value="uiview-corner-radius-circle"/>
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                         </subviews>
@@ -258,6 +279,49 @@ border-color:gray; (subview clipped)</string>
             </objects>
             <point key="canvasLocation" x="855" y="59"/>
         </scene>
+        <!--Navigation Bar View Controller-->
+        <scene sceneID="dNW-qS-Yhz">
+            <objects>
+                <viewController id="Ev7-RC-OQs" customClass="UINavigationBarViewController" customModule="NXSSDemo" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="S00-K3-lbe"/>
+                        <viewControllerLayoutGuide type="bottom" id="r7L-5s-Y89"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="JvR-Ub-Wcr">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Notice the navBar above is different " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cST-8e-15S">
+                                <rect key="frame" x="0.0" y="64" width="278" height="62"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="f3r-2e-XRS"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bXT-Xu-Out" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1410" y="1386"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="S8a-F1-B5X">
+            <objects>
+                <navigationController id="6A9-vh-nws" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="NE8-qs-YFy">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Ev7-RC-OQs" kind="relationship" relationship="rootViewController" id="icD-2P-X2r"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cHU-sJ-cRT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-690" y="1182"/>
+        </scene>
         <!--UIControl-->
         <scene sceneID="Nte-Xe-VgA">
             <objects>
@@ -282,14 +346,14 @@ border-color:gray; (subview clipped)</string>
                                                     <constraint firstAttribute="width" constant="200" id="dGX-Ev-P1D"/>
                                                     <constraint firstAttribute="height" constant="50" id="tdF-fP-6zj"/>
                                                 </constraints>
-                                                <state key="normal" title="Disabled">
+                                                <state key="normal" title="Disabled (Gray bg)">
                                                     <color key="titleColor" red="0.56789996519999997" green="1" blue="0.68350516029999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="nxssClass" value="controlButton"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="nxssClass" value="control-button"/>
                                                 </userDefinedRuntimeAttributes>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1cI-ZW-IGK">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1cI-ZW-IGK">
                                                 <rect key="frame" x="5" y="60" width="200" height="250"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="250" id="J09-1z-36o"/>
@@ -302,27 +366,14 @@ Highlighted: Blue Selected: Green</string>
                                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="nxssClass" value="controlButton"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="nxssClass" value="control-button"/>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="controlButtonTapped:" destination="RW0-jV-MUd" eventType="touchUpInside" id="FcW-5j-SCC"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vFg-2n-y6V">
-                                                <rect key="frame" x="5" y="315" width="127" height="43"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="43" id="SMX-cj-SDM"/>
-                                                    <constraint firstAttribute="width" constant="127" id="tp9-XW-baP"/>
-                                                </constraints>
-                                                <state key="normal" title="Button">
-                                                    <color key="titleColor" red="0.074509803920000006" green="0.2666666667" blue="0.29411764709999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                </state>
-                                                <state key="highlighted">
-                                                    <color key="titleColor" red="0.56789996519999997" green="1" blue="0.68350516029999997" alpha="1" colorSpace="calibratedRGB"/>
-                                                </state>
-                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KJT-kw-GQY">
-                                                <rect key="frame" x="5" y="363" width="127" height="45"/>
+                                                <rect key="frame" x="5" y="315" width="127" height="45"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="127" id="RtD-6e-l6w"/>
                                                     <constraint firstAttribute="height" constant="45" id="oEc-WK-soN"/>
@@ -336,12 +387,10 @@ Highlighted: Blue Selected: Green</string>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="1cI-ZW-IGK" firstAttribute="top" secondItem="h31-jL-dWe" secondAttribute="bottom" constant="5" id="4F1-0B-xCB"/>
-                                            <constraint firstItem="KJT-kw-GQY" firstAttribute="top" secondItem="vFg-2n-y6V" secondAttribute="bottom" constant="5" id="Igx-U2-jKR"/>
                                             <constraint firstItem="h31-jL-dWe" firstAttribute="leading" secondItem="B4o-dh-EkH" secondAttribute="leading" constant="5" id="KGF-gj-LuA"/>
                                             <constraint firstItem="KJT-kw-GQY" firstAttribute="leading" secondItem="B4o-dh-EkH" secondAttribute="leading" constant="5" id="L8x-y8-V2y"/>
                                             <constraint firstItem="h31-jL-dWe" firstAttribute="top" secondItem="B4o-dh-EkH" secondAttribute="top" constant="5" id="Nnm-Oz-ojq"/>
-                                            <constraint firstItem="vFg-2n-y6V" firstAttribute="top" secondItem="1cI-ZW-IGK" secondAttribute="bottom" constant="5" id="Nsa-z8-RHu"/>
-                                            <constraint firstItem="vFg-2n-y6V" firstAttribute="leading" secondItem="B4o-dh-EkH" secondAttribute="leading" constant="5" id="gVx-6Z-af0"/>
+                                            <constraint firstItem="KJT-kw-GQY" firstAttribute="top" secondItem="1cI-ZW-IGK" secondAttribute="bottom" constant="5" id="hwO-HO-PiS"/>
                                             <constraint firstItem="1cI-ZW-IGK" firstAttribute="leading" secondItem="B4o-dh-EkH" secondAttribute="leading" constant="5" id="n6k-lK-raa"/>
                                             <constraint firstAttribute="height" constant="536" id="rFL-ol-5ad"/>
                                         </constraints>
@@ -384,7 +433,41 @@ Highlighted: Blue Selected: Green</string>
                     <view key="view" contentMode="scaleToFill" id="km9-Vw-0ui">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title should change as you highlight/select this button below:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hJd-V3-5eb">
+                                <rect key="frame" x="15" y="81" width="272" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="272" id="4EA-py-tae"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dZ5-ZS-mgy">
+                                <rect key="frame" x="70" y="140" width="147" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="147" id="NnC-Pd-pYB"/>
+                                </constraints>
+                                <state key="normal" title="TitleChange Button">
+                                    <color key="titleColor" red="0.3803921569" green="0.38431372549999998" blue="0.38823529410000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="nxssClass" value="uibutton-title-change"/>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="titleChangeButtonTouchedUpInside:" destination="qlX-NY-cP4" eventType="touchUpInside" id="57P-WG-rsW"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="hJd-V3-5eb" firstAttribute="leading" secondItem="km9-Vw-0ui" secondAttribute="leadingMargin" constant="-5" id="3pe-PJ-YF6"/>
+                            <constraint firstItem="Dah-Xj-TeA" firstAttribute="top" secondItem="dZ5-ZS-mgy" secondAttribute="bottom" constant="410" id="Eeq-VZ-TU0"/>
+                            <constraint firstItem="dZ5-ZS-mgy" firstAttribute="top" secondItem="gAb-EO-0eL" secondAttribute="bottom" constant="76" id="NwZ-fi-UMf"/>
+                            <constraint firstItem="dZ5-ZS-mgy" firstAttribute="leading" secondItem="km9-Vw-0ui" secondAttribute="leadingMargin" constant="50" id="cky-y0-OqU"/>
+                            <constraint firstItem="Dah-Xj-TeA" firstAttribute="top" secondItem="hJd-V3-5eb" secondAttribute="bottom" constant="459" id="czu-1U-NUC"/>
+                            <constraint firstItem="hJd-V3-5eb" firstAttribute="top" secondItem="gAb-EO-0eL" secondAttribute="bottom" constant="17" id="uqL-iZ-2JZ"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="UIButton" id="0YS-Kz-zUT"/>
                 </viewController>
@@ -420,7 +503,7 @@ Highlighted: Blue Selected: Green</string>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="nxssClass" value="labelFontFamily"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="nxssClass" value="label-font-family"/>
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="font-family: AvenirNext-DemiBoldItalic; font-size:11;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QeD-o8-vzc">
@@ -433,7 +516,7 @@ Highlighted: Blue Selected: Green</string>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="nxssClass" value="labelFontFamilySize"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="nxssClass" value="label-font-family-size"/>
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="font-family: AvenirNext; font-style: DemiBoldItalic;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HGF-kB-4cr">
@@ -446,7 +529,7 @@ Highlighted: Blue Selected: Green</string>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="nxssClass" value="labelFontFamilyAndStyle"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="nxssClass" value="label-font-family-and-style"/>
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Below should be 'Plus' icon (NapsterXFont):" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CWc-Ql-gny">

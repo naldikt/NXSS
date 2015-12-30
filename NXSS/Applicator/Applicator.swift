@@ -73,5 +73,46 @@ class Applicator {
         applyCornerRadius( layer , number: layer.frame.size.width / 2 )
     }
     
-
+    // MARK: Utilities
+    
+    // Return UIControlState associated with the given pseudoClass.
+    class func toUIControlState( pseudoClass : PseudoClass ) -> UIControlState {
+        switch pseudoClass {
+        case .Normal: return .Normal
+        case .Highlighted: return .Highlighted
+        case .Selected: return .Selected
+        case .Disabled: return .Disabled
+        }
+    }
+    
+    // - discussion: Why can't we just have an extension method i.e. "getPseudoClass" declared in UIView, and override it in UIControl?
+    // Because then you'd get error: declarations in extension cannot override yet
+    // What I'm doing here is a workaround until Apple decides to change it.
+    class func getPseudoClass( instance : UIView ) -> PseudoClass {
+        
+        if let control = instance as? UIControl {
+            
+            if control.highlighted {
+                
+                return .Highlighted
+                
+            } else if control.selected {
+                
+                return .Selected
+                
+            } else if !control.enabled {
+                
+                return .Disabled
+                
+            } else {
+                return .Normal
+            }
+            
+            
+        } else {
+            // Anything above UIControl doesn't really have pseudoClass.
+            return .Normal
+        }
+        
+    }
 }

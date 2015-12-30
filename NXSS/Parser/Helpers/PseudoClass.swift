@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 /**
  Valid pseudo-class in NXSS.
  These are based on "selector-states" of UIButton.

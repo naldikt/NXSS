@@ -9,22 +9,35 @@
 import Foundation
 import UIKit
 
-extension UILabel {
+extension UILabel  {
+    
+    
+    override func applyNXSS_styleElement() throws {
+        
+        try super.applyNXSS_styleElement()
+        
+        if let declarations =  NXSS.sharedInstance.getStyleDeclarations("UILabel", selectorType:.Element) {
+            try applyLabelDeclarations(declarations)
+        }
+        
+        
+        
+    }
+    
     
     override func applyNXSS_styleClass() throws {
         
         try super.applyNXSS_styleClass()
         
-        if let declarations =  NXSS.sharedInstance.getStyleDeclarations("UILabel", selectorType:.Element) {
-            try applyDeclarations(declarations)
+        if let nxssClass = nxssClass, declarations = NXSS.sharedInstance.getStyleDeclarations(nxssClass, selectorType:.Class) {
+            try applyLabelDeclarations(declarations)
         }
+
         
     }
-    
 
-    override func applyDeclarations( declarations:Declarations ) throws {
-        
-        try super.applyDeclarations(declarations)
+
+    private func applyLabelDeclarations( declarations:Declarations ) throws {
         
         if let fontFamily  = declarations["font-family"] {
             

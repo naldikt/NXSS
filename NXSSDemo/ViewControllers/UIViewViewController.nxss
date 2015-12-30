@@ -1,19 +1,19 @@
 
-.backgroundColorRed {
+.uiview-background-color-red {
     background-color:red;
 }
 
-.borderColorGreen3 {
+.uiview-border-color-green-3 {
     border-color:green;
     border-width:3;
 }
 
-.cornerRadius10 {
-    @extend .borderColorGreen3;
+.uiview-corner-radius-10 {
+    @extend .uiview-border-color-green-3;
     corner-radius:10;
 }
 
-.cornerRadiusCircle {
+.uiview-corner-radius-circle {
     background-color:blue;
     corner-radius:circle;
     border-width:3;

@@ -39,17 +39,17 @@ extension UIView : NXSSViewApplicator {
     
     func applyNXSS_styleElement() throws {
         if let declarations =  NXSS.sharedInstance.getStyleDeclarations("UIView", selectorType:.Element) {
-            try applyDeclarations(declarations)
+            try applyViewDeclarations(declarations)
         }
     }
     
     func applyNXSS_styleClass() throws  {
-        if let nxssClass = nxssClass, declarations = NXSS.sharedInstance.getStyleDeclarations(nxssClass, selectorType:.Class) {
-            try applyDeclarations(declarations)
+        if let nxssClass = nxssClass, declarations = NXSS.sharedInstance.getStyleDeclarations(nxssClass, selectorType:.Class, pseudoClass: nxssCurrentPseudoClass ) {
+            try applyViewDeclarations(declarations)
         }
     }
     
-    func applyDeclarations( declarations : Declarations ) throws {
+    private func applyViewDeclarations( declarations : Declarations ) throws {
         
         if let backgroundColor  = declarations["background-color"] {
             try Applicator.applyBackgroundColor(self, color: backgroundColor)
@@ -81,6 +81,19 @@ extension UIView  {
 
 
     // MARK: - Protected
+    
+    var nxssCurrentPseudoClass : PseudoClass {
+        return Applicator.getPseudoClass( self )
+    }
+    
+    func nxssGetClassDeclarations( pseudoClass : PseudoClass ) -> Declarations? {
+        if let  nxssClass = nxssClass , declarations = NXSS.sharedInstance.getStyleDeclarations(nxssClass, selectorType: .Class, pseudoClass: pseudoClass) {
+            return declarations
+        } else {
+            return nil
+        }
+    }
+    
     
     var nxss_frame : CGRect {
         set {
