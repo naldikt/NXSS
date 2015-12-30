@@ -2,6 +2,10 @@
 .uinavigationbar-bar {
     bar-tint-color:red;
     tint-color:white;
+
+    color: #FFFFFF;
+    font-family: AvenirNext-DemiBoldItalic;
+    font-size: 19;
 }
 
 .uinavigationbar-close-button {
