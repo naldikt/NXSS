@@ -20,7 +20,7 @@ class UIControlTests: XCTestCase {
         NXSS.sharedInstance.useFile("UIControlTests",bundle: NSBundle(forClass: self.dynamicType ))
         
         control = UIButton()
-        control.nxss = "SButton"
+        control.nxssClass = "SButton"
 
     }
     
@@ -55,7 +55,7 @@ class UIControlTests: XCTestCase {
     
     func testCombination() {
         control = UIButton()
-        control.nxss = "SButton"
+        control.nxssClass = "SButton"
         
         // Normal
         assertNormal()
