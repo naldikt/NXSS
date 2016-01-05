@@ -16,9 +16,8 @@ class Queue<T> {
 		array.append(entry)
 	}
 	
-	/** If there's no entry it'll crash. */
-	func peek() -> T {
-		return array.last!
+	func peek() -> T? {
+		return array.last
 	}
 		
 	/** Pop and return. */

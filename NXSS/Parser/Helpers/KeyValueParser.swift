@@ -10,7 +10,7 @@ import Foundation
 
 enum KeyValueType {
 	case Declaration                   //	key => value is "background-color" => "red"
-	case VariableDeclaration           //	key => value is "$varName" => "rgb(255,255,255,1)"
+	case VariableDeclaration           //	key => value is "$varName" => "rgb(255,255,255,1)"  OR   "$varName" => "$otherVarName"
 	case Include                        //  key => value is "@include" => "...". Always includes mixin.
     case Extend(selectorType:SelectorType)     //  key => value is  "@extend" => "...". Can extend any rule set.
     case Import                         //  key => value is "@import" => FileName. FileName should be without the extension.

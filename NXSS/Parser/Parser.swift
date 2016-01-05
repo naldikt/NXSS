@@ -19,15 +19,35 @@ class Parser {
             - parentParser     Used internally during "import" to keep track of existing context and ruleSets.
 
     */
-    init( fileName : String , bundle : NSBundle? = nil , parentParser : Parser? = nil ) {
+    init( fileName : String , bundle : NSBundle? = nil , parentParser : Parser? = nil ) throws {
         
         self.fileName = fileName
         self.fileBundle = bundle
         
-        let filePath = Parser.pathForFile(fileName, bundle:bundle)
-        let data = NSData(contentsOfFile:filePath!)
-        assert(data != nil , "Could not find file \(filePath). Ensure it exists, and use NXSS.pathForFile() to generate the path.")
-        self.fileContent = NSString(data: data!, encoding: NSUTF8StringEncoding)! as String
+        // TODO: at some point needs to refine these.
+        guard let filePath = Parser.pathForFile(fileName, bundle:bundle) else {
+            self.blockQueue = Queue()
+            self.ruleSets = Dictionary()
+            self.mixins = Dictionary()
+            self.fileContent = ""
+            throw NXSSError.Require(msg: "FilePath does not exist", statement: fileName, line: nil)
+        }
+        guard let data = NSData(contentsOfFile:filePath) else {
+            self.blockQueue = Queue()
+            self.ruleSets = Dictionary()
+            self.mixins = Dictionary()
+            self.fileContent = ""
+            throw NXSSError.Require(msg: "Data from path is invalid", statement: filePath, line: nil)
+        }
+        guard let dataString = NSString(data: data, encoding: NSUTF8StringEncoding) as? String else {
+            self.blockQueue = Queue()
+            self.ruleSets = Dictionary()
+            self.mixins = Dictionary()
+            self.fileContent = ""
+            throw NXSSError.Require(msg: "Data cannot be converted to String", statement: "<cannot print data>", line: nil)
+        }
+        
+        self.fileContent = dataString
         
         if let blockQueue = parentParser?.blockQueue {
             self.blockQueue = blockQueue
@@ -42,6 +62,13 @@ class Parser {
         } else {
             // If it's not passed, create a new one.
             self.ruleSets = Dictionary()
+        }
+        
+        if let mixins = parentParser?.mixins {
+            self.mixins = mixins
+        } else {
+            // If it's not passed, create a new one
+            self.mixins = Dictionary()
         }
     }
     
@@ -95,7 +122,7 @@ class Parser {
     
     private let fileBundle : NSBundle?
     
-    private var mixins : [String:CompiledMixin] = Dictionary()		// mixinName => StyleMixin
+    private var mixins : [String:CompiledMixin] // mixinName => StyleMixin
     
     private static let fileExtension = ".nxss"
     
@@ -144,6 +171,8 @@ class Parser {
         
         let chars = self.fileContent.characters
         for s : Character in chars {
+            
+//            NSLog("CurBuf \(String(curBuffer))")
             
             if skip {
                 
@@ -251,7 +280,10 @@ class Parser {
         
         let (type,key,value) = try KeyValueParser.parse( String(curBuffer) )
         
-        let curBlock = blockQueue.peek()
+        guard let curBlock = blockQueue.peek() else {
+            throw NXSSError.Require(msg: "BlockQueue.peek() just failed", statement: "", line: nil)
+        }
+        
         switch type {
         case .Declaration, .VariableDeclaration:
             
@@ -306,7 +338,7 @@ class Parser {
         case .Import:
             
             // Let's start a new parser (recursive)
-            let parser = Parser(fileName: value, bundle: fileBundle , parentParser: self)
+            let parser = try Parser(fileName: value, bundle: fileBundle , parentParser: self)
             try parser.parse()
             
             // Assign or Override the resulting ruleSet

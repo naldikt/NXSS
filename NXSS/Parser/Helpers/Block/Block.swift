@@ -60,6 +60,7 @@ class Block {
 	/** 
 		Get the value for the given property or variable.
 		If not available, will keep going up to parentBlock recursively and try there.
+        If value is a variable, will recurse until it finds non-variable value.
 		
 		:param:	key	Property or Variable name i.e. "property-name",  "$varName", etc.
 	*/
@@ -73,7 +74,11 @@ class Block {
 			block = block?.parentBlock
 		}
 		
-		return ret
+        if let ret = ret , retFirstChar = ret.first where retFirstChar == "$" {
+            return getDeclarationValue(ret)   // recurse until we have it.
+        } else {
+            return ret
+        }
 	}
 	
 	
