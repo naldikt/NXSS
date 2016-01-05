@@ -25,15 +25,25 @@ public class NXSS {
         Start NXSS.
         Parse the file with the given name and the bundle they're in.
     */
-    public func useFile( fileName : String , bundle : NSBundle? = nil ) {
+    public func useFile( fileName : String , bundle : NSBundle? = nil ) -> Bool {
         
-        let startTime = NSDate()
+        do {
+            
         
-        let parser = Parser(fileName:fileName, bundle:bundle)
-        self.ruleSets = try! parser.parse()
-        
-        let diff = NSDate().timeIntervalSince1970 - startTime.timeIntervalSince1970
-        NSLog("Parsing Time [\(fileName)] = \(diff) seconds")
+            let startTime = NSDate()
+            
+            let parser = try Parser(fileName:fileName, bundle:bundle)
+            self.ruleSets = try! parser.parse()
+            
+            let diff = NSDate().timeIntervalSince1970 - startTime.timeIntervalSince1970
+            NSLog("NXSS Parsing Time [\(fileName)] = \(diff) seconds")
+            
+            return true
+            
+        } catch {
+            NSLog("Error in parsing NXSS")
+            return false
+        }
         
     }
     

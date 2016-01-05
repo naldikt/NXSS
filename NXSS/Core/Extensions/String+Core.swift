@@ -31,6 +31,14 @@ extension String {
         
     }
     
+    var first : Character? {
+        if self.characters.count > 0 {
+            return self[0]
+        } else {
+            return nil
+        }
+    }
+    
     var last : Character? {
         if self.characters.count > 0 {
             return self[self.characters.count-1]
