@@ -21,7 +21,7 @@ extension UIView : NXSSView {
         }
     }
     
-    public func applyNXSS() {
+    public func applyNXSS()  {
         do {
             
             try applyNXSS_styleElement()
@@ -29,7 +29,9 @@ extension UIView : NXSSView {
             
 
         } catch let error {
-            NSLog("UIView.applyNXSS failed with error:\n\(error)")
+            let msg = "UIView.applyNXSS failed with error:\n\(error)"
+            NSLog(msg)
+            assert(false,msg)
         }
     }
     

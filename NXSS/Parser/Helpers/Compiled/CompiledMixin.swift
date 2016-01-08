@@ -42,7 +42,11 @@ class CompiledMixin {
     
         - return:	declarations
     */
-    func resolveArguments( argValues : [String] ) -> Declarations {
+    func resolveArguments( argValues : [String] ) throws -> Declarations {
+        
+        if argValues.count != argNames.count {
+            throw NXSSError.Parse(msg: "Arguments passed for calling mixin is incorrect (check the number of args).", statement: "@include \(selector)", line: nil)
+        }
     
     	var ret : Declarations = Dictionary()
     	

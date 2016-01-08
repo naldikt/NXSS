@@ -66,6 +66,38 @@ extension UINavigationBar {
             self.barTintColor = try UIColor.fromNXSS(color)
         }
         
+        if let translucentS = declarations["translucent"] {
+            if let translucent = Applicator.stringToBool(translucentS) {
+                self.translucent = translucent
+            } else {
+                throw NXSSError.Require(msg: "translucent value must either be true or false", statement: "translucent: \(translucentS)", line:nil)
+            }
+        }
+        
+        if let backgroundImage = declarations["background-image"] {
+            if backgroundImage == "_" {
+                self.setBackgroundImage(UIImage(), forBarMetrics: .Default)
+            } else {
+                if let image = UIImage(named: backgroundImage) {
+                    self.setBackgroundImage(image, forBarMetrics: .Default)
+                } else {
+                    throw NXSSError.Require(msg: "background-image is not found", statement: "background-image: \(backgroundImage)", line: nil)
+                }
+            }
+        }
+        
+        if let shadowImage = declarations["shadow-image"] {
+            if shadowImage == "_" {
+                self.shadowImage = UIImage()
+            } else {
+                if let image = UIImage(named: shadowImage) {
+                    self.shadowImage = image
+                } else {
+                    throw NXSSError.Require(msg: "shadow-image is not found", statement: "shadow-image: \(shadowImage)", line: nil)
+                }
+            }
+        }
+        
     }
     
 }

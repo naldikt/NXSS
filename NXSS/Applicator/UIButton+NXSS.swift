@@ -47,7 +47,7 @@ extension UIButton {
                 fontSize = try fontSize_.toCGFloat()
             }
             
-            Applicator.applyFont(titleLabel, fontFamily: fontFamily, fontStyle: fontStyle, fontSize: fontSize)
+            try Applicator.applyFont(titleLabel, fontFamily: fontFamily, fontStyle: fontStyle, fontSize: fontSize)
         }
         
         let uiControlState = Applicator.toUIControlState(pseudoClass)
