@@ -34,7 +34,7 @@ class Applicator {
     
     // MARK: - UILabel
     
-    class func applyFont( label : UILabel , fontFamily:String, fontStyle:String?, fontSize:CGFloat?) {
+    class func applyFont( label : UILabel , fontFamily:String, fontStyle:String?, fontSize:CGFloat?) throws {
         var size : CGFloat = label.font.pointSize
         if let s = fontSize {
             size = s
@@ -43,7 +43,9 @@ class Applicator {
         let fontName = createFontName( fontFamily , fontStyle: fontStyle)
         
         
-        let theFont = UIFont(name: fontName, size: size)
+        guard let theFont = UIFont(name: fontName, size: size) else {
+            throw NXSSError.Require(msg: "Font does not exist", statement: fontName, line: nil)
+        }
         label.font = theFont
     }
     
@@ -90,6 +92,17 @@ class Applicator {
     }
     
     // MARK: Utilities
+    
+    /** Convert "true" and "false" into boolean. */
+    class func stringToBool( input : String ) -> Bool? {
+        if input == "true" {
+            return true
+        } else if input == "false" {
+            return false
+        } else {
+            return nil
+        }
+    }
     
     // Return UIControlState associated with the given pseudoClass.
     class func toUIControlState( pseudoClass : PseudoClass ) -> UIControlState {

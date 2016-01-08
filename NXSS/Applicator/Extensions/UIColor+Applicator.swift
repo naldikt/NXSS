@@ -25,8 +25,8 @@ extension UIColor {
             let (name,args) = try FunctionHeader.parse(string)
         
             let red = try args[0].toCGFloat() / 255.0
-            let blue = try args[1].toCGFloat() / 255.0
-            let green = try  args[2].toCGFloat() / 255.0
+            let green = try args[1].toCGFloat() / 255.0
+            let blue = try  args[2].toCGFloat() / 255.0
             let alpha = args.count == 4 ? try args[3].toCGFloat() : 1.0
             
             if name == "rgba" {

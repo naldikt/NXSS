@@ -298,7 +298,7 @@ class Parser {
             }
             
             curBlock.addDeclarations(
-                mixin.resolveArguments(argVals)
+                try mixin.resolveArguments(argVals)
             )
             
         case .Extend(let selectorType):

@@ -47,7 +47,7 @@ extension UILabel  {
                 fontSize = try fontSize_.toCGFloat()
             }
             
-            Applicator.applyFont(self,fontFamily:fontFamily,fontStyle:fontStyle,fontSize:fontSize)
+            try Applicator.applyFont(self,fontFamily:fontFamily,fontStyle:fontStyle,fontSize:fontSize)
         }
         
         if let color = declarations["color"] {
