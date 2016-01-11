@@ -15,10 +15,11 @@ extension CAGradientLayer {
     /**
         - parameters:
             - linearGradientString      Either linear-gradient( to bottom , topColor , bottomColor )  or   linear-gradient( to right , leftColor , rightColor )
+            - bounds                    The bounds of the view
     
         - return: The applied linear gradient.
     */
-    class func fromNXSSLinearGradient( layer : CALayer , linearGradientString : String , frame : CGRect ) throws -> CAGradientLayer {
+    class func fromNXSSLinearGradient( layer : CALayer , linearGradientString : String , bounds : CGRect ) throws -> CAGradientLayer {
 
         let (name,args) = try FunctionHeader.parse(linearGradientString)
 
@@ -38,17 +39,17 @@ extension CAGradientLayer {
         let secondColor : String = args[2]
         
         if direction == "bottom" {
-            return try CAGradientLayer.gradientLayerFromTop(firstColor, toBottom: secondColor, frame: frame)
+            return try CAGradientLayer.gradientLayerFromTop(firstColor, toBottom: secondColor, bounds: bounds)
         } else  {
-            return try CAGradientLayer.gradientLayerFromLeft(firstColor, toRight: secondColor, frame: frame)
+            return try CAGradientLayer.gradientLayerFromLeft(firstColor, toRight: secondColor, bounds: bounds)
         }
 
     }
     
     
-    class func gradientLayerFromTop( topColor : String , toBottom bottomColor : String , frame : CGRect ) throws -> CAGradientLayer {
+    class func gradientLayerFromTop( topColor : String , toBottom bottomColor : String , bounds : CGRect ) throws -> CAGradientLayer {
         let layer = CAGradientLayer()
-        layer.frame = frame
+        layer.frame = bounds
         layer.startPoint = CGPointMake(0.5,0.0)
         layer.endPoint = CGPointMake(0.5,1.0)
         
@@ -59,9 +60,9 @@ extension CAGradientLayer {
         return layer
     }
     
-    class func gradientLayerFromLeft( leftColor : String , toRight rightColor : String , frame : CGRect ) throws -> CAGradientLayer {
+    class func gradientLayerFromLeft( leftColor : String , toRight rightColor : String , bounds : CGRect ) throws -> CAGradientLayer {
         let layer = CAGradientLayer()
-        layer.frame = frame
+        layer.frame = bounds
         layer.startPoint = CGPointMake(0.0,0.5)
         layer.endPoint = CGPointMake(1.0,0.5)
         

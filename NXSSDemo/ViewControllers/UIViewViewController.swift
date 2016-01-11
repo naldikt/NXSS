@@ -11,4 +11,15 @@ import UIKit
 
 class UIViewViewController : UIViewController {
     
+    @IBOutlet weak var scrollView : UIScrollView?
+    @IBOutlet weak var containerView :UIView?
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        if let scrollView = scrollView , containerView = containerView {
+            scrollView.contentSize = CGSizeMake(  scrollView.contentSize.width , containerView.frame.size.height )
+        }
+
+    }
 }
