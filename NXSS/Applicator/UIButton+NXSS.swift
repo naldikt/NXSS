@@ -17,23 +17,24 @@ extension UIButton {
         try super.applyNXSS_styleElement()
         
         if let declarations =  NXSS.sharedInstance.getStyleDeclarations("UIButton", selectorType:.Element) {
-            try applyDeclarations(declarations, forPseudoClass:.Normal)
+            try applyButtonDeclarations(declarations, forPseudoClass:.Normal)
         }
         
     }
-    
+
     override func applyNXSS_styleClass() throws {
         
         try super.applyNXSS_styleClass()
         
         if let declarations = nxssGetClassDeclarations(nxssCurrentPseudoClass) {
-            try applyDeclarations(declarations, forPseudoClass: nxssCurrentPseudoClass)
+            try applyButtonDeclarations(declarations, forPseudoClass: nxssCurrentPseudoClass)
         }
-
+        
     }
-
     
-    private func applyDeclarations( declarations : Declarations, forPseudoClass pseudoClass : PseudoClass ) throws {
+    func applyButtonDeclarations( declarations : Declarations, forPseudoClass pseudoClass : PseudoClass ) throws {
+        
+        try super.applyControlDeclarations( declarations , forPseudoClass: pseudoClass)
         
         if let fontFamily : String =  declarations["font-family"] , titleLabel = self.titleLabel {
             

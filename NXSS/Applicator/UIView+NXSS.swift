@@ -51,7 +51,7 @@ extension UIView : NXSSViewApplicator {
         }
     }
     
-    private func applyViewDeclarations( declarations : Declarations ) throws {
+    func applyViewDeclarations( declarations : Declarations ) throws {
         
         if let backgroundColor  = declarations["background-color"] {
             try Applicator.applyBackgroundColor(self, color: backgroundColor)

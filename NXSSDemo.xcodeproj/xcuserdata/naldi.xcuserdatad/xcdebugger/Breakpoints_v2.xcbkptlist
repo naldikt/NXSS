@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NXSS/Applicator/UIButton+NXSS.swift"
-            timestampString = "473149660.753824"
+            timestampString = "474249125.540108"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "73"
-            endingLineNumber = "73"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
             landmarkName = "UIButton"
             landmarkType = "3">
          </BreakpointContent>

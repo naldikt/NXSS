@@ -21,7 +21,7 @@ extension UIControl {
         
         if let declarations =  NXSS.sharedInstance.getStyleDeclarations("UIControl", selectorType:.Element) {
             // We'll assume this is for Normal. In the future it may make sense to actually add state ability to elements.
-            try applyDeclarations(declarations , forPseudoClass : .Normal)
+            try applyControlDeclarations(declarations , forPseudoClass : .Normal)
         }
         
     }
@@ -31,13 +31,15 @@ extension UIControl {
         try super.applyNXSS_styleClass()
         
         if let declarations = nxssGetClassDeclarations(nxssCurrentPseudoClass) {
-            try applyDeclarations(declarations, forPseudoClass: nxssCurrentPseudoClass)
+            try applyControlDeclarations(declarations, forPseudoClass: nxssCurrentPseudoClass)
         }
-
+        
     }
     
     /** This is called when state has changed. */
-    private func applyDeclarations( declarations : Declarations , forPseudoClass pseudoClass : PseudoClass )  throws {
+    func applyControlDeclarations( declarations : Declarations , forPseudoClass pseudoClass : PseudoClass )  throws {
+        
+        try super.applyViewDeclarations( declarations )
         
         if let textAlign = declarations["text-align"] {
             
