@@ -8,7 +8,7 @@
         <!--Navigation Controller-->
         <scene sceneID="YDu-Gx-E1c">
             <objects>
-                <navigationController id="kKQ-T0-owI" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NXSSNavigationController" id="kKQ-T0-owI" customClass="NXSSNavigationController" customModule="NXSS" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="4i3-uh-rq2">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -36,11 +36,11 @@
                                         <rect key="frame" x="0.0" y="64" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="syc-4A-rLy" id="SXr-Ry-Crr">
-                                            <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="567" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="UIView" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="mMw-16-ORM">
-                                                    <rect key="frame" x="15" y="0.0" width="550" height="43"/>
+                                                    <rect key="frame" x="15" y="0.0" width="550" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -56,11 +56,11 @@
                                         <rect key="frame" x="0.0" y="108" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kbs-PT-Xad" id="7lw-OQ-QNT">
-                                            <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="567" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="UILabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7c6-i3-ASO">
-                                                    <rect key="frame" x="15" y="0.0" width="550" height="43"/>
+                                                    <rect key="frame" x="15" y="0.0" width="550" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -76,11 +76,11 @@
                                         <rect key="frame" x="0.0" y="152" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="h4w-lT-Oyr" id="28l-Q1-k1V">
-                                            <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="567" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="UIControl" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="SGw-be-kTt">
-                                                    <rect key="frame" x="15" y="0.0" width="550" height="43"/>
+                                                    <rect key="frame" x="15" y="0.0" width="550" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -96,11 +96,11 @@
                                         <rect key="frame" x="0.0" y="196" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Brr-4w-ht9" id="t3a-OO-hIw">
-                                            <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="567" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="UIButton" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8r7-hB-3P6">
-                                                    <rect key="frame" x="15" y="0.0" width="550" height="43"/>
+                                                    <rect key="frame" x="15" y="0.0" width="550" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -116,11 +116,11 @@
                                         <rect key="frame" x="0.0" y="240" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tbs-Ly-EEz" id="hXu-oI-2c9">
-                                            <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="567" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="UINavigationBar" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Meg-Yf-CAb">
-                                                    <rect key="frame" x="15" y="0.0" width="550" height="43"/>
+                                                    <rect key="frame" x="15" y="0.0" width="550" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -130,6 +130,26 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <segue destination="6A9-vh-nws" kind="presentation" id="OX8-iG-Nf2"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Ppr-XM-NvL" style="IBUITableViewCellStyleDefault" id="zHT-SV-BxE">
+                                        <rect key="frame" x="0.0" y="284" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zHT-SV-BxE" id="ZWA-KJ-Kze">
+                                            <rect key="frame" x="0.0" y="0.0" width="567" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="NXSSNavigationController" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ppr-XM-NvL">
+                                                    <rect key="frame" x="15" y="0.0" width="550" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="kYV-xl-51M" kind="show" id="EmM-UM-68Y"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -145,6 +165,174 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2ip-ID-Wu0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="161" y="176"/>
+        </scene>
+        <!--Nav View Controller Red-->
+        <scene sceneID="km0-ud-cPw">
+            <objects>
+                <viewController id="kYV-xl-51M" customClass="UINavViewControllerRed" customModule="NXSSDemo" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="WJr-cZ-Bde"/>
+                        <viewControllerLayoutGuide type="bottom" id="HbY-jB-d5s"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Dgu-aH-ePf">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NavigationBar shall be red" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cHu-Xr-9Yt">
+                                <rect key="frame" x="48" y="115" width="327" height="49"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="49" id="uBx-0v-q16"/>
+                                    <constraint firstAttribute="width" constant="327" id="vjn-IF-WSj"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kTV-K6-z82">
+                                <rect key="frame" x="40" y="184" width="105" height="63"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="105" id="yEU-In-Lab"/>
+                                </constraints>
+                                <state key="normal" title="Push Blue"/>
+                                <connections>
+                                    <segue destination="tde-NA-C5q" kind="show" id="uZT-P7-EuR"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="cHu-Xr-9Yt" firstAttribute="top" secondItem="WJr-cZ-Bde" secondAttribute="bottom" constant="51" id="0wO-xR-UlA"/>
+                            <constraint firstItem="cHu-Xr-9Yt" firstAttribute="leading" secondItem="Dgu-aH-ePf" secondAttribute="leadingMargin" constant="28" id="41u-TI-Hyb"/>
+                            <constraint firstItem="kTV-K6-z82" firstAttribute="leading" secondItem="Dgu-aH-ePf" secondAttribute="leadingMargin" constant="20" id="B6q-lC-HEe"/>
+                            <constraint firstItem="HbY-jB-d5s" firstAttribute="top" secondItem="kTV-K6-z82" secondAttribute="bottom" constant="353" id="QfL-b4-uQ1"/>
+                            <constraint firstItem="kTV-K6-z82" firstAttribute="top" secondItem="cHu-Xr-9Yt" secondAttribute="bottom" constant="20" id="fVp-U9-HFt"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qic-BN-9WF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="556" y="-639"/>
+        </scene>
+        <!--Nav View Controller Blue-->
+        <scene sceneID="fOo-WR-0ZL">
+            <objects>
+                <viewController id="tde-NA-C5q" customClass="UINavViewControllerBlue" customModule="NXSSDemo" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Dda-B2-rAo"/>
+                        <viewControllerLayoutGuide type="bottom" id="Lem-YP-hFP"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="gPF-Rk-qcm">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NavigationBar shall be blue" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Inn-vP-A73">
+                                <rect key="frame" x="57" y="144" width="327" height="49"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="327" id="7Ge-St-Nim"/>
+                                    <constraint firstAttribute="height" constant="49" id="fne-oT-C1q"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XnX-pj-bFb">
+                                <rect key="frame" x="64" y="210" width="121" height="63"/>
+                                <state key="normal" title="Push Transparent"/>
+                                <connections>
+                                    <segue destination="dd8-pz-CxV" kind="show" id="Pcb-Q4-lUh"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="XnX-pj-bFb" firstAttribute="leading" secondItem="gPF-Rk-qcm" secondAttribute="leadingMargin" constant="44" id="HOU-cz-dFi"/>
+                            <constraint firstItem="Inn-vP-A73" firstAttribute="leading" secondItem="gPF-Rk-qcm" secondAttribute="leadingMargin" constant="37" id="SUj-mc-zvy"/>
+                            <constraint firstItem="Lem-YP-hFP" firstAttribute="top" secondItem="XnX-pj-bFb" secondAttribute="bottom" constant="327" id="bgX-M1-HBj"/>
+                            <constraint firstItem="XnX-pj-bFb" firstAttribute="top" secondItem="Inn-vP-A73" secondAttribute="bottom" constant="17" id="fvU-e6-Gn7"/>
+                            <constraint firstItem="Inn-vP-A73" firstAttribute="top" secondItem="Dda-B2-rAo" secondAttribute="bottom" constant="80" id="ryz-y3-VV4"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8F6-sG-AVS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1245" y="-635"/>
+        </scene>
+        <!--Nav View Controller Transparent-->
+        <scene sceneID="QY3-HU-uM6">
+            <objects>
+                <viewController id="dd8-pz-CxV" customClass="UINavViewControllerTransparent" customModule="NXSSDemo" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="UMr-B0-C5K"/>
+                        <viewControllerLayoutGuide type="bottom" id="Y93-8z-wM3"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="vEO-6C-ya3">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="NavigationBar shall be transparent" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="77o-kw-Asl">
+                                <rect key="frame" x="29" y="122" width="327" height="49"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="327" id="ICj-u7-7xt"/>
+                                    <constraint firstAttribute="height" constant="49" id="TOR-AZ-bbp"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tut-hv-PpO">
+                                <rect key="frame" x="41" y="193" width="121" height="63"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="121" id="f5y-Xm-a3f"/>
+                                </constraints>
+                                <state key="normal" title="Push Default"/>
+                                <connections>
+                                    <segue destination="GOY-cS-XSO" kind="show" id="Qlu-YS-ITZ"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="Tut-hv-PpO" firstAttribute="top" secondItem="77o-kw-Asl" secondAttribute="bottom" constant="22" id="1Wi-MZ-V9b"/>
+                            <constraint firstItem="77o-kw-Asl" firstAttribute="leading" secondItem="vEO-6C-ya3" secondAttribute="leadingMargin" constant="9" id="Miw-bZ-IN9"/>
+                            <constraint firstItem="Tut-hv-PpO" firstAttribute="leading" secondItem="vEO-6C-ya3" secondAttribute="leadingMargin" constant="21" id="bJU-VZ-6PK"/>
+                            <constraint firstItem="77o-kw-Asl" firstAttribute="top" secondItem="UMr-B0-C5K" secondAttribute="bottom" constant="102" id="e2S-kU-Ews"/>
+                            <constraint firstItem="Y93-8z-wM3" firstAttribute="top" secondItem="Tut-hv-PpO" secondAttribute="bottom" constant="344" id="f7V-sA-vVg"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cUu-vq-3lU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1903" y="-619"/>
+        </scene>
+        <!--Nav View Controller Default-->
+        <scene sceneID="Xg2-Ud-nVl">
+            <objects>
+                <viewController id="GOY-cS-XSO" customClass="UINavViewControllerDefault" customModule="NXSSDemo" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Y1v-Eq-I0I"/>
+                        <viewControllerLayoutGuide type="bottom" id="hwh-yy-e9G"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="NRA-Ya-0xr">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="NavigationBar shall be default" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6i6-jV-wwW">
+                                <rect key="frame" x="30" y="157" width="228" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="6i6-jV-wwW" firstAttribute="leading" secondItem="NRA-Ya-0xr" secondAttribute="leadingMargin" constant="10" id="h6T-8c-7ca"/>
+                            <constraint firstItem="6i6-jV-wwW" firstAttribute="top" secondItem="Y1v-Eq-I0I" secondAttribute="bottom" constant="137" id="pab-zU-XwN"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BgJ-Od-ODZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2558" y="-590"/>
         </scene>
         <!--UIView-->
         <scene sceneID="uAB-HF-Wtq">
@@ -330,7 +518,7 @@ border-color:gray; (subview clipped)</string>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Notice the navBar above is different " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cST-8e-15S">
                                 <rect key="frame" x="0.0" y="64" width="278" height="62"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -476,7 +664,7 @@ Highlighted: Blue Selected: Green</string>
                                     <constraint firstAttribute="width" constant="272" id="4EA-py-tae"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dZ5-ZS-mgy">
@@ -575,7 +763,7 @@ Highlighted: Blue Selected: Green</string>
                                                     <constraint firstAttribute="height" constant="30" id="6W9-Ej-k84"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;some-txt&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WJH-ts-adZ">

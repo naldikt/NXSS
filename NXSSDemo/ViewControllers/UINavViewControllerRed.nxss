@@ -1,0 +1,4 @@
+
+.uinavviewcontrollerred-navigationbar {
+    bar-tint-color:red;
+}

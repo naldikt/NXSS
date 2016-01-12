@@ -1,0 +1,4 @@
+
+.uinavviewcontrollerblue-navigationbar {
+    bar-tint-color:blue;
+}

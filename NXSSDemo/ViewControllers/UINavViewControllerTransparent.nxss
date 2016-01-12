@@ -1,0 +1,6 @@
+
+.uinavviewcontrollertransparent-navigationbar {
+    translucent:true;
+    background-image:_;
+    shadow-image:_;
+}
