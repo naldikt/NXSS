@@ -19,3 +19,11 @@
     border-width:3;
     border-color:gray;
 }
+
+.uiview-gradient-right {
+    background-color: linear-gradient(to right,red,blue);
+}
+
+.uiview-gradient-bottom {
+    background-color: linear-gradient(to bottom,red,blue);
+}

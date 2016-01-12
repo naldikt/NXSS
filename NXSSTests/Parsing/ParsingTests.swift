@@ -28,7 +28,11 @@ class SuccessfulTests: XCTestCase {
         
         NXSS.sharedInstance.useFile(inputFileName, bundle: NSBundle(forClass: self.dynamicType ))
         
-        XCTAssert( try! NXSS.sharedInstance.isEqualRuleSets( outputDict) )
+        if let res = try? NXSS.sharedInstance.isEqualRuleSets( outputDict) {
+            XCTAssert( res )
+        }
+        
+
         
     }
     
@@ -170,7 +174,7 @@ class SuccessfulTests: XCTestCase {
                 "AndrewButton:normal" : [
                     "background-color":"andrew"
                 ],
-                "RichColor:normal":[
+                "RichButton:normal":[
                     "background-color":"rich"
                 ]
             ])

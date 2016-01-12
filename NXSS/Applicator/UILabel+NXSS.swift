@@ -21,7 +21,6 @@ extension UILabel  {
         
     }
     
-    
     override func applyNXSS_styleClass() throws {
         
         try super.applyNXSS_styleClass()
@@ -31,9 +30,11 @@ extension UILabel  {
         }
         
     }
+    
 
-
-    private func applyLabelDeclarations( declarations:Declarations ) throws {
+    func applyLabelDeclarations( declarations:Declarations ) throws {
+        
+        try super.applyViewDeclarations( declarations )
         
         if let fontFamily  = declarations["font-family"] {
             

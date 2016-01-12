@@ -16,7 +16,7 @@ extension UINavigationBar {
         try super.applyNXSS_styleElement()
         
         if let declarations =  NXSS.sharedInstance.getStyleDeclarations("UINavigationBar", selectorType:.Element) {
-            try applyDeclarations(declarations)
+            try applyNavBarDeclarations(declarations)
         }
     }
     
@@ -25,14 +25,16 @@ extension UINavigationBar {
         try super.applyNXSS_styleClass()
         
         if let nxssClass = nxssClass, declarations = NXSS.sharedInstance.getStyleDeclarations(nxssClass, selectorType:.Class) {
-            try applyDeclarations(declarations)
+            try applyNavBarDeclarations(declarations)
         }
-
+        
         
     }
     
 
-    private func applyDeclarations( declarations:Declarations ) throws {
+    func applyNavBarDeclarations( declarations:Declarations ) throws {
+        
+        try super.applyViewDeclarations( declarations )
         
         if let fontFamily : String =  declarations["font-family"], fontSize_ : String =  declarations["font-size"] {
             

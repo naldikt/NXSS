@@ -22,7 +22,9 @@ class Applicator {
         
         
         if color.hasPrefix("linear-gradient") {
-            view.nxssLinearGradient = try CAGradientLayer.fromNXSSLinearGradient( view.layer , linearGradientString: color , frame : view.frame )
+            let linearGradient = try CAGradientLayer.fromNXSSLinearGradient( view.layer , linearGradientString: color , bounds : view.bounds )
+            view.layer.insertSublayer(linearGradient, atIndex: 0)
+            view.nxssLinearGradient = linearGradient
             
         } else {
             let parsedColor = try UIColor.fromNXSS(color)

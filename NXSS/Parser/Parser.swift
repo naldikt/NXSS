@@ -182,9 +182,9 @@ class Parser {
                 }
                 continue
                 
-            } else if s == " " {
+            } else if s == " " && curBuffer.count == 0 {
                 
-                // We don't need empty spaces.
+                // We don't need empty spaces in the front.
                 continue
                 
             } else if s == "\n" {
