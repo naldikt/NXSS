@@ -3,6 +3,7 @@
 /** Global **/
 
 UINavigationBar {
+    translucent:false;   /* Needs this so translucent bar can be reverted. */
     bar-tint-color:gray;
     tint-color:black;
 }
@@ -14,3 +15,8 @@ UINavigationBar {
 @import UILabelViewController;
 @import UIViewViewController;
 @import UINavigationBarViewController;
+
+@import UINavViewControllerRed;
+@import UINavViewControllerBlue;
+@import UINavViewControllerTransparent;
+@import UINavViewControllerDefault;

@@ -24,7 +24,10 @@ extension UINavigationBar {
         
         try super.applyNXSS_styleClass()
         
+            NSLog("applyNXSS_styleClass \(nxssClass)")
+        
         if let nxssClass = nxssClass, declarations = NXSS.sharedInstance.getStyleDeclarations(nxssClass, selectorType:.Class) {
+            
             try applyNavBarDeclarations(declarations)
         }
         
