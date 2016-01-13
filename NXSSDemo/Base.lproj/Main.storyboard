@@ -149,7 +149,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="kYV-xl-51M" kind="show" id="EmM-UM-68Y"/>
+                                            <segue destination="uVY-Fy-6S3" kind="presentation" id="hPm-a1-9wf"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -165,6 +165,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2ip-ID-Wu0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="161" y="176"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="c6a-pb-OOq">
+            <objects>
+                <navigationController id="uVY-Fy-6S3" customClass="NXSSNavigationController" customModule="NXSS" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="1Kf-Tc-BBh">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="kYV-xl-51M" kind="relationship" relationship="rootViewController" id="lhg-zY-gi9"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pYR-P0-DXb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-260" y="-850"/>
         </scene>
         <!--Nav View Controller Red-->
         <scene sceneID="km0-ud-cPw">
@@ -193,9 +209,9 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="105" id="yEU-In-Lab"/>
                                 </constraints>
-                                <state key="normal" title="Push Blue"/>
+                                <state key="normal" title="Push"/>
                                 <connections>
-                                    <segue destination="tde-NA-C5q" kind="show" id="uZT-P7-EuR"/>
+                                    <segue destination="dd8-pz-CxV" kind="show" id="wGi-xV-ELJ"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -208,6 +224,7 @@
                             <constraint firstItem="kTV-K6-z82" firstAttribute="top" secondItem="cHu-Xr-9Yt" secondAttribute="bottom" constant="20" id="fVp-U9-HFt"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="zim-DP-qUx"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qic-BN-9WF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -225,7 +242,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NavigationBar shall be blue" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Inn-vP-A73">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="NavigationBar shall be blue" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Inn-vP-A73">
                                 <rect key="frame" x="57" y="144" width="327" height="49"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="327" id="7Ge-St-Nim"/>
@@ -235,11 +252,11 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XnX-pj-bFb">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XnX-pj-bFb">
                                 <rect key="frame" x="64" y="210" width="121" height="63"/>
-                                <state key="normal" title="Push Transparent"/>
+                                <state key="normal" title="Push"/>
                                 <connections>
-                                    <segue destination="dd8-pz-CxV" kind="show" id="Pcb-Q4-lUh"/>
+                                    <segue destination="GOY-cS-XSO" kind="show" id="mcE-k7-FMa"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -255,7 +272,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8F6-sG-AVS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1245" y="-635"/>
+            <point key="canvasLocation" x="1815" y="-747"/>
         </scene>
         <!--Nav View Controller Transparent-->
         <scene sceneID="QY3-HU-uM6">
@@ -270,7 +287,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="NavigationBar shall be transparent" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="77o-kw-Asl">
-                                <rect key="frame" x="29" y="122" width="327" height="49"/>
+                                <rect key="frame" x="29" y="166" width="327" height="49"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="327" id="ICj-u7-7xt"/>
                                     <constraint firstAttribute="height" constant="49" id="TOR-AZ-bbp"/>
@@ -280,17 +297,17 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tut-hv-PpO">
-                                <rect key="frame" x="41" y="193" width="121" height="63"/>
+                                <rect key="frame" x="41" y="231" width="121" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="121" id="f5y-Xm-a3f"/>
                                 </constraints>
-                                <state key="normal" title="Push Default"/>
+                                <state key="normal" title="Push"/>
                                 <connections>
-                                    <segue destination="GOY-cS-XSO" kind="show" id="Qlu-YS-ITZ"/>
+                                    <segue destination="tde-NA-C5q" kind="show" id="Tge-kG-eHb"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.56789996519999997" green="1" blue="0.68350516029999997" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="Tut-hv-PpO" firstAttribute="top" secondItem="77o-kw-Asl" secondAttribute="bottom" constant="22" id="1Wi-MZ-V9b"/>
                             <constraint firstItem="77o-kw-Asl" firstAttribute="leading" secondItem="vEO-6C-ya3" secondAttribute="leadingMargin" constant="9" id="Miw-bZ-IN9"/>
@@ -302,7 +319,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cUu-vq-3lU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1903" y="-619"/>
+            <point key="canvasLocation" x="1191" y="-590"/>
         </scene>
         <!--Nav View Controller Default-->
         <scene sceneID="Xg2-Ud-nVl">

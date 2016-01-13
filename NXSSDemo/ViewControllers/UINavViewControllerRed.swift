@@ -15,5 +15,11 @@ class UINavViewControllerRed : UIViewController {
         super.viewDidLoad()
         
         navigationItem.nxssClass = "uinavviewcontrollerred-navigationbar"
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "close", style: .Done, target: self, action: "close:")
+    }
+    
+    func close(sender:AnyObject) {
+        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
     }
 }
