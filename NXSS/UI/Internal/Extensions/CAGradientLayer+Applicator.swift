@@ -43,7 +43,6 @@ extension CAGradientLayer {
             let stringColor = args[i]
             do {
                 let color = try UIColor.fromNXSS(stringColor)
-                NSLog("Translating \(stringColor)")
                 colors.append(color)
             } catch {
                 throw NXSSError.Parse(msg: "Cannot parse color \(stringColor) as part of linear-gradient", statement: linearGradientString, line: nil)
