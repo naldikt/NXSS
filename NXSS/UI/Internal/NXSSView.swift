@@ -10,6 +10,9 @@ import Foundation
 
 public protocol NXSSView {
     
+    /** Set the nxssClass to use */
+    var nxssClass : String? { get set }
+    
     /** ApplyNXSS calls _styleElement and _styleClass */
     func applyNXSS()
     

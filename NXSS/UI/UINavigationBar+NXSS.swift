@@ -23,18 +23,15 @@ extension UINavigationBar {
     override func applyNXSS_styleClass() throws {
         
         try super.applyNXSS_styleClass()
-                
+        
         if let nxssClass = nxssClass, declarations = NXSS.sharedInstance.getStyleDeclarations(nxssClass, selectorType:.Class) {
-            
             try applyNavBarDeclarations(declarations)
-        }
-        
-        
+        }   
     }
     
 
     func applyNavBarDeclarations( declarations:Declarations ) throws {
-        
+
         try super.applyViewDeclarations( declarations )
         
         if let fontFamily : String =  declarations["font-family"], fontSize_ : String =  declarations["font-size"] {
@@ -67,6 +64,18 @@ extension UINavigationBar {
         
         if let color = declarations["bar-tint-color"] {
             self.barTintColor = try UIColor.fromNXSS(color)
+        }
+        
+        if let barStyle = declarations["bar-style"]?.lowercaseString {
+            if barStyle == "default" {
+                self.barStyle = .Default
+            } else if barStyle == "black" {
+                self.barStyle = .Black
+            } else if barStyle == "blacktranslucent" {
+                self.barStyle = .BlackTranslucent
+            } else {
+                throw NXSSError.Require(msg: "Value of bar-style is not valid", statement: declarations["bar-style"], line: nil)
+            }
         }
         
         if let translucentS = declarations["translucent"] {
