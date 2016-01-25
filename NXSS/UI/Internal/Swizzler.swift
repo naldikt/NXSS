@@ -19,6 +19,9 @@ class Swizzler {
         xImp( UIView.self , methodName: "didMoveToWindow" )
         xImp( UIView.self , methodName: "frame" )
         
+        xImp( UIViewController.self , methodName: "viewDidLoad" )
+        xImp( UIViewController.self , methodName: "preferredStatusBarStyle" )
+        
     }
     
     
