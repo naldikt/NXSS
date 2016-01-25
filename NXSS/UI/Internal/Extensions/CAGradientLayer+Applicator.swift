@@ -13,8 +13,10 @@ import UIKit
 extension CAGradientLayer {
     
     /**
+        Multiple colors are to be distributed evenly.
+     
         - parameters:
-            - linearGradientString      Either linear-gradient( to bottom , topColor , bottomColor )  or   linear-gradient( to right , leftColor , rightColor )
+            - linearGradientString      Either linear-gradient( to bottom , topColor , nextColor, ... )  or   linear-gradient( to right , leftColor , nextColor,... )
             - bounds                    The bounds of the view
     
         - return: The applied linear gradient.
@@ -24,7 +26,7 @@ extension CAGradientLayer {
         let (name,args) = try FunctionHeader.parse(linearGradientString)
 
         try NXSSError.throwIfNot( name == "linear-gradient" ,  msg: "applyLinearGradient requires string to be linear-gradient" ,  statement: linearGradientString , line:nil)
-        try NXSSError.throwIfNot( args.count == 3 , msg: "linear-gradient requires 3 arguments", statement: linearGradientString, line:nil)
+        try NXSSError.throwIfNot( args.count >= 3 , msg: "linear-gradient requires at least 3 arguments", statement: linearGradientString, line:nil)
         
         let directionStr = args[0]  // expected tobe: "to bottom" or "to right"
         let directionArr = directionStr.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
@@ -35,41 +37,44 @@ extension CAGradientLayer {
             msg: "applyLinearGradient first arg needs to be either 'to bottom' or 'to right'", statement:directionStr, line:nil)
         
         let direction = directionArr[1]
-        let firstColor : String = args[1]
-        let secondColor : String = args[2]
+        
+        var colors : [UIColor] = []
+        for i in 1..<args.count {
+            let stringColor = args[i]
+            do {
+                let color = try UIColor.fromNXSS(stringColor)
+                NSLog("Translating \(stringColor)")
+                colors.append(color)
+            } catch {
+                throw NXSSError.Parse(msg: "Cannot parse color \(stringColor) as part of linear-gradient", statement: linearGradientString, line: nil)
+            }
+        }
+
         
         if direction == "bottom" {
-            return try CAGradientLayer.gradientLayerFromTop(firstColor, toBottom: secondColor, bounds: bounds)
+            return try CAGradientLayer.gradientLayerToBottom(bounds, colors:colors)
         } else  {
-            return try CAGradientLayer.gradientLayerFromLeft(firstColor, toRight: secondColor, bounds: bounds)
+            return try CAGradientLayer.gradientLayerToRight(bounds, colors:colors)
         }
 
     }
     
-    
-    class func gradientLayerFromTop( topColor : String , toBottom bottomColor : String , bounds : CGRect ) throws -> CAGradientLayer {
+    class func gradientLayerToBottom( bounds : CGRect , colors : [UIColor] )  throws -> CAGradientLayer {
         let layer = CAGradientLayer()
         layer.frame = bounds
         layer.startPoint = CGPointMake(0.5,0.0)
         layer.endPoint = CGPointMake(0.5,1.0)
-        
-        let topColor : UIColor = try UIColor.fromNXSS(topColor)
-        let bottomColor : UIColor = try UIColor.fromNXSS(bottomColor)
-
-        layer.colors = [ topColor.CGColor , bottomColor.CGColor ]
+        layer.colors = colors.map { $0.CGColor }
         return layer
     }
     
-    class func gradientLayerFromLeft( leftColor : String , toRight rightColor : String , bounds : CGRect ) throws -> CAGradientLayer {
+    class func gradientLayerToRight( bounds : CGRect , colors : [UIColor] )  throws -> CAGradientLayer {
         let layer = CAGradientLayer()
         layer.frame = bounds
         layer.startPoint = CGPointMake(0.0,0.5)
         layer.endPoint = CGPointMake(1.0,0.5)
-        
-        let leftColor : UIColor = try UIColor.fromNXSS(leftColor)
-        let rightColor : UIColor = try UIColor.fromNXSS(rightColor)
-        
-        layer.colors = [ leftColor.CGColor , rightColor.CGColor ]
+        layer.colors = colors.map { $0.CGColor }
         return layer
     }
+
 }
