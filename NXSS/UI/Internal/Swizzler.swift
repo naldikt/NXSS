@@ -17,7 +17,7 @@ class Swizzler {
     class func swizzle() {
         
         xImp( UIView.self , methodName: "didMoveToWindow" )
-        xImp( UIView.self , methodName: "frame" )
+        xImp( UIView.self , methodName: "layoutSubviews" )
         
         xImp( UIViewController.self , methodName: "viewDidLoad" )
         xImp( UIViewController.self , methodName: "preferredStatusBarStyle" )
