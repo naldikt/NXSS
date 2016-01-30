@@ -17,6 +17,7 @@ var NXSS_FontFamily : UInt8 = 0
 var NXSS_FontStyle : UInt8 = 0
 var NXSS_FontSize : UInt8 = 0
 var NXSS_PreferredStatusBarStyleKey : UInt8 = 0
+var NXSS_RawBackgroundColorKey : UInt8 = 0
 
 
 

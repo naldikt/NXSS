@@ -12,14 +12,15 @@ import UIKit
 class Applicator {
     
     // MARK: - UIView
-    
-    class func applyBackgroundColor( view : UIView, color : String ) throws {
+ 
+    class func applyBackgroundColor( view : UIView, color : String ) throws  {
         
+        // - Reset -
         // If there's a linear gradient applied before, let's ensure we remove them.
         // Failing to do this would result to multiple gradients applied on top of each other.
         view.nxssLinearGradient?.removeFromSuperlayer()
         view.nxssLinearGradient = nil
-        
+        view.backgroundColor = nil
         
         if color.hasPrefix("linear-gradient") {
             let linearGradient = try CAGradientLayer.fromNXSSLinearGradient( view.layer , linearGradientString: color , bounds : view.bounds )

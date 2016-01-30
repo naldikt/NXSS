@@ -54,6 +54,7 @@ extension UIView : NXSSViewApplicator {
     func applyViewDeclarations( declarations : Declarations ) throws {
         
         if let backgroundColor  = declarations["background-color"] {
+            nxssRawBackgroundColor = backgroundColor
             try Applicator.applyBackgroundColor(self, color: backgroundColor)
         }
         
@@ -96,19 +97,22 @@ extension UIView  {
         }
     }
     
-    
-    var nxss_frame : CGRect {
-        set {
-            self.nxss_frame = newValue
-            
-            if nxssFrameCircle {
-                // Attempt to rectify the circle if there's any changes to the frame.
-                // This expects the frame to still be circle.
-                Applicator.applyCornerRadiusCircle( self.layer )
-            }
+    func nxss_layoutSubviews() {
+
+        self.nxss_layoutSubviews()
+
+        if nxssFrameCircle {
+            // Attempt to rectify the circle if there's any changes to the frame.
+            // This expects the frame to still be circle.
+            Applicator.applyCornerRadiusCircle( self.layer )
         }
-        get {
-            return self.nxss_frame
+        
+        if let nxssRawBackgroundColor = nxssRawBackgroundColor {
+            do {
+                try Applicator.applyBackgroundColor(self, color: nxssRawBackgroundColor)
+            } catch {
+                NSLog("[NXSS] Cannot reapply backgroundColor \(nxssRawBackgroundColor)")
+            }
         }
     }
     
@@ -135,6 +139,15 @@ extension UIView  {
         }
         get {
             return  objc_getAssociatedObject(self, &NXSS_LinearGradientKey) as? CALayer
+        }
+    }
+    
+    var nxssRawBackgroundColor : String? {
+        set {
+            objc_setAssociatedObject(self, &NXSS_RawBackgroundColorKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+        get {
+            return  objc_getAssociatedObject(self, &NXSS_RawBackgroundColorKey) as? String
         }
     }
 
