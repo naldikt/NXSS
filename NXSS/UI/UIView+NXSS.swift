@@ -12,7 +12,7 @@ import UIKit
 extension UIView : NXSSView {
     
     // The class name. Set by xibs.
-    public var nxssClass : String? {
+    @IBInspectable public var nxssClass : String? {
         set {
             objc_setAssociatedObject(self, &NXSS_ClassNameKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
