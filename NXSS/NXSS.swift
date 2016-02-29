@@ -27,16 +27,16 @@ public class NXSS {
     */
     public func useFile( fileName : String , bundle : NSBundle? = nil ) -> Bool {
         
-        do {
-            
+        self.lastParseDuration = nil  // always clear out in case it fails.
         
+        do {
             let startTime = NSDate()
             
             let parser = try Parser(fileName:fileName, bundle:bundle)
             self.ruleSets = try! parser.parse()
             
             let diff = NSDate().timeIntervalSince1970 - startTime.timeIntervalSince1970
-            NSLog("NXSS Parsing Time [\(fileName)] = \(diff) seconds")
+            self.lastParseDuration = diff
             
             return true
             
@@ -47,6 +47,8 @@ public class NXSS {
         
     }
     
+    /** The time it took to run useFile(). If nil means the last call failed or never been called at all. */
+    public var lastParseDuration : NSTimeInterval?
 
     
     /**
