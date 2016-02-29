@@ -19,6 +19,8 @@
 		2010F4751C2A4FB000212731 /* RootViewController.nxss in Resources */ = {isa = PBXBuildFile; fileRef = 2010F4741C2A4FB000212731 /* RootViewController.nxss */; };
 		2012A80B1C1E522C00D38DBE /* UIControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2012A80A1C1E522C00D38DBE /* UIControlTests.swift */; };
 		2012A80D1C1E52D700D38DBE /* UIControlTests.nxss in Resources */ = {isa = PBXBuildFile; fileRef = 2012A80C1C1E52D700D38DBE /* UIControlTests.nxss */; };
+		201D5C3C1C83FE020096F1B5 /* CommandParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201D5C3A1C83FE020096F1B5 /* CommandParser.swift */; };
+		201D5C3D1C83FE020096F1B5 /* CommandParserResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201D5C3B1C83FE020096F1B5 /* CommandParserResults.swift */; };
 		202D1D8F1C449175006F493E /* Applicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202D1D821C449175006F493E /* Applicator.swift */; };
 		202D1D901C449175006F493E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202D1D831C449175006F493E /* Constants.swift */; };
 		202D1D911C449175006F493E /* CAGradientLayer+Applicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202D1D851C449175006F493E /* CAGradientLayer+Applicator.swift */; };
@@ -162,6 +164,8 @@
 		2010F4741C2A4FB000212731 /* RootViewController.nxss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = RootViewController.nxss; sourceTree = "<group>"; };
 		2012A80A1C1E522C00D38DBE /* UIControlTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIControlTests.swift; sourceTree = "<group>"; };
 		2012A80C1C1E52D700D38DBE /* UIControlTests.nxss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = UIControlTests.nxss; sourceTree = "<group>"; };
+		201D5C3A1C83FE020096F1B5 /* CommandParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandParser.swift; sourceTree = "<group>"; };
+		201D5C3B1C83FE020096F1B5 /* CommandParserResults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandParserResults.swift; sourceTree = "<group>"; };
 		202D1D821C449175006F493E /* Applicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Applicator.swift; sourceTree = "<group>"; };
 		202D1D831C449175006F493E /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		202D1D851C449175006F493E /* CAGradientLayer+Applicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CAGradientLayer+Applicator.swift"; sourceTree = "<group>"; };
@@ -326,6 +330,15 @@
 			path = Applicator;
 			sourceTree = "<group>";
 		};
+		201D5C391C83FE020096F1B5 /* CommandParser */ = {
+			isa = PBXGroup;
+			children = (
+				201D5C3A1C83FE020096F1B5 /* CommandParser.swift */,
+				201D5C3B1C83FE020096F1B5 /* CommandParserResults.swift */,
+			);
+			path = CommandParser;
+			sourceTree = "<group>";
+		};
 		202D1D801C449175006F493E /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -476,6 +489,7 @@
 		20958DE21BCB61A700C456A5 /* Parser */ = {
 			isa = PBXGroup;
 			children = (
+				201D5C391C83FE020096F1B5 /* CommandParser */,
 				20958DE31BCB61A700C456A5 /* Helpers */,
 				20958DF01BCB61A700C456A5 /* Parser.swift */,
 			);
@@ -840,8 +854,10 @@
 				20A0D1511C13FE4F00DB4065 /* Block.swift in Sources */,
 				202D1D981C449175006F493E /* UILabel+NXSS.swift in Sources */,
 				202D1D901C449175006F493E /* Constants.swift in Sources */,
+				201D5C3D1C83FE020096F1B5 /* CommandParserResults.swift in Sources */,
 				20958DFA1BCB61A700C456A5 /* String+Core.swift in Sources */,
 				20A0D14C1C13F87900DB4065 /* Declarations.swift in Sources */,
+				201D5C3C1C83FE020096F1B5 /* CommandParser.swift in Sources */,
 				202D1D9A1C449175006F493E /* UIView+NXSS.swift in Sources */,
 				20A0D1531C13FE4F00DB4065 /* MixinBlock.swift in Sources */,
 				202D1D971C449175006F493E /* UIControl+NXSS.swift in Sources */,

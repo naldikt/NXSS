@@ -162,15 +162,40 @@ class Parser {
     
     private func traverse() throws -> [String:CompiledRuleSet] {
 
-        var curBuffer : String.CharacterView = String.CharacterView()
-        curBuffer.reserveCapacity(300)
-        
-        var skip = false
-        var lastS:Character?
         var curLineNum = 1  // line num starts from 1-based
+        var curLine : String.CharacterView = String.CharacterView()
+        curLine.reserveCapacity(100)
+        
+        var commandParser = CommandParser()
+
         
         let chars = self.fileContent.characters
-        for s : Character in chars {
+        for c : Character in chars {
+            
+            // Debugging purpose. Keep track of the lines.
+            curLine.append(c)
+            if c == "\n" {
+                curLineNum++
+                curLine.removeAll()
+            }
+            
+            // Run the Parser.
+            if let resultType = commandParser.append(c) {
+                switch resultType {
+                case .InProgress: continue    // Great. Nothign todo.
+                case .Extend(let result):
+                    break
+                default:
+                    break
+                }
+                
+
+                commandParser = CommandParser()
+                
+            } else {
+                // CommandParser doesn't have any idea what this line is.
+            }
+            
             
 //            NSLog("CurBuf \(String(curBuffer))")
             
