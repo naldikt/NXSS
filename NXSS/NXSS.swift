@@ -123,12 +123,12 @@ public class NXSS {
             case .Class(let selector_, let pseudoClass_):
                 selector = selector_
                 pseudoClass = pseudoClass_
-                selectorType = .Class
+                selectorType = .NXSSClass
             
             case .Element(let selector_, let pseudoClass_):
                 selector = selector_
                 pseudoClass = pseudoClass_
-                selectorType = .Element
+                selectorType = .UIKitElement
                 
             }
             

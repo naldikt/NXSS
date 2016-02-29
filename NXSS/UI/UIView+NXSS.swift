@@ -40,13 +40,13 @@ extension UIView : NXSSView {
 extension UIView : NXSSViewApplicator {
     
     func applyNXSS_styleElement() throws {
-        if let declarations =  NXSS.sharedInstance.getStyleDeclarations("UIView", selectorType:.Element) {
+        if let declarations =  NXSS.sharedInstance.getStyleDeclarations("UIView", selectorType:.UIKitElement) {
             try applyViewDeclarations(declarations)
         }
     }
     
     func applyNXSS_styleClass() throws  {
-        if let nxssClass = nxssClass, declarations = NXSS.sharedInstance.getStyleDeclarations(nxssClass, selectorType:.Class, pseudoClass: nxssCurrentPseudoClass ) {
+        if let nxssClass = nxssClass, declarations = NXSS.sharedInstance.getStyleDeclarations(nxssClass, selectorType:.NXSSClass, pseudoClass: nxssCurrentPseudoClass ) {
             try applyViewDeclarations(declarations)
         }
     }
@@ -90,7 +90,7 @@ extension UIView  {
     }
     
     func nxssGetClassDeclarations( pseudoClass : PseudoClass ) -> Declarations? {
-        if let  nxssClass = nxssClass , declarations = NXSS.sharedInstance.getStyleDeclarations(nxssClass, selectorType: .Class, pseudoClass: pseudoClass) {
+        if let  nxssClass = nxssClass , declarations = NXSS.sharedInstance.getStyleDeclarations(nxssClass, selectorType: .NXSSClass, pseudoClass: pseudoClass) {
             return declarations
         } else {
             return nil

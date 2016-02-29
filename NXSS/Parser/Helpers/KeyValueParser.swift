@@ -50,9 +50,9 @@ class KeyValueParser {
             let (k,v) = try parseKeyVal(s)
             
             if v.hasPrefix(".") {
-                return (.Extend(selectorType:.Class),k,v)
+                return (.Extend(selectorType:.NXSSClass),k,v)
             } else {
-                return (.Extend(selectorType:.Element),k,v)
+                return (.Extend(selectorType:.UIKitElement),k,v)
             }
             
         } else if s.hasPrefix("@import") {

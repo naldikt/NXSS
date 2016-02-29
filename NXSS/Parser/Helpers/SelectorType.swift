@@ -9,6 +9,6 @@
 import Foundation
 
 public enum SelectorType {
-    case Class      /** This RuleSet is defined as a class */
-    case Element    /** This RuleSet is for UIKit elements. */
+    case NXSSClass        /** This RuleSet is defined as a class */
+    case UIKitElement     /** This RuleSet is for UIKit elements. */
 }
