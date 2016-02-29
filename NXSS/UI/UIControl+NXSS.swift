@@ -19,7 +19,7 @@ extension UIControl {
         
         try super.applyNXSS_styleElement()
         
-        if let declarations =  NXSS.sharedInstance.getStyleDeclarations("UIControl", selectorType:.Element) {
+        if let declarations =  NXSS.sharedInstance.getStyleDeclarations("UIControl", selectorType:.UIKitElement) {
             // We'll assume this is for Normal. In the future it may make sense to actually add state ability to elements.
             try applyControlDeclarations(declarations , forPseudoClass : .Normal)
         }

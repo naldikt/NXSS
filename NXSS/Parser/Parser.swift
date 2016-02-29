@@ -211,13 +211,13 @@ class Parser {
                 case .Class(let selector,let pseudoClass):
 
                     blockQueue.push(
-                        RuleSetBlock(selector:selector,selectorType:.Class, pseudoClass: pseudoClass,parentBlock:blockQueue.peek())
+                        RuleSetBlock(selector:selector,selectorType:.NXSSClass, pseudoClass: pseudoClass,parentBlock:blockQueue.peek())
                     )
                     
                 case .Element(let selector,let pseudoClass):
 
                     blockQueue.push(
-                        RuleSetBlock(selector:selector,selectorType:.Element, pseudoClass: pseudoClass,parentBlock:blockQueue.peek())
+                        RuleSetBlock(selector:selector,selectorType:.UIKitElement, pseudoClass: pseudoClass,parentBlock:blockQueue.peek())
                     )
                 }
             

@@ -16,7 +16,7 @@ extension UIButton {
         
         try super.applyNXSS_styleElement()
         
-        if let declarations =  NXSS.sharedInstance.getStyleDeclarations("UIButton", selectorType:.Element) {
+        if let declarations =  NXSS.sharedInstance.getStyleDeclarations("UIButton", selectorType:.UIKitElement) {
             try applyButtonDeclarations(declarations, forPseudoClass:.Normal)
         }
         

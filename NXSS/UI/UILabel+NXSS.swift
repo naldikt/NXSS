@@ -15,7 +15,7 @@ extension UILabel  {
         
         try super.applyNXSS_styleElement()
         
-        if let declarations =  NXSS.sharedInstance.getStyleDeclarations("UILabel", selectorType:.Element) {
+        if let declarations =  NXSS.sharedInstance.getStyleDeclarations("UILabel", selectorType:.UIKitElement) {
             try applyLabelDeclarations(declarations)
         }
         
@@ -25,7 +25,7 @@ extension UILabel  {
         
         try super.applyNXSS_styleClass()
         
-        if let nxssClass = nxssClass, declarations = NXSS.sharedInstance.getStyleDeclarations(nxssClass, selectorType:.Class) {
+        if let nxssClass = nxssClass, declarations = NXSS.sharedInstance.getStyleDeclarations(nxssClass, selectorType:.NXSSClass) {
             try applyLabelDeclarations(declarations)
         }
         

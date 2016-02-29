@@ -15,7 +15,7 @@ extension UINavigationBar {
         
         try super.applyNXSS_styleElement()
         
-        if let declarations =  NXSS.sharedInstance.getStyleDeclarations("UINavigationBar", selectorType:.Element) {
+        if let declarations =  NXSS.sharedInstance.getStyleDeclarations("UINavigationBar", selectorType:.UIKitElement) {
             try applyNavBarDeclarations(declarations)
         }
     }
@@ -24,7 +24,7 @@ extension UINavigationBar {
         
         try super.applyNXSS_styleClass()
         
-        if let nxssClass = nxssClass, declarations = NXSS.sharedInstance.getStyleDeclarations(nxssClass, selectorType:.Class) {
+        if let nxssClass = nxssClass, declarations = NXSS.sharedInstance.getStyleDeclarations(nxssClass, selectorType:.NXSSClass) {
             try applyNavBarDeclarations(declarations)
         }   
     }

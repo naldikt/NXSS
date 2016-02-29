@@ -74,7 +74,7 @@ public class CompiledRuleSet : Equatable, CustomStringConvertible {
         This can be anything as long as it's unique.
     */
     internal class func getCompiledKey( selector : String , selectorType : SelectorType, pseudoClass : PseudoClass ) -> String {
-        return (selectorType == .Class ? "." : "") + selector + ":" + pseudoClass.rawValue
+        return (selectorType == .NXSSClass ? "." : "") + selector + ":" + pseudoClass.rawValue
     }
     
 }
