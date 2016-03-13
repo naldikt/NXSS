@@ -10,13 +10,12 @@ import Foundation
 
 enum CPResultType {
     case InProgress         // The append is still in progress and has no definitive result.
-    case Extend(result:CPResultExtend)
-    case Include(result:CPResultInclude)
-    case Import(result:CPResultImport)
-    case StyleDeclaration(result:CPResultStyleDeclaration)
-    case UIKitElementHeader(result:CPResultUIKitElementHeader)
-    case NXSSClassHeader(result:CPResultNXSSClassHeader)
-    case MixinHeader(result:CPResultMixinHeader)
+    case Extend(selector:String, selectorType:SelectorType, pseudoClass:PseudoClass)
+    case Include(selector:String, argumentValues:[String])
+    case Import(fileName:String)
+    case StyleDeclaration(key:String, value:String)
+    case RuleSetHeader(selector:String, selectorType:SelectorType, pseudoClass:PseudoClass)
+    case MixinHeader(selector:String, argumentNames:[String])
     case BlockClosure
 }
 
@@ -35,9 +34,9 @@ class CommandParser {
             CPResultInclude(),
             CPResultImport(),
             CPResultStyleDeclaration(),
-            CPResultUIKitElementHeader(),
-            CPResultNXSSClassHeader(),
-            CPResultMixinHeader()
+            CPResultRuleSetHeader(),
+            CPResultMixinHeader(),
+            CPResultBlockClosure()
         ]
     }
     

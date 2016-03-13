@@ -68,8 +68,6 @@ class _CPResultReservedKeyValueBase : _CPResultBase, CPAppendable {
         self.key = k
     }
     
-    private(set) var value : String?
-    
     func append(c:Character) -> CPAppendResult {
         characters.append(c)
         return verify(characters.count-1, added : c)
@@ -78,7 +76,7 @@ class _CPResultReservedKeyValueBase : _CPResultBase, CPAppendable {
     // MARK: Private
     
     private var key : [Character]
-    private var valueBuffer : String.CharacterView?
+    private var value : String?
     
     private func verify( index : Int , added c : Character ) -> CPAppendResult {
         if characters.count <= key.count {
@@ -94,28 +92,20 @@ class _CPResultReservedKeyValueBase : _CPResultBase, CPAppendable {
     }
     
     private func verifyValue( index : Int , added c : Character ) -> CPAppendResult {
-        if valueBuffer == nil {
-            valueBuffer = String.CharacterView()
-            valueBuffer?.reserveCapacity(CPBufferInitialLength)
-        }
-        
+
         if c == ";" {
-            guard let valueBuffer = valueBuffer else {
+            if value == nil {
                 return .Invalid
             }
-            value = String(valueBuffer).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
             return .Resolved
             
-        } else if valueBuffer != nil {
-            
-            valueBuffer?.append(c)
-            return .InProgress
+        } else if c == " " {
+            return .InProgress            // skip
             
         } else {
-            
-            valueBuffer = createCharacterView(c)
+            if value == nil { value = "" }
+            value!.append(c)
             return .InProgress
-            
         }
 
     }
@@ -124,11 +114,27 @@ class _CPResultReservedKeyValueBase : _CPResultBase, CPAppendable {
 class CPResultExtend : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
     
     init() {
-        super.init(key: "extend ")
+        super.init(key: "@extend ")
     }
     
     func resolveType() -> CPResultType {
-        return .Extend(result:self)
+        return .Extend(
+    }
+    
+    // MARK: Private
+    
+    private var selector = ""
+    private var selectorType : SelectorType = .UIKitElement
+    private var pseudoClass : PseudoClass = .Normal
+    
+    private override func verifyValue( index : Int , added c : Character ) -> CPAppendResult {
+        let result = super.verifyValue(index, added: c)
+        self.interceptVerifyValue(index,added:c)
+        return result
+    }
+    
+    private func interceptVerifyValue(index : Int , added c : Character) {
+        if
     }
     
 }
@@ -138,7 +144,7 @@ class CPResultInclude : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
     
     /* Non-nil when resolved */
     private(set) var selector:String?
-    private(set) var argumentNames:[String]?
+    private(set) var argumentValues:[String]?
     
     init() {
         super.init(key: "@include ")
@@ -160,14 +166,14 @@ class CPResultInclude : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
             // Something is wrong. Parse state should have been either .Pre or .Post
             return .Invalid
         } else if result == .Resolved {
-            if argumentNames == nil { argumentNames = [] }
+            if argumentValues == nil { argumentValues = [] }
         }
         return result
     }
     
     private func interceptVerifyValue(index : Int , added c : Character) {
         if argumentParseState == .Pre && c == "(" {
-            argumentNames = []
+            argumentValues = []
             argumentParseState = .In
             
         } else if argumentParseState == .Pre && c != " " {
@@ -180,7 +186,7 @@ class CPResultInclude : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
             argumentParseState = .Post
             
         } else if argumentParseState == .In && c == "," {
-            argumentNames?.append(currentArgument)
+            argumentValues?.append(currentArgument)
             currentArgument = ""
             
         } else if argumentParseState == .In {

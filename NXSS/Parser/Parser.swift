@@ -189,44 +189,58 @@ class Parser {
             if let resultType : CPResultType = commandParser.append(c) {
                 switch resultType {
                 case .InProgress: continue    // Nothign todo.
-                case .Extend(let result):
-                    break
                     
-                case .Include(let result):
-
-                    let (selector,argVals) = try FunctionHeader.parse(value)
+                case .Extend(let result):
+                    
+                    var selector:String?
+                    var pseudoClass:PseudoClass?
+                    
+                    // We're going to extend from another class.
+                    switch try BlockHeader.parse(value) {
+                    case .Class(let selector_, let pseudoClass_):
+                        selector = selector_
+                        pseudoClass = pseudoClass_
+                        
+                    case .Element(let selector_, let pseudoClass_):
+                        selector = selector_
+                        pseudoClass = pseudoClass_
+                        
+                    default:
+                        break
+                    }
+                    
+                    if let selector = selector ,   pseudoClass = pseudoClass {
+                        
+                        let compiledKey = CompiledRuleSet.getCompiledKey(selector,selectorType: selectorType, pseudoClass: pseudoClass)
+                        
+                        guard let baseStyle = ruleSets[compiledKey] else {
+                            NSLog("ruleSets \(ruleSets)")
+                            throw NXSSError.Require(msg: "Cannot find class/element to extend from with name \(value)", statement: value, line:curLineNum)
+                        }
+                        
+                        curBlock.addDeclarations(baseStyle.declarations)
+                        
+                    } else {
+                        throw NXSSError.Parse(msg: "This extend does not contain Class or Element: \(value)", statement: value, line:curLineNum)
+                    }
+                    
+                case .Include(let selector, let argumentValues):
                     
                     guard let mixin = mixins[selector] else {
-                        throw NXSSError.Require(msg: "Cannot find mixin named \(selector)", statement: value, line:curLineNum)
+                        throw NXSSError.Require(msg: "Cannot find mixin named \(selector)", statement: String(curLine), line:curLineNum)
                     }
                     
                     curBlock.addDeclarations(
-                        try mixin.resolveArguments(argVals)
+                        try mixin.resolveArguments(argumentValues)
                     )
                     
-                case .Import(let result):
+                case .Import(let fileName):
                     break
                     
-                case .StyleDeclaration(let result):
-                    
-                    guard let key = result.key else {
-                        throw NXSSError.Parse(msg: "Missing key-value pair", statement: String(curLine), line: curLineNum)
-                    }
-                    guard let value = result.value else {
-                        throw NXSSError.Parse(msg: "Missing key-value pair", statement: String(curLine), line: curLineNum)
-                    }
-                    
+                case .StyleDeclaration(let key, let value):
                     curBlock.addDeclaration(key,value:value)
                     
-                case .UIKitElementHeader(let result):
-                    
-                    guard let selector = result.selector else {
-                        throw NXSSError.Parse(msg: "Missing selector", statement: String(curLine), line: curLineNum)
-                    }
-                    guard let pseudoClass = result.pseudoClass else {
-                        throw NXSSError.Parse(msg: "Missing selector", statement: String(curLine), line: curLineNum)
-                    }
-                    
+                case .UIKitElementHeader(let selector, let pseudoClass):
                     blockQueue.push(
                         RuleSetBlock(selector:selector,
                                 selectorType:.UIKitElement,
@@ -234,15 +248,7 @@ class Parser {
                                 parentBlock:blockQueue.peek())
                     )
                 
-                case .NXSSClassHeader(let result):
-                    
-                    guard let selector = result.selector else {
-                        throw NXSSError.Parse(msg: "Missing selector", statement: String(curLine), line: curLineNum)
-                    }
-                    guard let pseudoClass = result.pseudoClass else {
-                        throw NXSSError.Parse(msg: "Missing selector", statement: String(curLine), line: curLineNum)
-                    }
-                    
+                case .NXSSClassHeader(let selector, let pseudoClass):
                     blockQueue.push(
                         RuleSetBlock(selector:selector,
                                     selectorType:.NXSSClass,
@@ -250,18 +256,10 @@ class Parser {
                                      parentBlock:blockQueue.peek())
                     )
                     
-                case .MixinHeader(let result):
-                    
-                    guard let selector = result.selector else {
-                        throw NXSSError.Parse(msg: "Missing selector", statement: String(curLine), line: curLineNum)
-                    }
-                    guard let argNames = result.argumentNames else {
-                        throw NXSSError.Parse(msg: "Missing argument names", statement: String(curLine), line: curLineNum)
-                    }
-                    
+                case .MixinHeader(let selector, let argumentNames):
                     blockQueue.push(
                         MixinBlock(selector:selector,
-                                    argNames:argNames,
+                                    argNames:argumentNames,
                                 parentBlock:blockQueue.peek())
                     )
                     
@@ -297,18 +295,6 @@ class Parser {
         }
     }
     
-            
-        case .Include:
-            
-            let (selector,argVals) = try FunctionHeader.parse(value)
-            
-            guard let mixin = mixins[selector] else {
-                throw NXSSError.Require(msg: "Cannot find mixin named \(selector)", statement: value, line:curLineNum)
-            }
-            
-            curBlock.addDeclarations(
-                try mixin.resolveArguments(argVals)
-            )
             
         case .Extend(let selectorType):
             
