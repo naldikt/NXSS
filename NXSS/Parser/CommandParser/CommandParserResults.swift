@@ -31,7 +31,7 @@ protocol CPResultTypeResolvable {
 }
 
 class _CPResultBase {
-    private var cs : [Character] = []
+    private var characters : [Character] = []
     
     private func createCharacterView() -> String.CharacterView {
         var ret = String.CharacterView()
@@ -49,24 +49,29 @@ class _CPResultBase {
 /*! Base class for reserved-key and value pair line. You need to subclass me. */
 class _CPResultReservedKeyValueBase : _CPResultBase, CPAppendable {
     
-    init(keyCount : Int) {
-        self.keyCount = keyCount
+    /** Anything after key is considered value. */
+    init(key : String) {
+        var k : [Character] = []
+        for character in key.characters {
+            k.append(character)
+        }
+        self.key = k
     }
     
     private(set) var value : String?
     
     func append(c:Character) -> CPAppendResult {
-        cs.append(c)
-        return verify(cs.count-1, added : c)
+        characters.append(c)
+        return verify(characters.count-1, added : c)
     }
     
     // MARK: Private
     
-    private var keyCount : Int = 0
+    private var key : [Character]
     private var valueBuffer : String.CharacterView?
     
     private func verify( index : Int , added c : Character ) -> CPAppendResult {
-        if cs.count <= keyCount {
+        if characters.count <= key.count {
             return verifyKey( index , added : c )
         } else {
             return verifyValue( index, added : c )
@@ -74,8 +79,8 @@ class _CPResultReservedKeyValueBase : _CPResultBase, CPAppendable {
     }
     
     private func verifyKey( index : Int , added c : Character ) -> CPAppendResult {
-        assert(false,"Subclass needs to override me and not calling super.")
-        return .Invalid
+        if key[index] == c { return .InProgress }
+        else { return .Invalid }
     }
     
     private func verifyValue( index : Int , added c : Character ) -> CPAppendResult {
@@ -109,23 +114,24 @@ class _CPResultReservedKeyValueBase : _CPResultBase, CPAppendable {
 class CPResultExtend : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
     
     init() {
-        super.init(keyCount: "@extend ".length)
+        super.init(key: "extend ")
     }
     
     func resolveType() -> CPResultType {
         return .Extend(result:self)
     }
     
-    private override func verifyKey(index: Int, added c: Character) -> CPAppendResult {
-        if index == 0 && c == "@" { return .InProgress }
-        else if index == 1 && c == "e" { return .InProgress }
-        else if index == 2 && c == "x" { return .InProgress }
-        else if index == 3 && c == "t" { return .InProgress }
-        else if index == 4 && c == "e" { return .InProgress }
-        else if index == 5 && c == "n" { return .InProgress }
-        else if index == 6 && c == "d" { return .InProgress }
-        else if index == 7 && c == " " { return .InProgress }
-        else { return .Invalid }
+}
+
+
+class CPResultInclude : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
+    
+    init() {
+        super.init(key: "@include ")
+    }
+    
+    func resolveType() -> CPResultType {
+        return .Include(result:self)
     }
     
 }
@@ -133,23 +139,11 @@ class CPResultExtend : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
 class CPResultImport : _CPResultReservedKeyValueBase, CPResultTypeResolvable {
     
     init() {
-        super.init(keyCount: "@import ".length)
+        super.init(key: "@import ")
     }
     
     func resolveType() -> CPResultType {
         return .Import(result:self)
-    }
-    
-    private override func verifyKey(index: Int, added c: Character) -> CPAppendResult {
-        if index == 0 && c == "@" { return .InProgress }
-        else if index == 1 && c == "i" { return .InProgress }
-        else if index == 2 && c == "m" { return .InProgress }
-        else if index == 3 && c == "p" { return .InProgress }
-        else if index == 4 && c == "o" { return .InProgress }
-        else if index == 5 && c == "r" { return .InProgress }
-        else if index == 6 && c == "t" { return .InProgress }
-        else if index == 7 && c == " " { return .InProgress }
-        else { return .Invalid }
     }
 }
 
@@ -160,7 +154,7 @@ class CPResultStyleDeclaration : _CPResultBase , CPAppendable, CPResultTypeResol
     
     /*! Parses standard key-value style declaration e.g. "background-color: red;" */
     func append(c:Character) -> CPAppendResult {
-        cs.append(c)
+        characters.append(c)
         
         if c == ";" {
             guard let _ = keyBuffer, _ = valueBuffer else {
@@ -219,7 +213,7 @@ class CPResultUIKitElementHeader : _CPResultBaseHeader, CPAppendable {
     
     /*! Parses UIKitElement header e.g.  "UIButton {" */
     func append(c:Character) -> CPAppendResult {
-        cs.append(c)
+        characters.append(c)
         
         if c == "{" {
             
@@ -271,6 +265,14 @@ class CPResultUIKitElementHeader : _CPResultBaseHeader, CPAppendable {
     private var pseudoClassBuffer : String.CharacterView?
 }
 
-class CPResultNXSSClassHeader : _CPResultBaseHeader, CPAppendable {
+class CPResultNXSSClassHeader : CPResultUIKitElementHeader {
     
+    /** nxss-class is the same as uikit class but starts with "." */
+    override func append( c : Character ) -> CPAppendResult {
+        if characters.count == 0 && c == "." {
+            return super.append(c)
+        } else {
+            return .Invalid
+        }
+    }
 }

@@ -11,6 +11,7 @@ import Foundation
 enum CPResultType {
     case InProgress         // The append is still in progress and has no definitive result.
     case Extend(result:CPResultExtend)
+    case Include(result:CPResultInclude)
     case Import(result:CPResultImport)
     case StyleDeclaration(result:CPResultStyleDeclaration)
     case UIKitElementHeader(result:CPResultUIKitElementHeader)
@@ -24,12 +25,12 @@ enum CPState {
 
 }
 
-
 class CommandParser {
     
     init() {
         parsers = [
             CPResultExtend(),
+            CPResultInclude(),
             CPResultImport(),
             CPResultNXSSClassHeader(),
             CPResultUIKitElementHeader()
@@ -86,9 +87,7 @@ class CommandParser {
         switch state {
         case .ScanForLeadingSpace:
             if newChar == " " {
-                
                 // ignore
-                
             } else {
                 state = .RunParsers
                 runState( newChar )
@@ -96,13 +95,9 @@ class CommandParser {
             
         case .RunParsers:
             if newChar == "*" && prevChar == "/" {
-                
-                state = .SkipForComment // Done
-                
+                state = .SkipForComment
             } else {
-                
                 // We're good! Do nothing.
-                
             }
             
         case .SkipForComment:
