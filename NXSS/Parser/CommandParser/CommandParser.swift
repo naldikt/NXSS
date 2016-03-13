@@ -16,6 +16,8 @@ enum CPResultType {
     case StyleDeclaration(result:CPResultStyleDeclaration)
     case UIKitElementHeader(result:CPResultUIKitElementHeader)
     case NXSSClassHeader(result:CPResultNXSSClassHeader)
+    case MixinHeader(result:CPResultMixinHeader)
+    case BlockClosure
 }
 
 enum CPState {
@@ -32,8 +34,10 @@ class CommandParser {
             CPResultExtend(),
             CPResultInclude(),
             CPResultImport(),
+            CPResultStyleDeclaration(),
+            CPResultUIKitElementHeader(),
             CPResultNXSSClassHeader(),
-            CPResultUIKitElementHeader()
+            CPResultMixinHeader()
         ]
     }
     

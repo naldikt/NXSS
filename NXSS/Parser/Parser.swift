@@ -167,7 +167,9 @@ class Parser {
         curLine.reserveCapacity(100)
         
         var commandParser = CommandParser()
-
+        
+        var blockQueue = Queue<Block>()
+        blockQueue.push(Block(selector: nil, parentBlock: nil))
         
         let chars = self.fileContent.characters
         for c : Character in chars {
@@ -179,14 +181,108 @@ class Parser {
                 curLine.removeAll()
             }
             
+            guard let curBlock = blockQueue.peek() else {
+                throw NXSSError.Require(msg: "BlockQueue.peek() just failed", statement: "", line: nil)
+            }
+            
             // Run the Parser.
-            if let resultType = commandParser.append(c) {
+            if let resultType : CPResultType = commandParser.append(c) {
                 switch resultType {
-                case .InProgress: continue    // Great. Nothign todo.
+                case .InProgress: continue    // Nothign todo.
                 case .Extend(let result):
                     break
-                default:
+                    
+                case .Include(let result):
+
+                    let (selector,argVals) = try FunctionHeader.parse(value)
+                    
+                    guard let mixin = mixins[selector] else {
+                        throw NXSSError.Require(msg: "Cannot find mixin named \(selector)", statement: value, line:curLineNum)
+                    }
+                    
+                    curBlock.addDeclarations(
+                        try mixin.resolveArguments(argVals)
+                    )
+                    
+                case .Import(let result):
                     break
+                    
+                case .StyleDeclaration(let result):
+                    
+                    guard let key = result.key else {
+                        throw NXSSError.Parse(msg: "Missing key-value pair", statement: String(curLine), line: curLineNum)
+                    }
+                    guard let value = result.value else {
+                        throw NXSSError.Parse(msg: "Missing key-value pair", statement: String(curLine), line: curLineNum)
+                    }
+                    
+                    curBlock.addDeclaration(key,value:value)
+                    
+                case .UIKitElementHeader(let result):
+                    
+                    guard let selector = result.selector else {
+                        throw NXSSError.Parse(msg: "Missing selector", statement: String(curLine), line: curLineNum)
+                    }
+                    guard let pseudoClass = result.pseudoClass else {
+                        throw NXSSError.Parse(msg: "Missing selector", statement: String(curLine), line: curLineNum)
+                    }
+                    
+                    blockQueue.push(
+                        RuleSetBlock(selector:selector,
+                                selectorType:.UIKitElement,
+                                pseudoClass: pseudoClass,
+                                parentBlock:blockQueue.peek())
+                    )
+                
+                case .NXSSClassHeader(let result):
+                    
+                    guard let selector = result.selector else {
+                        throw NXSSError.Parse(msg: "Missing selector", statement: String(curLine), line: curLineNum)
+                    }
+                    guard let pseudoClass = result.pseudoClass else {
+                        throw NXSSError.Parse(msg: "Missing selector", statement: String(curLine), line: curLineNum)
+                    }
+                    
+                    blockQueue.push(
+                        RuleSetBlock(selector:selector,
+                                    selectorType:.NXSSClass,
+                                     pseudoClass: pseudoClass,
+                                     parentBlock:blockQueue.peek())
+                    )
+                    
+                case .MixinHeader(let result):
+                    
+                    guard let selector = result.selector else {
+                        throw NXSSError.Parse(msg: "Missing selector", statement: String(curLine), line: curLineNum)
+                    }
+                    guard let argNames = result.argumentNames else {
+                        throw NXSSError.Parse(msg: "Missing argument names", statement: String(curLine), line: curLineNum)
+                    }
+                    
+                    blockQueue.push(
+                        MixinBlock(selector:selector,
+                                    argNames:argNames,
+                                parentBlock:blockQueue.peek())
+                    )
+                    
+                    
+                case .BlockClosure:
+                    
+                    let oldContext = blockQueue.pop()
+                    if let oldContext = oldContext as? MixinBlock {
+                        
+                        let styleMixin : CompiledMixin = try oldContext.compile()
+                        mixins[styleMixin.selector] = styleMixin
+                        
+                        
+                    } else if let oldContext = oldContext as? RuleSetBlock {
+                        
+                        let styleClass : CompiledRuleSet = try oldContext.compile()
+                        ruleSets[styleClass.compiledKey] = styleClass
+                        
+                    } else {
+                        assert(false,"Should never have gone here. Fatal logic error.")
+                    }
                 }
                 
 
@@ -196,123 +292,11 @@ class Parser {
                 // CommandParser doesn't have any idea what this line is.
             }
             
-            
-//            NSLog("CurBuf \(String(curBuffer))")
-            
-            if skip {
-                
-                // Check for Close comment
-                if let lastS = lastS where s == "/" && "\(lastS)" == "*" {
-                    skip = false
-                }
-                continue
-                
-            } else if s == " " && curBuffer.count == 0 {
-                
-                // We don't need empty spaces in the front.
-                continue
-                
-            } else if s == "\n" {
-                
-                curLineNum++
-                continue
-                
-            }
+ 
 
-            // Start of Context
-            if s == "{" {
-                
-            
-                // Figure out whether what kind of header this is
-                let blockHeader = try BlockHeader.parse(String(curBuffer))
-                switch blockHeader {
-
-                case .Mixin(let selector, let args):
-
-                    blockQueue.push(
-                        MixinBlock(selector:selector,argNames:args,parentBlock:blockQueue.peek())
-                    )
-
-                case .Class(let selector,let pseudoClass):
-
-                    blockQueue.push(
-                        RuleSetBlock(selector:selector,selectorType:.NXSSClass, pseudoClass: pseudoClass,parentBlock:blockQueue.peek())
-                    )
-                    
-                case .Element(let selector,let pseudoClass):
-
-                    blockQueue.push(
-                        RuleSetBlock(selector:selector,selectorType:.UIKitElement, pseudoClass: pseudoClass,parentBlock:blockQueue.peek())
-                    )
-                }
-            
-                curBuffer.removeAll(keepCapacity: true)
-                                
-                
-            // End of Context
-            } else if s == "}" {
-                
-                if curBuffer.count > 0 {
-                    throw NXSSError.Parse(msg: "You forgot to apply semi-colon to your last line.", statement: String(curBuffer), line: curLineNum)
-                }
-                // By now curBuffer is an empty string
-            
-                let oldContext = blockQueue.pop()
-                if let oldContext = oldContext as? MixinBlock {
-                    
-                    let styleMixin : CompiledMixin = try oldContext.compile()
-                    mixins[styleMixin.selector] = styleMixin
-                    
-                
-                } else if let oldContext = oldContext as? RuleSetBlock {
-                
-                    let styleClass : CompiledRuleSet = try oldContext.compile()
-                    ruleSets[styleClass.compiledKey] = styleClass
-                
-                } else {
-                    assert(false,"Should never have gone here. Fatal logic error.")
-                }
-                
-            }	 
-                    
-            // End of Line
-            else if s == ";" {
-                
-                try processLine(&curBuffer, ruleSets: &ruleSets, curLineNum:  curLineNum)
-
-                
-            // Check for Open Comment
-            } else if let last = curBuffer.last where s == "*" && last == "/" {
-                
-                curBuffer.removeLast()  // remove the saved "/", since we're going to ignore that.
-                skip = true
-                
-            
-            } else {
-                
-                curBuffer.append(s)
-            }
-            
-        
-            lastS = s
         }
-        
-        return ruleSets
-            
     }
     
-    private func processLine(inout curBuffer : String.CharacterView, inout ruleSets : [String:CompiledRuleSet] , curLineNum : Int ) throws {
-        
-        let (type,key,value) = try KeyValueParser.parse( String(curBuffer) )
-        
-        guard let curBlock = blockQueue.peek() else {
-            throw NXSSError.Require(msg: "BlockQueue.peek() just failed", statement: "", line: nil)
-        }
-        
-        switch type {
-        case .Declaration, .VariableDeclaration:
-            
-            curBlock.addDeclaration(key,value: value)
             
         case .Include:
             

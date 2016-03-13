@@ -34,8 +34,8 @@ class Block {
 
     /**
         - parameters:
-            - selector          The selector/selector of the block. nil means it's a root block.
-            - parentBlcok       It is used for lookup. Say you're in some ClassBlock which refers to a property not in that block. With parentBlock, we can ask parent to see if it contains that property.
+            - selector          The selector/name of the block. nil means it's a root block.
+            - parentBlock       It is used for lookup. Say you're in some ClassBlock which refers to a property not in that block. With parentBlock, we can ask parent to see if it contains that property.
     */
 	init( selector:String? = nil , parentBlock : Block? = nil ) {
 		self.selector = selector

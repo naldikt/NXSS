@@ -16,6 +16,13 @@ enum CPAppendResult {
     case Resolved      // resolved.
 }
 
+private enum CPResultArgParseState {
+    case Pre
+    case In
+    case Post
+}
+
+
 protocol CPAppendable {
     /*!
         Called by LineParser when it bumped into valid characters.
@@ -31,6 +38,9 @@ protocol CPResultTypeResolvable {
 }
 
 class _CPResultBase {
+    
+    // MARK: Private 
+    
     private var characters : [Character] = []
     
     private func createCharacterView() -> String.CharacterView {
@@ -126,6 +136,10 @@ class CPResultExtend : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
 
 class CPResultInclude : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
     
+    /* Non-nil when resolved */
+    private(set) var selector:String?
+    private(set) var argumentNames:[String]?
+    
     init() {
         super.init(key: "@include ")
     }
@@ -134,6 +148,47 @@ class CPResultInclude : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
         return .Include(result:self)
     }
     
+    // MARK: Private
+    
+    private var argumentParseState : CPResultArgParseState = .Pre
+    private var currentArgument : String = ""
+    
+    private override func verifyValue( index : Int , added c : Character ) -> CPAppendResult {
+        let result = super.verifyValue(index, added: c)
+        self.interceptVerifyValue(index,added:c)
+        if result == .Resolved && argumentParseState == .In {
+            // Something is wrong. Parse state should have been either .Pre or .Post
+            return .Invalid
+        } else if result == .Resolved {
+            if argumentNames == nil { argumentNames = [] }
+        }
+        return result
+    }
+    
+    private func interceptVerifyValue(index : Int , added c : Character) {
+        if argumentParseState == .Pre && c == "(" {
+            argumentNames = []
+            argumentParseState = .In
+            
+        } else if argumentParseState == .Pre && c != " " {
+            
+            if selector == nil { selector = "" }
+            selector?.append(c)
+            
+            
+        } else if argumentParseState == .In && c == ")" {
+            argumentParseState = .Post
+            
+        } else if argumentParseState == .In && c == "," {
+            argumentNames?.append(currentArgument)
+            currentArgument = ""
+            
+        } else if argumentParseState == .In {
+            if c != " " {
+                currentArgument.append(c)
+            }
+        }
+    }
 }
 
 class CPResultImport : _CPResultReservedKeyValueBase, CPResultTypeResolvable {
@@ -206,7 +261,7 @@ class _CPResultBaseHeader : _CPResultBase {
     
 }
 
-class CPResultUIKitElementHeader : _CPResultBaseHeader, CPAppendable {
+class CPResultUIKitElementHeader : _CPResultBaseHeader, CPAppendable , CPResultTypeResolvable {
     
     private(set) var selector : String?  // the Name
     private(set) var pseudoClass : PseudoClass?
@@ -259,8 +314,13 @@ class CPResultUIKitElementHeader : _CPResultBaseHeader, CPAppendable {
         }
     }
     
+    func resolveType() -> CPResultType {
+        return .UIKitElementHeader(result:self)
+    }
+    
     // MARK: Private
     
+    // - do we even need this? seems overkill... usually selector & pseudoClass are < 10 characters
     private var selectorBuffer : String.CharacterView?
     private var pseudoClassBuffer : String.CharacterView?
 }
@@ -273,6 +333,127 @@ class CPResultNXSSClassHeader : CPResultUIKitElementHeader {
             return super.append(c)
         } else {
             return .Invalid
+        }
+    }
+    
+    override func resolveType() -> CPResultType {
+        return .NXSSClassHeader(result:self)
+    }
+}
+
+
+class CPResultMixinHeader:_CPResultBaseHeader, CPAppendable , CPResultTypeResolvable {
+    
+    /* non-nil when Resolved. */
+    private(set) var argumentNames : [String] = []
+    private(set) var selector : String?
+    
+    override init() {
+        let key = "@mixin "
+        var keyword : [Character] = []
+        for k in key.characters {
+            keyword.append(k)
+        }
+        self.keyword = keyword
+        super.init()
+    }
+
+    /** Solves "@mixin foo($a,$b) {" */
+    func append(c: Character) -> CPAppendResult {
+        characters.append(c)
+        
+        if characters.count < keyword.count {
+
+            if c == keyword[characters.count-1] { return .InProgress }
+            else { return .Invalid }
+            
+
+        } else if argumentParseState == .Pre {
+            if c == "("  {
+                argumentParseState = .In
+            } else {
+                if selector == nil { selector = "" }
+                selector!.append(c)
+            }
+            
+        } else if argumentParseState == .In  {
+            
+            if c == " " {
+                
+            } else if c == "," {
+                
+                argumentNames.append(currentArgument)
+                currentArgument = ""
+                
+            } else if c == ")" {
+                
+                argumentNames.append(currentArgument)
+                currentArgument = ""
+                argumentParseState = .Post
+                
+            } else {
+            
+                currentArgument.append(c)
+                
+            }
+            
+        } else if c == "{" {
+            if argumentParseState == .Pre || argumentParseState == .Post {
+                return .Resolved
+            } else {
+                return .Invalid
+            }
+        }
+        
+        return .InProgress
+
+    }
+    
+    func resolveType() -> CPResultType {
+        return .MixinHeader(result:self)
+    }
+    
+    // MARK: Private
+    
+    private var argumentParseState : CPResultArgParseState = .Pre
+    private var currentArgument : String = ""
+    private let keyword : [Character]
+    
+    
+    private override func verifyValue( index : Int , added c : Character ) -> CPAppendResult {
+        let result = super.verifyValue(index, added: c)
+        self.interceptVerifyValue(index,added:c)
+        if result == .Resolved && argumentParseState == .In {
+            // Something is wrong. Parse state should have been either .Pre or .Post
+            return .Invalid
+        } else if result == .Resolved {
+            if argumentNames == nil { argumentNames = [] }
+        }
+        return result
+    }
+    
+    private func interceptVerifyValue(index : Int , added c : Character) {
+        if argumentParseState == .Pre && c == "(" {
+            argumentNames = []
+            argumentParseState = .In
+            
+        } else if argumentParseState == .Pre && c != " " {
+        
+            if selector == nil { selector = "" }
+            selector?.append(c)
+            
+            
+        } else if argumentParseState == .In && c == ")" {
+            argumentParseState = .Post
+            
+        } else if argumentParseState == .In && c == "," {
+            argumentNames?.append(currentArgument)
+            currentArgument = ""
+        
+        } else if argumentParseState == .In {
+            if c != " " {
+                currentArgument.append(c)
+            }
         }
     }
 }
