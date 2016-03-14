@@ -197,7 +197,7 @@ class CPResultInclude : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
     private var numOfParenthesis = 0  // helps with distinguishing between arg and sub-arg
  
     private override func processValue(index : Int , added c : Character) {
-        if c  == " " { return }
+        // We need to preserve spaces. e.g. "to bottom" for gradients.
         
         switch argumentParseState {
         case .Pre:
@@ -400,8 +400,7 @@ class CPResultMixinHeader:_CPResultBaseHeader, CPAppendable , CPResultTypeResolv
             if c == "("  {
                 argumentParseState = .In
             } else {
-                if selector == nil { selector = "" }
-                selector!.append(c)
+                selector.append(c)
             }
             
         } else if argumentParseState == .In  {
@@ -438,7 +437,7 @@ class CPResultMixinHeader:_CPResultBaseHeader, CPAppendable , CPResultTypeResolv
     }
     
     func resolveType() -> CPResultType {
-        return .MixinHeader(result:self)
+        return .MixinHeader(selector:selector, argumentNames:argumentNames)
     }
     
     // MARK: Private
@@ -447,42 +446,23 @@ class CPResultMixinHeader:_CPResultBaseHeader, CPAppendable , CPResultTypeResolv
     private var currentArgument : String = ""
     private let keyword : [Character]
     private var argumentNames : [String] = []
-    private var selector : String?
-    
-    private override func verifyValue( index : Int , added c : Character ) -> CPAppendResult {
-        let result = super.verifyValue(index, added: c)
-        self.interceptVerifyValue(index,added:c)
-        if result == .Resolved && argumentParseState == .In {
-            // Something is wrong. Parse state should have been either .Pre or .Post
+    private var selector : String = ""
+ 
+}
+
+class CPResultBlockClosure:_CPResultBase, CPAppendable , CPResultTypeResolvable  {
+
+    /** Solves end of block/rule-set "}" */
+    func append(c: Character) -> CPAppendResult {
+        characters.append(c)
+        if characters.count == 1 && c == "}" {
+            return .Resolved
+        } else {
             return .Invalid
-        } else if result == .Resolved {
-            if argumentNames == nil { argumentNames = [] }
         }
-        return result
     }
     
-    private func interceptVerifyValue(index : Int , added c : Character) {
-        if argumentParseState == .Pre && c == "(" {
-            argumentNames = []
-            argumentParseState = .In
-            
-        } else if argumentParseState == .Pre && c != " " {
-        
-            if selector == nil { selector = "" }
-            selector?.append(c)
-            
-            
-        } else if argumentParseState == .In && c == ")" {
-            argumentParseState = .Post
-            
-        } else if argumentParseState == .In && c == "," {
-            argumentNames?.append(currentArgument)
-            currentArgument = ""
-        
-        } else if argumentParseState == .In {
-            if c != " " {
-                currentArgument.append(c)
-            }
-        }
+    func resolveType() -> CPResultType {
+        return .BlockClosure
     }
 }

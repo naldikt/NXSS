@@ -18,6 +18,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
+        NXSS.sharedInstance.useFile("Main")
+        
+        /*
         // DEBUG TIME ME
         NSLog("NXSS Parsing times")
         let total : Int = 20
@@ -31,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         let average : NSTimeInterval = sum / NSTimeInterval(total)
         NSLog("Average = \(average)")
-        
+        */
         
 //        NSLog("Start")
 //        NXSS.sharedInstance.useFile("DefaultX_nui")

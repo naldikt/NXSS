@@ -168,7 +168,7 @@ class Parser {
         
         var commandParser = CommandParser()
         
-        var blockQueue = Queue<Block>()
+        let blockQueue = Queue<Block>()
         blockQueue.push(Block(selector: nil, parentBlock: nil))
         
         let chars = self.fileContent.characters
@@ -190,39 +190,16 @@ class Parser {
                 switch resultType {
                 case .InProgress: continue    // Nothign todo.
                     
-                case .Extend(let result):
+                case .Extend(let selector, let selectorType, let pseudoClass):
                     
-                    var selector:String?
-                    var pseudoClass:PseudoClass?
+                    let compiledKey = CompiledRuleSet.getCompiledKey(selector,selectorType: selectorType, pseudoClass: pseudoClass)
                     
-                    // We're going to extend from another class.
-                    switch try BlockHeader.parse(value) {
-                    case .Class(let selector_, let pseudoClass_):
-                        selector = selector_
-                        pseudoClass = pseudoClass_
-                        
-                    case .Element(let selector_, let pseudoClass_):
-                        selector = selector_
-                        pseudoClass = pseudoClass_
-                        
-                    default:
-                        break
+                    guard let baseStyle = ruleSets[compiledKey] else {
+                        throw NXSSError.Require(msg: "Cannot find class/element to extend from with name \(selector)", statement: String(curLine), line:curLineNum)
                     }
                     
-                    if let selector = selector ,   pseudoClass = pseudoClass {
-                        
-                        let compiledKey = CompiledRuleSet.getCompiledKey(selector,selectorType: selectorType, pseudoClass: pseudoClass)
-                        
-                        guard let baseStyle = ruleSets[compiledKey] else {
-                            NSLog("ruleSets \(ruleSets)")
-                            throw NXSSError.Require(msg: "Cannot find class/element to extend from with name \(value)", statement: value, line:curLineNum)
-                        }
-                        
-                        curBlock.addDeclarations(baseStyle.declarations)
-                        
-                    } else {
-                        throw NXSSError.Parse(msg: "This extend does not contain Class or Element: \(value)", statement: value, line:curLineNum)
-                    }
+                    curBlock.addDeclarations(baseStyle.declarations)
+                    
                     
                 case .Include(let selector, let argumentValues):
                     
@@ -235,26 +212,29 @@ class Parser {
                     )
                     
                 case .Import(let fileName):
-                    break
+                    // Let's start a new parser (recursive)
+                    let parser = try Parser(fileName: fileName, bundle: fileBundle , parentParser: self)
+                    try parser.parse()
+                    
+                    // Assign or Override the resulting ruleSet
+                    for (k,v) in parser.ruleSets {
+                        ruleSets[k] = v
+                    }
+                    
+                    // Assign or Override the Block
+                    self.blockQueue = parser.blockQueue
                     
                 case .StyleDeclaration(let key, let value):
                     curBlock.addDeclaration(key,value:value)
                     
-                case .UIKitElementHeader(let selector, let pseudoClass):
+                case .RuleSetHeader(let selector, let selectorType, let pseudoClass):
                     blockQueue.push(
                         RuleSetBlock(selector:selector,
-                                selectorType:.UIKitElement,
+                                selectorType: selectorType,
                                 pseudoClass: pseudoClass,
                                 parentBlock:blockQueue.peek())
                     )
-                
-                case .NXSSClassHeader(let selector, let pseudoClass):
-                    blockQueue.push(
-                        RuleSetBlock(selector:selector,
-                                    selectorType:.NXSSClass,
-                                     pseudoClass: pseudoClass,
-                                     parentBlock:blockQueue.peek())
-                    )
+                 
                     
                 case .MixinHeader(let selector, let argumentNames):
                     blockQueue.push(
@@ -288,65 +268,9 @@ class Parser {
                 
             } else {
                 // CommandParser doesn't have any idea what this line is.
+                NXSSError.Parse(msg: "Cannot parse line", statement: String(curLine), line: curLineNum)
             }
-            
- 
-
-        }
-    }
-    
-            
-        case .Extend(let selectorType):
-            
-            var selector:String?
-            var pseudoClass:PseudoClass?
-            
-            // We're going to extend from another class.
-            switch try BlockHeader.parse(value) {
-            case .Class(let selector_, let pseudoClass_):
-                selector = selector_
-                pseudoClass = pseudoClass_
-                
-            case .Element(let selector_, let pseudoClass_):
-                selector = selector_
-                pseudoClass = pseudoClass_
-                
-            default:
-                break
-            }
-            
-            if let selector = selector ,   pseudoClass = pseudoClass {
-                
-                let compiledKey = CompiledRuleSet.getCompiledKey(selector,selectorType: selectorType, pseudoClass: pseudoClass)
-                
-                guard let baseStyle = ruleSets[compiledKey] else {
-                    NSLog("ruleSets \(ruleSets)")
-                    throw NXSSError.Require(msg: "Cannot find class/element to extend from with name \(value)", statement: value, line:curLineNum)
-                }
-                
-                curBlock.addDeclarations(baseStyle.declarations)
-                
-            } else {
-                throw NXSSError.Parse(msg: "This extend does not contain Class or Element: \(value)", statement: value, line:curLineNum)
-            }
-            
-        case .Import:
-            
-            // Let's start a new parser (recursive)
-            let parser = try Parser(fileName: value, bundle: fileBundle , parentParser: self)
-            try parser.parse()
-            
-            // Assign or Override the resulting ruleSet
-            for (k,v) in parser.ruleSets {
-                ruleSets[k] = v
-            }
-            
-            // Assign or Override the Block
-            self.blockQueue = parser.blockQueue
-            
-        }
-        
-        curBuffer.removeAll(keepCapacity: true)
-    }
-    
+        } // end for loop
+        return ruleSets
+    } // end method
 }

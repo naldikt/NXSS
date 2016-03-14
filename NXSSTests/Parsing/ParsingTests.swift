@@ -29,6 +29,8 @@ class SuccessfulTests: XCTestCase {
         NXSS.sharedInstance.useFile(inputFileName, bundle: NSBundle(forClass: self.dynamicType ))
         
         if let res = try? NXSS.sharedInstance.isEqualRuleSets( outputDict) {
+            print("Parsed RuleSet")
+            print(NXSS.sharedInstance.ruleSets)
             XCTAssert( res )
         }
         

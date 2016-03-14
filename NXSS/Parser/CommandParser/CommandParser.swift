@@ -41,13 +41,13 @@ class CommandParser {
     }
     
     /*!  
-        Append the given character and re-run the elimination process.
+        Append the characters and re-run the elimination process.
     */
     func append(c : Character) -> CPResultType? {
         
-        characters.append(c)
-        
-        runState( c )
+        if runState( c ) {
+            characters.append(c)
+        }
         
         if state == .RunParsers {
             
@@ -80,17 +80,18 @@ class CommandParser {
     private var state : CPState = .ScanForLeadingSpace
 
     private var characters : [Character] = []
-
-    private var prevChar : Character? {
-        return characters.last
-    }
     
-    private func runState( newChar : Character ) {
+    /** @return whether should honor the character. */
+    private func runState( newChar : Character ) -> Bool {
+        
+        let prevChar = characters.last
         
         switch state {
         case .ScanForLeadingSpace:
-            if newChar == " " {
-                // ignore
+//            let isMember = NSCharacterSet.whitespaceAndNewlineCharacterSet().characterIsMember(newChar)
+            let isUselessChar = (newChar == " " || newChar == "\n" || newChar == "\r" || newChar == "\t")
+            if isUselessChar {
+
             } else {
                 state = .RunParsers
                 runState( newChar )
@@ -99,15 +100,21 @@ class CommandParser {
         case .RunParsers:
             if newChar == "*" && prevChar == "/" {
                 state = .SkipForComment
+                characters.removeLast()
+                
             } else {
-                // We're good! Do nothing.
+                // We're good!
+                return true
             }
             
         case .SkipForComment:
             if newChar == "/" && prevChar == "*" {
                 state = .RunParsers // Done
+                characters.removeLast()
             }
         }
+        
+        return false
         
     }
 }
