@@ -37,11 +37,69 @@ protocol CPResultTypeResolvable {
     func resolveType() -> CPResultType
 }
 
-class _CPResultBase {
+class _CPResultBase : CPAppendable {
+    
+    func append(c: Character) -> CPAppendResult {
+    
+        switch appendState {
+        case .Append:
+            if c == "/" {
+                appendState = .PossiblyStartSkip
+                
+            } else if characters.count == 0 &&
+                (c == " " || c == "\t" || c == "\n" || c == "\r") {
+                    
+                // Intentionally skip
+                    
+            } else {
+                characters.append(c)
+                return characterAppended(c)
+            }
+        case .PossiblyStartSkip:
+            if c == "*" {
+                appendState = .Skip
+            } else {
+                appendState = .Append
+                characters.append("/")
+                return characterAppended("/")
+            }
+        case .Skip:
+            if c == "*" {
+                appendState = .PossiblyEndSkip
+            }
+        case .PossiblyEndSkip:
+            if c == "/" {
+                appendState = .Append
+            } else {
+                characters.append("*")
+                appendState = .Skip
+                return characterAppended("*")
+            }
+        }
+        return .InProgress
+        
+    }
+    
+    // MARK: Override Me
+    
+    private func characterAppended(c:Character) -> CPAppendResult {
+        assert(false,"Override me")
+        return .Invalid
+    }
+    
     
     // MARK: Private 
     
+    private enum AppendState {
+        case Append
+        case PossiblyStartSkip
+        case Skip
+        case PossiblyEndSkip
+    }
+    
+    private var skip = false
     private var characters : [Character] = []
+    private var appendState : AppendState = .Append
     
     private func createCharacterView() -> String.CharacterView {
         var ret = String.CharacterView()
@@ -57,7 +115,7 @@ class _CPResultBase {
 }
 
 /*! Base class for reserved-key and value pair line. You need to subclass me. */
-class _CPResultReservedKeyValueBase : _CPResultBase, CPAppendable {
+class _CPResultReservedKeyValueBase : _CPResultBase {
     
     /** Anything after key is considered value. */
     init(key : String) {
@@ -68,8 +126,9 @@ class _CPResultReservedKeyValueBase : _CPResultBase, CPAppendable {
         self.key = k
     }
     
-    func append(c:Character) -> CPAppendResult {
-        characters.append(c)
+    // MARK: Overrides
+    
+    private override func characterAppended(c:Character) -> CPAppendResult {
         return verify(characters.count-1, added : c)
     }
     
@@ -122,6 +181,7 @@ class _CPResultReservedKeyValueBase : _CPResultBase, CPAppendable {
     
     private func processValue( index:Int, added c : Character ) {
         // Nothing, please override and do anything you'd like.
+        assert(false,"Override me")
     }
 }
 
@@ -188,14 +248,8 @@ class CPResultInclude : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
         return .Include(selector:selector, argumentValues : argumentValues)
     }
     
-    // MARK: Private
+    // MARK: Override
     
-    private var argumentParseState : CPResultArgParseState = .Pre
-    private var currentArgument  = ""
-    private var selector  = ""
-    private var argumentValues:[String] = []
-    private var numOfParenthesis = 0  // helps with distinguishing between arg and sub-arg
- 
     private override func processValue(index : Int , added c : Character) {
         // We need to preserve spaces. e.g. "to bottom" for gradients.
         
@@ -221,7 +275,7 @@ class CPResultInclude : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
             } else if c  == "," && numOfParenthesis == 0 {
                 argumentValues.append(currentArgument)
                 currentArgument = ""
-
+                
             } else {
                 currentArgument.append(c)
                 
@@ -231,6 +285,16 @@ class CPResultInclude : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
             break
         }
     }
+    
+    // MARK: Private
+    
+    private var argumentParseState : CPResultArgParseState = .Pre
+    private var currentArgument  = ""
+    private var selector  = ""
+    private var argumentValues:[String] = []
+    private var numOfParenthesis = 0  // helps with distinguishing between arg and sub-arg
+ 
+
 }
 
 class CPResultImport : _CPResultReservedKeyValueBase, CPResultTypeResolvable {
@@ -245,13 +309,17 @@ class CPResultImport : _CPResultReservedKeyValueBase, CPResultTypeResolvable {
     }
 }
 
-class CPResultStyleDeclaration : _CPResultBase , CPAppendable, CPResultTypeResolvable {
+class CPResultStyleDeclaration : _CPResultBase , CPResultTypeResolvable {
+
+    func resolveType() -> CPResultType {
+        return .StyleDeclaration(key:key,value:value)
+    }
+    
+    // MARK: Override
     
     /*! Parses standard key-value style declaration e.g. "background-color: red;" */
-    func append(c:Character) -> CPAppendResult {
-        
-        characters.append(c)
-        
+    private override func characterAppended(c:Character) -> CPAppendResult {
+
         if c != " " {
             switch parseState {
             case .Key:
@@ -276,10 +344,6 @@ class CPResultStyleDeclaration : _CPResultBase , CPAppendable, CPResultTypeResol
         return .InProgress
     }
     
-    func resolveType() -> CPResultType {
-        return .StyleDeclaration(key:key,value:value)
-    }
-    
     // MARK: Private
     
     private enum ParseState {
@@ -290,22 +354,26 @@ class CPResultStyleDeclaration : _CPResultBase , CPAppendable, CPResultTypeResol
     private var key = ""
     private var value = ""
     private var parseState : ParseState = .Key
+    
+    
+
 }
 
 class _CPResultBaseHeader : _CPResultBase {
     
 }
 
-class CPResultRuleSetHeader : _CPResultBaseHeader, CPAppendable , CPResultTypeResolvable {
-    
-    /*! Parses UIKitElement header e.g.  "UIButton:normal {" */
-    func append(c:Character) -> CPAppendResult {
-        characters.append(c)
-        return self.verifyAndProcessValue( characters.count - 1 , added : c )
-    }
+class CPResultRuleSetHeader : _CPResultBaseHeader , CPResultTypeResolvable {
     
     func resolveType() -> CPResultType {
         return .RuleSetHeader(selector:selector, selectorType:.UIKitElement, pseudoClass:pseudoClass)
+    }
+    
+    // MARK: Override
+    
+    /*! Parses UIKitElement header e.g.  "UIButton:normal {" */
+    private override func characterAppended(c: Character) -> CPAppendResult {
+        return self.verifyAndProcessValue( characters.count - 1 , added : c )
     }
     
     // MARK: Private
@@ -321,6 +389,7 @@ class CPResultRuleSetHeader : _CPResultBaseHeader, CPAppendable , CPResultTypeRe
     private var pseudoClass : PseudoClass = .Normal
     private var selectorType : SelectorType = .NXSSClass
     private var parseState : ParseState = .SelectorType
+
     
     private func verifyAndProcessValue( index : Int , added c : Character ) -> CPAppendResult {
         if c != " " {
@@ -374,7 +443,7 @@ class CPResultRuleSetHeader : _CPResultBaseHeader, CPAppendable , CPResultTypeRe
     
 }
 
-class CPResultMixinHeader:_CPResultBaseHeader, CPAppendable , CPResultTypeResolvable {
+class CPResultMixinHeader:_CPResultBaseHeader , CPResultTypeResolvable {
     
     override init() {
         let key = "@mixin "
@@ -385,17 +454,22 @@ class CPResultMixinHeader:_CPResultBaseHeader, CPAppendable , CPResultTypeResolv
         self.keyword = keyword
         super.init()
     }
+    func resolveType() -> CPResultType {
+        return .MixinHeader(selector:selector, argumentNames:argumentNames)
+    }
+    
 
+ 
+    // MARK: Override
     /** Solves "@mixin foo($a,$b) {" */
-    func append(c: Character) -> CPAppendResult {
-        characters.append(c)
+    private override func characterAppended(c: Character) -> CPAppendResult {
         
         if characters.count < keyword.count {
-
+            
             if c == keyword[characters.count-1] { return .InProgress }
             else { return .Invalid }
             
-
+            
         } else if argumentParseState == .Pre {
             if c == "("  {
                 argumentParseState = .In
@@ -419,7 +493,7 @@ class CPResultMixinHeader:_CPResultBaseHeader, CPAppendable , CPResultTypeResolv
                 argumentParseState = .Post
                 
             } else {
-            
+                
                 currentArgument.append(c)
                 
             }
@@ -433,11 +507,7 @@ class CPResultMixinHeader:_CPResultBaseHeader, CPAppendable , CPResultTypeResolv
         }
         
         return .InProgress
-
-    }
-    
-    func resolveType() -> CPResultType {
-        return .MixinHeader(selector:selector, argumentNames:argumentNames)
+        
     }
     
     // MARK: Private
@@ -447,22 +517,23 @@ class CPResultMixinHeader:_CPResultBaseHeader, CPAppendable , CPResultTypeResolv
     private let keyword : [Character]
     private var argumentNames : [String] = []
     private var selector : String = ""
- 
+
 }
 
-class CPResultBlockClosure:_CPResultBase, CPAppendable , CPResultTypeResolvable  {
+class CPResultBlockClosure:_CPResultBase , CPResultTypeResolvable  {
 
+    func resolveType() -> CPResultType {
+        return .BlockClosure
+    }
+    
+    // MARK: Override
+    
     /** Solves end of block/rule-set "}" */
-    func append(c: Character) -> CPAppendResult {
-        characters.append(c)
+    private override func characterAppended(c: Character) -> CPAppendResult {
         if characters.count == 1 && c == "}" {
             return .Resolved
         } else {
             return .Invalid
         }
-    }
-    
-    func resolveType() -> CPResultType {
-        return .BlockClosure
     }
 }

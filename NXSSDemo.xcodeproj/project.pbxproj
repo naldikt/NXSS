@@ -712,7 +712,6 @@
 					};
 					202FA1031BC093CD00E91CF3 = {
 						CreatedOnToolsVersion = 7.0;
-						TestTargetID = 202FA0C41BC093B800E91CF3;
 					};
 				};
 			};
@@ -1152,7 +1151,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.nkusuma.NXSSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NXSSDemo.app/NXSSDemo";
 			};
 			name = Debug;
 		};
@@ -1163,7 +1161,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.nkusuma.NXSSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NXSSDemo.app/NXSSDemo";
 			};
 			name = Release;
 		};

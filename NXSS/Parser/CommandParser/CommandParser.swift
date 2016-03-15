@@ -39,18 +39,15 @@ class CommandParser {
             CPResultBlockClosure()
         ]
     }
-    
-    /*!  
-        Append the characters and re-run the elimination process.
-    */
+
     func append(c : Character) -> CPResultType? {
-        
+        /*
         if runState( c ) {
             characters.append(c)
         }
         
         if state == .RunParsers {
-            
+          */
             // Let's run the parser!
             var newParsers : [protocol<CPAppendable,CPResultTypeResolvable>] = []
             for parser in parsers {
@@ -66,7 +63,7 @@ class CommandParser {
                 return nil // Gave up.
             }
             
-        }
+//        }
 
         return .InProgress
     }
@@ -77,11 +74,12 @@ class CommandParser {
     
     private var parsers : [protocol<CPAppendable,CPResultTypeResolvable>] = []
 
-    private var state : CPState = .ScanForLeadingSpace
+//    private var state : CPState = .ScanForLeadingSpace
 
-    private var characters : [Character] = []
+//    private var characters : [Character] = []
     
     /** @return whether should honor the character. */
+    /*
     private func runState( newChar : Character ) -> Bool {
         
         let prevChar = characters.last
@@ -117,4 +115,5 @@ class CommandParser {
         return false
         
     }
+*/
 }
