@@ -38,6 +38,8 @@ class SuccessfulTests: XCTestCase {
         
     }
     
+    /*
+    
     func testBasic() {
         test("parsing_basic.nxss",
             outputDict: [
@@ -50,6 +52,8 @@ class SuccessfulTests: XCTestCase {
                 ]
             ])
     }
+
+
     
     func testInclude() {
         test("parsing_include.nxss",
@@ -62,7 +66,8 @@ class SuccessfulTests: XCTestCase {
                 ]
             ])
     }
-    
+
+  
     
     func testExtend() {
         test("parsing_extend.nxss",
@@ -95,6 +100,7 @@ class SuccessfulTests: XCTestCase {
         )
     }
 
+  
     func testVariables() {
         test("parsing_variables.nxss",
             outputDict: [
@@ -108,7 +114,7 @@ class SuccessfulTests: XCTestCase {
                 ]
             ])
     }
-    
+
     func testComplex() {
         // This will also test Multiple Overrides
         test("parsing_complex.nxss",
@@ -125,7 +131,8 @@ class SuccessfulTests: XCTestCase {
                 ]
             ])
     }
-    
+*/
+
     func testSelector() {
         test("parsing_selector.nxss",
             outputDict: [
@@ -155,7 +162,7 @@ class SuccessfulTests: XCTestCase {
                 ]
             ])
     }
-    
+       /* 
     func testImport() {
         test("parsing_import.nxss",
             outputDict: [
@@ -181,5 +188,6 @@ class SuccessfulTests: XCTestCase {
                 ]
             ])
     }
+    */
     
 }

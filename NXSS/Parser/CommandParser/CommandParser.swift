@@ -29,13 +29,15 @@ enum CPState {
 class CommandParser {
     
     init() {
+        
+        // Orders matter. The first resolved wins.
         parsers = [
             CPResultExtend(),
             CPResultInclude(),
             CPResultImport(),
-            CPResultStyleDeclaration(),
-            CPResultRuleSetHeader(),
             CPResultMixinHeader(),
+            CPResultRuleSetHeader(),
+            CPResultStyleDeclaration(),
             CPResultBlockClosure()
         ]
     }
@@ -48,20 +50,22 @@ class CommandParser {
         
         if state == .RunParsers {
           */
-            // Let's run the parser!
-            var newParsers : [protocol<CPAppendable,CPResultTypeResolvable>] = []
-            for parser in parsers {
-                switch parser.append(c) {
-                case .InProgress: newParsers.append(parser)
-                case .Invalid:  continue
-                case .Resolved: return parser.resolveType()   // Done.
-                }
+        
+        // Let's run the parser!
+        var newParsers : [protocol<CPAppendable,CPResultTypeResolvable>] = []
+        for parser in parsers {
+            switch parser.append(c) {
+            case .InProgress: newParsers.append(parser)
+            case .Invalid:  continue
+            case .Resolved: return parser.resolveType()   // Done.
             }
-            
-            parsers = newParsers
-            if parsers.count == 0 {
-                return nil // Gave up.
-            }
+        }
+        
+        parsers = newParsers
+        if parsers.count == 0 {
+            return nil // Gave up.
+        }
+        
             
 //        }
 

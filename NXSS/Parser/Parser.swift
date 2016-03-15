@@ -191,11 +191,11 @@ class Parser {
                 case .InProgress: continue    // Nothign todo.
                     
                 case .Extend(let selector, let selectorType, let pseudoClass):
-                    
+                    NSLog("extend \(selector) \(selectorType) \(pseudoClass)")
                     let compiledKey = CompiledRuleSet.getCompiledKey(selector,selectorType: selectorType, pseudoClass: pseudoClass)
                     
                     guard let baseStyle = ruleSets[compiledKey] else {
-                        throw NXSSError.Require(msg: "Cannot find class/element to extend from with name \(selector)", statement: String(curLine), line:curLineNum)
+                        throw NXSSError.Require(msg: "Cannot find class/element to extend from with name \"\(selector)\"", statement: String(curLine), line:curLineNum)
                     }
                     
                     curBlock.addDeclarations(baseStyle.declarations)

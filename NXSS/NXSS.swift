@@ -33,7 +33,7 @@ public class NXSS {
             let startTime = NSDate()
             
             let parser = try Parser(fileName:fileName, bundle:bundle)
-            self.ruleSets = try! parser.parse()
+            self.ruleSets = try parser.parse()
             
             let diff = NSDate().timeIntervalSince1970 - startTime.timeIntervalSince1970
             self.lastParseDuration = diff
@@ -41,7 +41,7 @@ public class NXSS {
             return true
             
         } catch {
-            NSLog("Error in parsing NXSS")
+            print("Error in parsing NXSS")
             return false
         }
         

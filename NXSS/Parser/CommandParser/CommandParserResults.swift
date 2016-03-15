@@ -118,12 +118,8 @@ class _CPResultBase : CPAppendable {
 class _CPResultReservedKeyValueBase : _CPResultBase {
     
     /** Anything after key is considered value. */
-    init(key : String) {
-        var k : [Character] = []
-        for character in key.characters {
-            k.append(character)
-        }
-        self.key = k
+    init(key : [Character]) {
+        self.key = key
     }
     
     // MARK: Overrides
@@ -140,6 +136,9 @@ class _CPResultReservedKeyValueBase : _CPResultBase {
     private func verify( index : Int , added c : Character ) -> CPAppendResult {
         if characters.count <= key.count {
             return verifyKey( index , added : c )
+        } else if value.characters.count == 0 && c == " " {
+            // handles space between keyword and selector name
+            return .InProgress
         } else {
             let result = verifyValue( index, added : c )
             switch result {
@@ -189,7 +188,19 @@ class CPResultExtend : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
     
     /** "@extend .Foo:normal" or "@extend UIView:selected" */
     init() {
-        super.init(key: "@extend ")
+        struct Static {
+            static var token: dispatch_once_t = 0
+            static var keyword : [Character] = []
+        }
+        dispatch_once(&Static.token) {
+            let key = "@extend "
+            var keyword : [Character] = []
+            for k in key.characters {
+                keyword.append(k)
+            }
+            Static.keyword = keyword
+        }
+        super.init(key: Static.keyword)
     }
     
     func resolveType() -> CPResultType {
@@ -241,7 +252,19 @@ class CPResultInclude : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
     
     /** "@include foo(1,2,bar(3,4), aldi)" */
     init() {
-        super.init(key: "@include ")
+        struct Static {
+            static var token: dispatch_once_t = 0
+            static var keyword : [Character] = []
+        }
+        dispatch_once(&Static.token) {
+            let key = "@include "
+            var keyword : [Character] = []
+            for k in key.characters {
+                keyword.append(k)
+            }
+            Static.keyword = keyword
+        }
+        super.init(key: Static.keyword)
     }
     
     func resolveType() -> CPResultType {
@@ -270,6 +293,9 @@ class CPResultInclude : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
             }
             
             if c == ")" {
+                argumentValues.append(currentArgument)
+                currentArgument = ""
+                
                 argumentParseState = .Post
                 
             } else if c  == "," && numOfParenthesis == 0 {
@@ -293,15 +319,25 @@ class CPResultInclude : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
     private var selector  = ""
     private var argumentValues:[String] = []
     private var numOfParenthesis = 0  // helps with distinguishing between arg and sub-arg
- 
-
 }
 
 class CPResultImport : _CPResultReservedKeyValueBase, CPResultTypeResolvable {
     
     /*!  "@import FileName;*/
     init() {
-        super.init(key: "@import ")
+        struct Static {
+            static var token: dispatch_once_t = 0
+            static var keyword : [Character] = []
+        }
+        dispatch_once(&Static.token) {
+            let key = "@import "
+            var keyword : [Character] = []
+            for k in key.characters {
+                keyword.append(k)
+            }
+            Static.keyword = keyword
+        }
+        super.init(key: Static.keyword)
     }
     
     func resolveType() -> CPResultType {
@@ -366,7 +402,7 @@ class _CPResultBaseHeader : _CPResultBase {
 class CPResultRuleSetHeader : _CPResultBaseHeader , CPResultTypeResolvable {
     
     func resolveType() -> CPResultType {
-        return .RuleSetHeader(selector:selector, selectorType:.UIKitElement, pseudoClass:pseudoClass)
+        return .RuleSetHeader(selector:selector, selectorType:selectorType, pseudoClass:pseudoClass)
     }
     
     // MARK: Override
@@ -392,34 +428,34 @@ class CPResultRuleSetHeader : _CPResultBaseHeader , CPResultTypeResolvable {
 
     
     private func verifyAndProcessValue( index : Int , added c : Character ) -> CPAppendResult {
-        if c != " " {
-            switch parseState {
-            case .SelectorType:
-                if c == "{" {
-                    return finalize()
-                } else if c == "." {
-                    selectorType = .NXSSClass
-                    parseState = .Selector
-                } else {
-                    selectorType = .UIKitElement
-                    parseState = .Selector
-                    return verifyAndProcessValue(index, added: c)
-                }
-            case .Selector:
-                if c == "{" {
-                    return finalize()
-                } else if c == ":" {
-                    parseState = .PseudoClass
-                } else {
-                    selector.append(c)
-                }
-                
-            case .PseudoClass:
-                if c == "{" {
-                    return finalize()
-                } else {
-                    pseudoClassString.append(c)
-                }
+        switch parseState {
+        case .SelectorType:
+            if c == "{" {
+                return finalize()
+            } else if c == "." {
+                selectorType = .NXSSClass
+                parseState = .Selector
+            } else {
+                selectorType = .UIKitElement
+                parseState = .Selector
+                return verifyAndProcessValue(index, added: c)
+            }
+        case .Selector:
+            if c == "{" {
+                return finalize()
+            } else if c == ":" {
+                parseState = .PseudoClass
+            } else if c == " " {
+                // handles space b/t selector name and open parenthesis
+            } else {
+                selector.append(c)
+            }
+            
+        case .PseudoClass:
+            if c == "{" {
+                return finalize()
+            } else {
+                pseudoClassString.append(c)
             }
         }
         return .InProgress
@@ -446,33 +482,46 @@ class CPResultRuleSetHeader : _CPResultBaseHeader , CPResultTypeResolvable {
 class CPResultMixinHeader:_CPResultBaseHeader , CPResultTypeResolvable {
     
     override init() {
-        let key = "@mixin "
-        var keyword : [Character] = []
-        for k in key.characters {
-            keyword.append(k)
+        struct Static {
+            static var token: dispatch_once_t = 0
+            static var keyword : [Character] = []
         }
-        self.keyword = keyword
+        dispatch_once(&Static.token) {
+            let key = "@mixin "
+            var keyword : [Character] = []
+            for k in key.characters {
+                keyword.append(k)
+            }
+            Static.keyword = keyword
+        }
+        self.keyword = Static.keyword
         super.init()
     }
+    
     func resolveType() -> CPResultType {
         return .MixinHeader(selector:selector, argumentNames:argumentNames)
     }
-    
-
  
     // MARK: Override
+    
     /** Solves "@mixin foo($a,$b) {" */
     private override func characterAppended(c: Character) -> CPAppendResult {
         
-        if characters.count < keyword.count {
+        if characters.count <= keyword.count {
             
-            if c == keyword[characters.count-1] { return .InProgress }
-            else { return .Invalid }
+            if c == keyword[characters.count-1] {
+                return .InProgress
+            }
+            else {
+                return .Invalid
+            }
             
             
         } else if argumentParseState == .Pre {
             if c == "("  {
                 argumentParseState = .In
+            } else if c == " " {
+                // handles space b/t selector name and open parenthesis
             } else {
                 selector.append(c)
             }
@@ -514,10 +563,10 @@ class CPResultMixinHeader:_CPResultBaseHeader , CPResultTypeResolvable {
     
     private var argumentParseState : CPResultArgParseState = .Pre
     private var currentArgument : String = ""
-    private let keyword : [Character]
+
     private var argumentNames : [String] = []
     private var selector : String = ""
-
+    private var keyword : [Character] = []
 }
 
 class CPResultBlockClosure:_CPResultBase , CPResultTypeResolvable  {
