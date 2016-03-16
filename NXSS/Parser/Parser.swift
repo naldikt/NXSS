@@ -259,7 +259,8 @@ class Parser {
                         ruleSets[styleClass.compiledKey] = styleClass
                         
                     } else {
-                        assert(false,"Should never have gone here. Fatal logic error.")
+                        throw NXSSError.Parse(msg: "Too many close bracket.", statement: String(curLine), line: curLineNum)
+                        
                     }
                 }
                 

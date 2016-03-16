@@ -132,7 +132,7 @@ class SuccessfulTests: XCTestCase {
             ])
     }
 */
-
+/*
     func testSelector() {
         test("parsing_selector.nxss",
             outputDict: [
@@ -162,7 +162,8 @@ class SuccessfulTests: XCTestCase {
                 ]
             ])
     }
-       /* 
+*/
+    
     func testImport() {
         test("parsing_import.nxss",
             outputDict: [
@@ -188,6 +189,6 @@ class SuccessfulTests: XCTestCase {
                 ]
             ])
     }
-    */
+    
     
 }

@@ -343,6 +343,10 @@ class CPResultImport : _CPResultReservedKeyValueBase, CPResultTypeResolvable {
     func resolveType() -> CPResultType {
         return .Import(fileName:value)
     }
+    
+    private override func processValue(index: Int, added c: Character) {
+        // nothing
+    }
 }
 
 class CPResultStyleDeclaration : _CPResultBase , CPResultTypeResolvable {
@@ -454,6 +458,8 @@ class CPResultRuleSetHeader : _CPResultBaseHeader , CPResultTypeResolvable {
         case .PseudoClass:
             if c == "{" {
                 return finalize()
+            } else if c == " " {
+                // space in before and after pseudoClass.
             } else {
                 pseudoClassString.append(c)
             }
