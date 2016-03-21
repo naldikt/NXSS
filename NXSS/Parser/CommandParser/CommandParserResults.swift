@@ -180,8 +180,8 @@ class _CPResultReservedKeyValueBase : _CPResultBase {
             }
             return .Resolved
             
-        } else if c == " " {
-            return .InProgress // skip
+//        } else if c == " " {
+//            return .InProgress // skip
             
         } else {
             value.append(c)
@@ -388,8 +388,8 @@ class CPResultStyleDeclaration : _CPResultBase , CPResultTypeResolvable {
                 } else {
                     return .Invalid
                 }
-            } else if c == " " && value.characters.count == 0 {
-                // Skip. Do not prepend spaces.
+//            } else if c == " " && value.characters.count == 0 {
+//                // Skip. Do not prepend spaces.
             } else {
                 value.append(c)
             }
@@ -463,7 +463,7 @@ class CPResultRuleSetHeader : _CPResultBaseHeader , CPResultTypeResolvable {
                 return finalize()
             } else if c == ":" {
                 parseState = .PseudoClass
-            } else if c == " " {
+//            } else if c == " " {
                 // handles space b/t selector name and open parenthesis
             } else {
                 selector.append(c)
@@ -472,7 +472,7 @@ class CPResultRuleSetHeader : _CPResultBaseHeader , CPResultTypeResolvable {
         case .PseudoClass:
             if c == "{" {
                 return finalize()
-            } else if c == " " {
+//            } else if c == " " {
                 // space in before and after pseudoClass.
             } else {
                 pseudoClassString.append(c)
@@ -484,9 +484,7 @@ class CPResultRuleSetHeader : _CPResultBaseHeader , CPResultTypeResolvable {
     
     private func finalize() -> CPAppendResult {
         // End of command. Let's process.
-        if selector.characters.count == 0 {
-            return .Invalid
-        }
+
         if pseudoClassString.characters.count > 0 {
             if let pc = PseudoClass(rawValue: pseudoClassString) {
                 self.pseudoClass = pc
@@ -494,6 +492,12 @@ class CPResultRuleSetHeader : _CPResultBaseHeader , CPResultTypeResolvable {
                 return .Invalid
             }
         }
+        
+        selector = selector.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        if selector.characters.count == 0 {
+            return .Invalid
+        }
+        
         return .Resolved
     }
     
@@ -540,7 +544,7 @@ class CPResultMixinHeader:_CPResultBaseHeader , CPResultTypeResolvable {
         } else if argumentParseState == .Pre {
             if c == "("  {
                 argumentParseState = .In
-            } else if c == " " {
+//            } else if c == " " {
                 // handles space b/t selector name and open parenthesis
             } else {
                 selector.append(c)
@@ -548,9 +552,10 @@ class CPResultMixinHeader:_CPResultBaseHeader , CPResultTypeResolvable {
             
         } else if argumentParseState == .In  {
             
-            if c == " " {
-                
-            } else if c == "," {
+//            if c == " " {
+//                
+//            } else
+                if c == "," {
                 
                 argumentNames.append(currentArgument)
                 currentArgument = ""
@@ -569,6 +574,10 @@ class CPResultMixinHeader:_CPResultBaseHeader , CPResultTypeResolvable {
             
         } else if c == "{" {
             if argumentParseState == .Pre || argumentParseState == .Post {
+                selector = selector.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+                argumentNames = argumentNames.map({ arg in
+                    return arg.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+                })
                 return .Resolved
             } else {
                 return .Invalid
