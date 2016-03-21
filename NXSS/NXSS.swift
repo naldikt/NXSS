@@ -143,6 +143,7 @@ public class NXSS {
                 
             } else {
                 NSLog("NXSS.isStyleClassEqualToDictionary failed because selector \(selector) selectorType \(selectorType) pseudoClass \(pseudoClass) does not exist on self's")
+                return false
             }
                 
         }

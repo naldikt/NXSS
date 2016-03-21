@@ -42,130 +42,38 @@ protocol CPAppendable {
         - Space before first real character
         - Comments-related character (/* and any characters in between */)
     */
-    func append( c : Character ) -> CPAppendResult
+    func characterAppended( c : Character , currentData : CParserData ) -> CPAppendResult
 }
 
 protocol CPResultTypeResolvable {
-    func resolveType() -> CPResultType
+    func resolveType( currentData : CParserData ) -> CPResultType
 }
 
-class _CPResultBase : CPAppendable {
-    
-    init() {
-        self.characters = createCharacterView()
-    }
-    
-    func append(c: Character) -> CPAppendResult {
-        
-        characters.append(c)
-        return characterAppended(c)
-
-//        switch appendState {
-//        case .Append:
-//            if c == "/" {
-//                appendState = .PossiblyStartSkip
-//                
-//            } else if characters.count == 0 &&
-//                (c == " " || c == "\t" || c == "\n" || c == "\r") {
-//                    
-//                // Intentionally skip
-//                    
-//            } else {
-//                characters.append(c)
-//                return characterAppended(c)
-//            }
-//        case .PossiblyStartSkip:
-//            if c == "*" {
-//                appendState = .Skip
-//            } else {
-//                appendState = .Append
-//                
-//                // Attempt to restore
-//                characters.append("/")
-//                let ret1 = characterAppended("/")
-//                if ret1 == .InProgress {
-//                    characters.append(c)
-//                    return characterAppended(c)
-//                } else {
-//                    return ret1
-//                }
-//            }
-//        case .Skip:
-//            if c == "*" {
-//                appendState = .PossiblyEndSkip
-//            }
-//        case .PossiblyEndSkip:
-//            if c == "/" {
-//                appendState = .Append
-//            } else if c == "*" {
-//                // still same state
-//            } else {
-//                // Still skipping!
-//                appendState = .Skip
-//            }
-//        }
-//        return .InProgress
-        
-    }
-    
-    // MARK: Override Me
-    
-    private func characterAppended(c:Character) -> CPAppendResult {
-        assert(false,"Override me")
-        return .Invalid
-    }
-    
-    
-    // MARK: Private 
-    
-    private enum AppendState {
-        case Append
-        case PossiblyStartSkip
-        case Skip
-        case PossiblyEndSkip
-    }
-    
-    private var skip = false
-    private var characters : String.CharacterView
-    private var appendState : AppendState = .Append
-    
-}
 
 /*! Base class for reserved-key and value pair line. You need to subclass me. */
-class _CPResultReservedKeyValueBase : _CPResultBase {
+class _CPResultReservedKeyValueBase : CPAppendable{
     
     /** Anything after key is considered value. */
     init(key : [Character]) {
         self.key = key
-        self.value = createCharacterView()
     }
     
-    // MARK: Overrides
-    
-    private override func characterAppended(c:Character) -> CPAppendResult {
-        return verify(characters.count-1, added : c)
-    }
-    
-    // MARK: Private
-    
-    private var key : [Character]
-    private var value : String.CharacterView
-    
-    private func verify( index : Int , added c : Character ) -> CPAppendResult {
-        if characters.count <= key.count {
-            return verifyKey( index , added : c )
-        } else if value.count == 0 && c == " " {
+    func characterAppended(c:Character, currentData : CParserData) -> CPAppendResult {
+        
+        if currentData.characters.count <= key.count {
+            return verifyKey( c , currentData:  currentData)
+            
+        } else if valueIndexStart == nil && c == " " {
+            
             // handles space between keyword and selector name
             return .InProgress
+            
         } else {
-            let result = verifyValue( index, added : c )
+            // Handle Values
+            let result = verifyValue( c, currentData:  currentData )
             switch result {
             case .InProgress:
-                self.processValue( index,added:c)
-            case .Resolved:
-                if value.count == 0 {
-                    return .Invalid
-                }
+                self.processValue( c, currentData:currentData)
             default:
                 break
             }
@@ -173,30 +81,36 @@ class _CPResultReservedKeyValueBase : _CPResultBase {
         }
     }
     
-    private func verifyKey( index : Int , added c : Character ) -> CPAppendResult {
-        if key[index] == c { return .InProgress }
+    // MARK: Private
+    
+    private var key : [Character]
+    private var valueResult : String = ""
+    private var valueIndexStart : String.CharacterView.Index?
+    
+    
+    private func verifyKey( c:Character, currentData : CParserData ) -> CPAppendResult {
+        if key[currentData.characters.count] == c { return .InProgress }
         else { return .Invalid }
     }
     
-    private func verifyValue( index : Int , added c : Character ) -> CPAppendResult {
-
+    private func verifyValue( c:Character, currentData : CParserData ) -> CPAppendResult {
         if c == ";" {
-            if value.count == 0 {
+            if let valueIndexStart = valueIndexStart where currentData.lastCharacterIndex != valueIndexStart {
+                let lastIndex = currentData.lastCharacterIndex.predecessor()
+                valueResult = currentData.trimmedStringWithRange(valueIndexStart, endIndex: lastIndex)
+                return .Resolved
+            } else {
                 return .Invalid
             }
-            return .Resolved
-            
-//        } else if c == " " {
-//            return .InProgress // skip
-            
         } else {
-            value.append(c)
+            if valueIndexStart == nil {
+                valueIndexStart = currentData.lastCharacterIndex
+            }
             return .InProgress
         }
-
     }
     
-    private func processValue( index:Int, added c : Character ) {
+    private func processValue( c:Character, currentData : CParserData ) {
         // Nothing, please override and do anything you'd like.
         assert(false,"Override me")
     }
@@ -218,12 +132,21 @@ class CPResultExtend : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
             }
             Static.keyword = keyword
         }
-        self.selector = createCharacterView()
         super.init(key: Static.keyword)
         
     }
     
-    func resolveType() -> CPResultType {
+    func resolveType( currentData : CParserData ) -> CPResultType {
+        
+        // TODO: this isn't safe. I think resolveType should be throwable
+        let selector = currentData.trimmedStringWithRange(selectorStartIndex!, endIndex: selectorEndIndex!)
+        
+        var pseudoClass : PseudoClass = .Normal
+        if let pseudoClassStartIndex = pseudoClassStartIndex {
+            let pseudoClassStr = currentData.trimmedStringWithRange(pseudoClassStartIndex, endIndex: currentData.lastCharacterIndex)
+            let pc = PseudoClass(rawValue: pseudoClassStr)!
+            pseudoClass = pc
+        }
         return .Extend(selector:String(selector), selectorType:selectorType, pseudoClass:pseudoClass)
     }
     
@@ -235,12 +158,15 @@ class CPResultExtend : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
         case PseudoClass
     }
     
-    private var selector : String.CharacterView
+    private var selectorStartIndex : String.CharacterView.Index?
+    private var selectorEndIndex : String.CharacterView.Index?
+    
+    private var pseudoClassStartIndex : String.CharacterView.Index?
+    
     private var selectorType : SelectorType = .UIKitElement
-    private var pseudoClass : PseudoClass = .Normal
     private var parseState : ParseState = .SelectorType
     
-    private override func processValue(index: Int, added c: Character) {
+    private override func processValue(c:Character , currentData : CParserData ) {
         
         if c == " " { return }
         
@@ -250,18 +176,21 @@ class CPResultExtend : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
             if c == "." {
                 selectorType = .NXSSClass
             } else {
-                self.processValue(index, added: c)
+                self.processValue(c, currentData: currentData)
             }
             
         case .Selector:
             if c == ":" {
+                selectorEndIndex = currentData.lastCharacterIndex.predecessor()
                 parseState = .PseudoClass
-            } else {
-                selector.append(c)
+            } else if selectorStartIndex == nil {
+                selectorStartIndex = currentData.lastCharacterIndex
             }
             
         case .PseudoClass:
-            selector.append(c)
+            if pseudoClassStartIndex == nil {
+                pseudoClassStartIndex = currentData.lastCharacterIndex
+            }
         }
     }
     
@@ -285,29 +214,26 @@ class CPResultInclude : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
             Static.keyword = keyword
         }
         
-        self.currentArgument = createCharacterView()
-        self.selectorBuffer = createCharacterView()
         super.init(key: Static.keyword)
     }
     
-    func resolveType() -> CPResultType {
-        let argVals = self.argumentValues.map { (charView) in
-            return String(charView).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-        }
-        return .Include(selector:String(selectorBuffer), argumentValues : argVals)
+    func resolveType( currentData : CParserData ) -> CPResultType {
+        return .Include(selector:selectorResult, argumentValues : argumentValuesResut)
     }
     
     // MARK: Override
     
-    private override func processValue(index : Int , added c : Character) {
+    private override func processValue(c : Character, currentData : CParserData) {
         // We need to preserve spaces. e.g. "to bottom" for gradients.
         
         switch argumentParseState {
         case .Pre:
             if c == "(" {
+                let lastIndex = currentData.lastCharacterIndex.predecessor()
+                selectorResult = currentData.trimmedStringWithRange(self.selectorStartIndex!, endIndex: lastIndex)
                 argumentParseState = .In
-            } else  {
-                selectorBuffer.append(c)
+            } else  if selectorStartIndex == nil {
+                selectorStartIndex = currentData.lastCharacterIndex
             }
             
         case .In:
@@ -318,19 +244,19 @@ class CPResultInclude : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
                 numOfParenthesis -= 1
             }
             
-            if c == ")" {
-                argumentValues.append(currentArgument)
-                currentArgument = createCharacterView()
+            if c == ")" || (c  == "," && numOfParenthesis == 0) {
                 
-                argumentParseState = .Post
+                let lastIndex = currentData.lastCharacterIndex.predecessor()
+                let argVal = currentData.trimmedStringWithRange(self.currentArgumentStartIndex!, endIndex: lastIndex)
+                argumentValuesResut.append(argVal)
+                currentArgumentStartIndex = nil
                 
-            } else if c  == "," && numOfParenthesis == 0 {
-                argumentValues.append(currentArgument)
-                currentArgument = createCharacterView()
+                if c == ")" {
+                    argumentParseState = .Post
+                }
                 
-            } else {
-                currentArgument.append(c)
-                
+            } else if currentArgumentStartIndex == nil {
+                currentArgumentStartIndex = currentData.lastCharacterIndex
             }
             
         case .Post:
@@ -341,9 +267,14 @@ class CPResultInclude : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
     // MARK: Private
     
     private var argumentParseState : CPResultArgParseState = .Pre
-    private var currentArgument : String.CharacterView
-    private var selectorBuffer : String.CharacterView
-    private var argumentValues:[String.CharacterView] = []
+    
+    private var selectorStartIndex : String.CharacterView.Index?
+    
+    private var currentArgumentStartIndex : String.CharacterView.Index?
+
+    private var selectorResult : String = ""
+    private var argumentValuesResut :[String] = []
+    
     private var numOfParenthesis = 0  // helps with distinguishing between arg and sub-arg
     
 }
@@ -367,52 +298,45 @@ class CPResultImport : _CPResultReservedKeyValueBase, CPResultTypeResolvable {
         super.init(key: Static.keyword)
     }
     
-    func resolveType() -> CPResultType {
-        return .Import(fileName:String(value))
+    func resolveType( currentData : CParserData ) -> CPResultType {
+        return .Import(fileName:valueResult)
     }
     
-    private override func processValue(index: Int, added c: Character) {
+    private override func processValue( c: Character , currentData : CParserData  ) {
         // nothing
     }
 }
 
-class CPResultStyleDeclaration : _CPResultBase , CPResultTypeResolvable {
-    
-    override init() {
-        self.keyBuffer = createCharacterView()
-        self.valueBuffer = createCharacterView()
-        super.init()
-    }
+class CPResultStyleDeclaration : CPResultTypeResolvable ,CPAppendable {
 
-    func resolveType() -> CPResultType {
+    func resolveType( currentData : CParserData ) -> CPResultType {
         return .StyleDeclaration(key:self.keyResult,value:self.valueResult)
     }
     
-    // MARK: Override
-    
     /*! Parses standard key-value style declaration e.g. "background-color: red;" */
-    private override func characterAppended(c:Character) -> CPAppendResult {
+    func characterAppended(c:Character , currentData : CParserData ) -> CPAppendResult {
 
         switch parseState {
         case .Key:
             if c  == ":" {
+                let lastIndex = currentData.lastCharacterIndex.predecessor()
+                keyResult = currentData.trimmedStringWithRange(self.keyStartIndex!, endIndex: lastIndex)
                 parseState = .Value
-            } else {
-                keyBuffer.append(c)
+            } else if keyStartIndex == nil {
+                keyStartIndex = currentData.lastCharacterIndex
             }
         case .Value:
             if c == ";" {
-                self.keyResult = String(keyBuffer).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-                self.valueResult = String(valueBuffer).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+                let lastIndex = currentData.lastCharacterIndex.predecessor()
+                valueResult = currentData.trimmedStringWithRange(self.valueStartIndex!, endIndex: lastIndex)
+
                 if self.keyResult.characters.count > 0 && self.valueResult.characters.count > 0 {
                     return .Resolved
                 } else {
                     return .Invalid
                 }
-//            } else if c == " " && value.characters.count == 0 {
-//                // Skip. Do not prepend spaces.
-            } else {
-                valueBuffer.append(c)
+            } else if valueStartIndex == nil {
+                valueStartIndex = currentData.lastCharacterIndex
             }
         }
         
@@ -426,34 +350,57 @@ class CPResultStyleDeclaration : _CPResultBase , CPResultTypeResolvable {
         case Value
     }
     
-    private var keyBuffer : String.CharacterView
-    private var valueBuffer : String.CharacterView
+    private var keyStartIndex : String.CharacterView.Index?
+    private var valueStartIndex : String.CharacterView.Index?
+    
     private var parseState : ParseState = .Key
     private var keyResult : String = ""
     private var valueResult : String = ""
 }
 
-class _CPResultBaseHeader : _CPResultBase {
-    
-}
 
-class CPResultRuleSetHeader : _CPResultBaseHeader , CPResultTypeResolvable {
+class CPResultRuleSetHeader :  CPResultTypeResolvable,CPAppendable  {
     
-    override init() {
-        self.selectorBuffer = createCharacterView()
-        self.pseudoClassStringBuffer = createCharacterView()
-        super.init()
+    func resolveType(currentData : CParserData) -> CPResultType {
+        return .RuleSetHeader(selector:selectorResult, selectorType:selectorType, pseudoClass:pseudoClassResult)
     }
-    
-    func resolveType() -> CPResultType {
-        return .RuleSetHeader(selector:selectorResult, selectorType:selectorType, pseudoClass:pseudoClass)
-    }
-    
-    // MARK: Override
-    
+
     /*! Parses UIKitElement header e.g.  "UIButton:normal {" */
-    private override func characterAppended(c: Character) -> CPAppendResult {
-        return self.verifyAndProcessValue( characters.count - 1 , added : c )
+    func characterAppended(c: Character , currentData : CParserData) -> CPAppendResult {
+        switch parseState {
+        case .SelectorType:
+            if c == "{" {
+                return finalize(currentData)
+            } else if c == "." {
+                selectorType = .NXSSClass
+                parseState = .Selector
+            } else {
+                selectorType = .UIKitElement
+                parseState = .Selector
+                return characterAppended(c, currentData: currentData)
+            }
+        case .Selector:
+            if c == "{" {
+                
+                return finalize(currentData)
+                
+            } else if c == ":" {
+            
+                selectorEndIndex = currentData.lastCharacterIndex
+                parseState = .PseudoClass
+                
+            } else if selectorStartIndex == nil {
+                selectorStartIndex = currentData.lastCharacterIndex
+            }
+            
+        case .PseudoClass:
+            if c == "{" {
+                return finalize(currentData)
+            } else if pseudoClassStartIndex == nil {
+                pseudoClassStartIndex = currentData.lastCharacterIndex
+            }
+        }
+        return .InProgress
     }
     
     // MARK: Private
@@ -464,64 +411,31 @@ class CPResultRuleSetHeader : _CPResultBaseHeader , CPResultTypeResolvable {
         case PseudoClass
     }
     
-    private var selectorBuffer : String.CharacterView
-    private var pseudoClassStringBuffer : String.CharacterView
-    private var pseudoClass : PseudoClass = .Normal
+    private var selectorStartIndex : String.CharacterView.Index?
+    private var selectorEndIndex : String.CharacterView.Index?
+    private var pseudoClassStartIndex : String.CharacterView.Index?
+    
     private var selectorType : SelectorType = .NXSSClass
     private var parseState : ParseState = .SelectorType
     
+    private var pseudoClassResult : PseudoClass = .Normal
     private var selectorResult = ""
     
-    private func verifyAndProcessValue( index : Int , added c : Character ) -> CPAppendResult {
-        switch parseState {
-        case .SelectorType:
-            if c == "{" {
-                return finalize()
-            } else if c == "." {
-                selectorType = .NXSSClass
-                parseState = .Selector
-            } else {
-                selectorType = .UIKitElement
-                parseState = .Selector
-                return verifyAndProcessValue(index, added: c)
-            }
-        case .Selector:
-            if c == "{" {
-                return finalize()
-            } else if c == ":" {
-                parseState = .PseudoClass
-//            } else if c == " " {
-                // handles space b/t selector name and open parenthesis
-            } else {
-                selectorBuffer.append(c)
-            }
-            
-        case .PseudoClass:
-            if c == "{" {
-                return finalize()
-//            } else if c == " " {
-                // space in before and after pseudoClass.
-            } else {
-                pseudoClassStringBuffer.append(c)
-            }
-        }
-        return .InProgress
-        
-    }
-    
-    private func finalize() -> CPAppendResult {
+    private func finalize(currentData : CParserData) -> CPAppendResult {
         // End of command. Let's process.
 
-        let pseudoClassStringResult = String(pseudoClassStringBuffer).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-        if pseudoClassStringResult.characters.count > 0 {
-            if let pc = PseudoClass(rawValue: pseudoClassStringResult) {
-                self.pseudoClass = pc
+        if let pseudoClassStartIndex = pseudoClassStartIndex {
+            let lastIndex = currentData.lastCharacterIndex.predecessor()
+            let pcStr = currentData.trimmedStringWithRange(pseudoClassStartIndex, endIndex: lastIndex)
+            if let pc = PseudoClass(rawValue: pcStr) {
+                self.pseudoClassResult = pc
             } else {
                 return .Invalid
             }
         }
         
-        selectorResult = String(selectorBuffer).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        let lastIndex = currentData.lastCharacterIndex.predecessor()
+        selectorResult = currentData.trimmedStringWithRange(self.selectorStartIndex!, endIndex: lastIndex)
         if selectorResult.characters.count == 0 {
             return .Invalid
         }
@@ -531,9 +445,9 @@ class CPResultRuleSetHeader : _CPResultBaseHeader , CPResultTypeResolvable {
     
 }
 
-class CPResultMixinHeader:_CPResultBaseHeader , CPResultTypeResolvable {
+class CPResultMixinHeader:CPAppendable , CPResultTypeResolvable {
     
-    override init() {
+    init() {
         struct Static {
             static var token: dispatch_once_t = 0
             static var keyword : [Character] = []
@@ -547,23 +461,18 @@ class CPResultMixinHeader:_CPResultBaseHeader , CPResultTypeResolvable {
             Static.keyword = keyword
         }
         self.keyword = Static.keyword
-        self.selectorBuffer = createCharacterView()
-        self.currentArgumentBuffer = createCharacterView()
-        super.init()
     }
     
-    func resolveType() -> CPResultType {
+    func resolveType( currentData : CParserData ) -> CPResultType {
         return .MixinHeader(selector:selectorResult, argumentNames:argumentNamesResult)
     }
  
-    // MARK: Override
-    
     /** Solves "@mixin foo($a,$b) {" */
-    private override func characterAppended(c: Character) -> CPAppendResult {
+    func characterAppended(c: Character,currentData : CParserData) -> CPAppendResult {
         
-        if characters.count <= keyword.count {
+        if currentData.characters.count <= keyword.count {
             
-            if c == keyword[characters.count-1] {
+            if c == keyword[currentData.characters.count-1] {
                 return .InProgress
             }
             else {
@@ -573,41 +482,37 @@ class CPResultMixinHeader:_CPResultBaseHeader , CPResultTypeResolvable {
             
         } else if argumentParseState == .Pre {
             if c == "("  {
+                
+                let lastIndex = currentData.lastCharacterIndex.predecessor()
+                selectorResult = currentData.trimmedStringWithRange(self.selectorStartIndex!, endIndex: lastIndex)
                 argumentParseState = .In
-//            } else if c == " " {
-                // handles space b/t selector name and open parenthesis
-            } else {
-                selectorBuffer.append(c)
+                
+            } else if selectorStartIndex == nil {
+                selectorStartIndex = currentData.lastCharacterIndex
             }
             
         } else if argumentParseState == .In  {
             
-//            if c == " " {
-//                
-//            } else
-                if c == "," {
+            if c == "," || c == ")" {
                 
-                argumentNamesBuffer.append(currentArgumentBuffer)
-                currentArgumentBuffer = createCharacterView()
+                let lastIndex = currentData.lastCharacterIndex.predecessor()
+                let argName = currentData.trimmedStringWithRange(self.currentArgumentStartIndex!, endIndex: lastIndex)
+                argumentNamesResult.append(argName)
+
+                currentArgumentStartIndex = nil
                 
-            } else if c == ")" {
+                if c == ")" {
+                    argumentParseState = .Post
+                }
                 
-                argumentNamesBuffer.append(currentArgumentBuffer)
-                currentArgumentBuffer = createCharacterView()
-                argumentParseState = .Post
+            } else if currentArgumentStartIndex == nil {
                 
-            } else {
-                
-                currentArgumentBuffer.append(c)
+                currentArgumentStartIndex = currentData.lastCharacterIndex
                 
             }
             
         } else if c == "{" {
             if argumentParseState == .Pre || argumentParseState == .Post {
-                selectorResult = String(selectorBuffer).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-                argumentNamesResult = argumentNamesBuffer.map({ buffer in
-                    return String(buffer).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-                })
                 return .Resolved
             } else {
                 return .Invalid
@@ -621,26 +526,24 @@ class CPResultMixinHeader:_CPResultBaseHeader , CPResultTypeResolvable {
     // MARK: Private
     
     private var argumentParseState : CPResultArgParseState = .Pre
-    private var currentArgumentBuffer : String.CharacterView
-    private var argumentNamesBuffer : [String.CharacterView] = []
-    private var selectorBuffer : String.CharacterView
     private var keyword : [Character] = []
+
+    private var selectorStartIndex : String.CharacterView.Index?
+    private var currentArgumentStartIndex : String.CharacterView.Index?
     
     private var selectorResult = ""
     private var argumentNamesResult : [String] = []
 }
 
-class CPResultBlockClosure:_CPResultBase , CPResultTypeResolvable  {
+class CPResultBlockClosure:CPAppendable , CPResultTypeResolvable  {
 
-    func resolveType() -> CPResultType {
+    func resolveType(currentData : CParserData) -> CPResultType {
         return .BlockClosure
     }
     
-    // MARK: Override
-    
     /** Solves end of block/rule-set "}" */
-    private override func characterAppended(c: Character) -> CPAppendResult {
-        if characters.count == 1 && c == "}" {
+    func characterAppended(c: Character, currentData : CParserData) -> CPAppendResult {
+        if currentData.characters.count == 1 && c == "}" {
             return .Resolved
         } else {
             return .Invalid

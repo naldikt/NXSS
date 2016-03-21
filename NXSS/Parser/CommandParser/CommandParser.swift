@@ -23,15 +23,45 @@ enum CPState {
     case ScanForLeadingSpace
     case RunParsers
     case SkipForComment
-
 }
 
 typealias CParser = protocol<CPAppendable,CPResultTypeResolvable>
+
+class CParserData {
+    private(set) var characters : String.CharacterView
+    
+    // This is the start index of the last character
+//    private(set) var lastCharacterIndex : String.CharacterView.Index
+    
+    init() {
+        self.characters = String.CharacterView()
+        self.characters.reserveCapacity(150)
+//        self.lastCharacterIndex = characters.startIndex
+    }
+    
+    func append(c : Character) {
+        self.characters.append(c)
+//        self.lastCharacterIndex = self.characters.endIndex.predecessor()  //
+    }
+    
+    func trimmedStringWithRange( startIndex : String.CharacterView.Index , endIndex : String.CharacterView.Index ) -> String {
+        let s = self.stringWithRange(startIndex, endIndex: endIndex)
+        return s.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+    }
+    
+    func stringWithRange( startIndex : String.CharacterView.Index , endIndex : String.CharacterView.Index ) -> String {
+        let range = Range(start: startIndex, end: endIndex)
+        let string = String(characters[range])
+        print("*** string \(string)")
+        return string
+    }
+}
 
 class CommandParser {
     
     init( pastResult : CPResultType? = nil ) {
         
+        self.data = CParserData()
         parsers = CommandParser.defaultParsers()
         
         /*
@@ -68,7 +98,6 @@ class CommandParser {
     
     class func defaultParsers() -> [CParser] {
         return [
-
             CPResultStyleDeclaration(),
             CPResultMixinHeader(),
             CPResultRuleSetHeader(),
@@ -76,7 +105,6 @@ class CommandParser {
             CPResultExtend(),
             CPResultInclude(),
             CPResultImport()
-
         ]
     }
 
@@ -87,7 +115,7 @@ class CommandParser {
             if c == "/" {
                 appendState = .PossiblyStartSkip
                 
-            } else if isFirstCharacter &&
+            } else if data.characters.count == 0 &&
                 (c == " " || c == "\t" || c == "\n" || c == "\r") {
                     
                     // Intentionally skip
@@ -106,15 +134,6 @@ class CommandParser {
                     return cpAppendResult
                 }
                 return doAppend(c)
-                
-//                characters.append("/")
-//                let ret1 = characterAppended("/")
-//                if ret1 == .InProgress {
-//                    characters.append(c)
-//                    return characterAppended(c)
-//                } else {
-//                    return ret1
-//                }
             }
         case .Skip:
             if c == "*" {
@@ -128,9 +147,6 @@ class CommandParser {
             } else {
                 // Still skipping!
                 appendState = .Skip
-                //                characters.append("*")
-                //                appendState = .Skip
-                //                return characterAppended("*")
             }
         }
         
@@ -152,19 +168,19 @@ class CommandParser {
     }
     
     private var appendState : AppendState = .Append
-    private var isFirstCharacter : Bool = true
+    private var data : CParserData
     
     private func doAppend(c : Character) -> CPResultType? {
         // Let's run the parser!
-        isFirstCharacter = false
+        data.append(c)
         var newParsers : [protocol<CPAppendable,CPResultTypeResolvable>] = []
         for parser in parsers {
-            switch parser.append(c) {
+            switch parser.characterAppended(c, currentData:  data) {
             case .InProgress: newParsers.append(parser)
             case .Invalid:  continue
             case .Resolved:
                 //                print("We've got a winnder: \(parser)")
-                return parser.resolveType()   // Done.
+                return parser.resolveType( data)   // Done.
                 
             }
         }
