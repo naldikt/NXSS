@@ -27,7 +27,7 @@ enum CPState {
 
 typealias CParser = protocol<CPAppendable,CPResultTypeResolvable>
 
-class CParserData {
+class CParserData : CustomStringConvertible {
     private(set) var characters : String.CharacterView
     
     // This is the start index of the last character
@@ -52,8 +52,12 @@ class CParserData {
     func stringWithRange( startIndex : String.CharacterView.Index , endIndex : String.CharacterView.Index ) -> String {
         let range = Range(start: startIndex, end: endIndex)
         let string = String(characters[range])
-        print("*** string \(string)")
+//        print("*** string |\(string)|")
         return string
+    }
+    
+    var description : String {
+        return "<CParserData characters=|\(String(characters))|>"
     }
 }
 

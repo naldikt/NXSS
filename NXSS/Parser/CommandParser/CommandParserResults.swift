@@ -63,11 +63,6 @@ class _CPResultReservedKeyValueBase : CPAppendable{
         if currentData.characters.count <= key.count {
             return verifyKey( c , currentData:  currentData)
             
-        } else if valueIndexStart == nil && c == " " {
-            
-            // handles space between keyword and selector name
-            return .InProgress
-            
         } else {
             // Handle Values
             let result = verifyValue( c, currentData:  currentData )
@@ -89,14 +84,14 @@ class _CPResultReservedKeyValueBase : CPAppendable{
     
     
     private func verifyKey( c:Character, currentData : CParserData ) -> CPAppendResult {
-        if key[currentData.characters.count] == c { return .InProgress }
+        if key[currentData.characters.count-1] == c { return .InProgress }
         else { return .Invalid }
     }
     
     private func verifyValue( c:Character, currentData : CParserData ) -> CPAppendResult {
         if c == ";" {
-            if let valueIndexStart = valueIndexStart where currentData.lastCharacterIndex != valueIndexStart {
-                let lastIndex = currentData.lastCharacterIndex.predecessor()
+            if let valueIndexStart = valueIndexStart where currentData.characters.endIndex != valueIndexStart {
+                let lastIndex = currentData.characters.endIndex.predecessor()
                 valueResult = currentData.trimmedStringWithRange(valueIndexStart, endIndex: lastIndex)
                 return .Resolved
             } else {
@@ -104,7 +99,7 @@ class _CPResultReservedKeyValueBase : CPAppendable{
             }
         } else {
             if valueIndexStart == nil {
-                valueIndexStart = currentData.lastCharacterIndex
+                valueIndexStart = currentData.characters.endIndex.predecessor()
             }
             return .InProgress
         }
@@ -139,11 +134,14 @@ class CPResultExtend : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
     func resolveType( currentData : CParserData ) -> CPResultType {
         
         // TODO: this isn't safe. I think resolveType should be throwable
+        if selectorEndIndex == nil {
+            selectorEndIndex = currentData.characters.endIndex.predecessor() // endIndex is ";"
+        }
         let selector = currentData.trimmedStringWithRange(selectorStartIndex!, endIndex: selectorEndIndex!)
         
         var pseudoClass : PseudoClass = .Normal
         if let pseudoClassStartIndex = pseudoClassStartIndex {
-            let pseudoClassStr = currentData.trimmedStringWithRange(pseudoClassStartIndex, endIndex: currentData.lastCharacterIndex)
+            let pseudoClassStr = currentData.trimmedStringWithRange(pseudoClassStartIndex, endIndex: currentData.characters.endIndex)
             let pc = PseudoClass(rawValue: pseudoClassStr)!
             pseudoClass = pc
         }
@@ -181,15 +179,15 @@ class CPResultExtend : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
             
         case .Selector:
             if c == ":" {
-                selectorEndIndex = currentData.lastCharacterIndex.predecessor()
+                selectorEndIndex = currentData.characters.endIndex.predecessor()
                 parseState = .PseudoClass
             } else if selectorStartIndex == nil {
-                selectorStartIndex = currentData.lastCharacterIndex
+                selectorStartIndex = currentData.characters.endIndex.predecessor()
             }
             
         case .PseudoClass:
             if pseudoClassStartIndex == nil {
-                pseudoClassStartIndex = currentData.lastCharacterIndex
+                pseudoClassStartIndex = currentData.characters.endIndex.predecessor()
             }
         }
     }
@@ -229,11 +227,11 @@ class CPResultInclude : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
         switch argumentParseState {
         case .Pre:
             if c == "(" {
-                let lastIndex = currentData.lastCharacterIndex.predecessor()
+                let lastIndex = currentData.characters.endIndex.predecessor()
                 selectorResult = currentData.trimmedStringWithRange(self.selectorStartIndex!, endIndex: lastIndex)
                 argumentParseState = .In
             } else  if selectorStartIndex == nil {
-                selectorStartIndex = currentData.lastCharacterIndex
+                selectorStartIndex = currentData.characters.endIndex.predecessor()
             }
             
         case .In:
@@ -246,17 +244,20 @@ class CPResultInclude : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
             
             if c == ")" || (c  == "," && numOfParenthesis == 0) {
                 
-                let lastIndex = currentData.lastCharacterIndex.predecessor()
-                let argVal = currentData.trimmedStringWithRange(self.currentArgumentStartIndex!, endIndex: lastIndex)
-                argumentValuesResut.append(argVal)
-                currentArgumentStartIndex = nil
+                if let currentArgumentStartIndex = currentArgumentStartIndex {
+                    // May get here when a func is called without argument
+                    let lastIndex = currentData.characters.endIndex.predecessor()
+                    let argVal = currentData.trimmedStringWithRange(currentArgumentStartIndex, endIndex: lastIndex)
+                    argumentValuesResut.append(argVal)
+                    self.currentArgumentStartIndex = nil
+                }
                 
                 if c == ")" {
                     argumentParseState = .Post
                 }
                 
             } else if currentArgumentStartIndex == nil {
-                currentArgumentStartIndex = currentData.lastCharacterIndex
+                currentArgumentStartIndex = currentData.characters.endIndex.predecessor()
             }
             
         case .Post:
@@ -319,15 +320,15 @@ class CPResultStyleDeclaration : CPResultTypeResolvable ,CPAppendable {
         switch parseState {
         case .Key:
             if c  == ":" {
-                let lastIndex = currentData.lastCharacterIndex.predecessor()
+                let lastIndex = currentData.characters.endIndex.predecessor()
                 keyResult = currentData.trimmedStringWithRange(self.keyStartIndex!, endIndex: lastIndex)
                 parseState = .Value
             } else if keyStartIndex == nil {
-                keyStartIndex = currentData.lastCharacterIndex
+                keyStartIndex = currentData.characters.endIndex.predecessor()
             }
         case .Value:
             if c == ";" {
-                let lastIndex = currentData.lastCharacterIndex.predecessor()
+                let lastIndex = currentData.characters.endIndex.predecessor()
                 valueResult = currentData.trimmedStringWithRange(self.valueStartIndex!, endIndex: lastIndex)
 
                 if self.keyResult.characters.count > 0 && self.valueResult.characters.count > 0 {
@@ -336,7 +337,7 @@ class CPResultStyleDeclaration : CPResultTypeResolvable ,CPAppendable {
                     return .Invalid
                 }
             } else if valueStartIndex == nil {
-                valueStartIndex = currentData.lastCharacterIndex
+                valueStartIndex = currentData.characters.endIndex.predecessor()
             }
         }
         
@@ -381,23 +382,23 @@ class CPResultRuleSetHeader :  CPResultTypeResolvable,CPAppendable  {
             }
         case .Selector:
             if c == "{" {
-                
+                selectorEndIndex = currentData.characters.endIndex.predecessor()
                 return finalize(currentData)
                 
             } else if c == ":" {
             
-                selectorEndIndex = currentData.lastCharacterIndex
+                selectorEndIndex = currentData.characters.endIndex.predecessor()
                 parseState = .PseudoClass
                 
             } else if selectorStartIndex == nil {
-                selectorStartIndex = currentData.lastCharacterIndex
+                selectorStartIndex = currentData.characters.endIndex.predecessor()
             }
             
         case .PseudoClass:
             if c == "{" {
                 return finalize(currentData)
             } else if pseudoClassStartIndex == nil {
-                pseudoClassStartIndex = currentData.lastCharacterIndex
+                pseudoClassStartIndex = currentData.characters.endIndex.predecessor()
             }
         }
         return .InProgress
@@ -425,7 +426,7 @@ class CPResultRuleSetHeader :  CPResultTypeResolvable,CPAppendable  {
         // End of command. Let's process.
 
         if let pseudoClassStartIndex = pseudoClassStartIndex {
-            let lastIndex = currentData.lastCharacterIndex.predecessor()
+            let lastIndex = currentData.characters.endIndex.predecessor()
             let pcStr = currentData.trimmedStringWithRange(pseudoClassStartIndex, endIndex: lastIndex)
             if let pc = PseudoClass(rawValue: pcStr) {
                 self.pseudoClassResult = pc
@@ -434,8 +435,7 @@ class CPResultRuleSetHeader :  CPResultTypeResolvable,CPAppendable  {
             }
         }
         
-        let lastIndex = currentData.lastCharacterIndex.predecessor()
-        selectorResult = currentData.trimmedStringWithRange(self.selectorStartIndex!, endIndex: lastIndex)
+        selectorResult = currentData.trimmedStringWithRange(self.selectorStartIndex!, endIndex: selectorEndIndex!)
         if selectorResult.characters.count == 0 {
             return .Invalid
         }
@@ -483,21 +483,26 @@ class CPResultMixinHeader:CPAppendable , CPResultTypeResolvable {
         } else if argumentParseState == .Pre {
             if c == "("  {
                 
-                let lastIndex = currentData.lastCharacterIndex.predecessor()
+                let lastIndex = currentData.characters.endIndex.predecessor()
                 selectorResult = currentData.trimmedStringWithRange(self.selectorStartIndex!, endIndex: lastIndex)
                 argumentParseState = .In
                 
             } else if selectorStartIndex == nil {
-                selectorStartIndex = currentData.lastCharacterIndex
+                selectorStartIndex = currentData.characters.endIndex.predecessor()
             }
             
         } else if argumentParseState == .In  {
             
             if c == "," || c == ")" {
                 
-                let lastIndex = currentData.lastCharacterIndex.predecessor()
-                let argName = currentData.trimmedStringWithRange(self.currentArgumentStartIndex!, endIndex: lastIndex)
-                argumentNamesResult.append(argName)
+                if let currentArgumentStartIndex = currentArgumentStartIndex {
+                    // May get here when you do "foo()"
+                    let lastIndex = currentData.characters.endIndex.predecessor()
+                    let argName = currentData.trimmedStringWithRange(currentArgumentStartIndex, endIndex: lastIndex)
+                    if argName.characters.count > 0 {
+                        argumentNamesResult.append(argName)
+                    }
+                }
 
                 currentArgumentStartIndex = nil
                 
@@ -507,7 +512,7 @@ class CPResultMixinHeader:CPAppendable , CPResultTypeResolvable {
                 
             } else if currentArgumentStartIndex == nil {
                 
-                currentArgumentStartIndex = currentData.lastCharacterIndex
+                currentArgumentStartIndex = currentData.characters.endIndex.predecessor()
                 
             }
             
