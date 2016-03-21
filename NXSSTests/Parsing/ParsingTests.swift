@@ -130,6 +130,7 @@ class SuccessfulTests: XCTestCase {
                 ]
             ])
     }
+
     
     func testSelector() {
         test("parsing_selector.nxss",

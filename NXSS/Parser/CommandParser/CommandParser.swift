@@ -49,7 +49,7 @@ class CommandParser {
             if c == "/" {
                 appendState = .PossiblyStartSkip
                 
-            } else if characters.count == 0 &&
+            } else if isFirstCharacter &&
                 (c == " " || c == "\t" || c == "\n" || c == "\r") {
                     
                     // Intentionally skip
@@ -114,11 +114,11 @@ class CommandParser {
     }
     
     private var appendState : AppendState = .Append
-    private var characters : [Character] = []
+    private var isFirstCharacter : Bool = true
     
     private func doAppend(c : Character) -> CPResultType? {
         // Let's run the parser!
-        characters.append(c)
+        isFirstCharacter = false
         var newParsers : [protocol<CPAppendable,CPResultTypeResolvable>] = []
         for parser in parsers {
             switch parser.append(c) {

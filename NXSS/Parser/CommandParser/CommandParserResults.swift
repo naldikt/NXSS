@@ -8,7 +8,19 @@
 
 import Foundation
 
-let CPBufferInitialLength : Int = 30
+let CPBufferInitialLength : Int = 50
+
+func createCharacterView() -> String.CharacterView {
+    var ret = String.CharacterView()
+    ret.reserveCapacity(CPBufferInitialLength)
+    return ret
+}
+
+func createCharacterView(initialCharacter : Character) -> String.CharacterView {
+    var ret = createCharacterView()
+    ret.append(initialCharacter)
+    return ret
+}
 
 enum CPAppendResult {
     case InProgress    // can still take more characters
@@ -38,6 +50,10 @@ protocol CPResultTypeResolvable {
 }
 
 class _CPResultBase : CPAppendable {
+    
+    init() {
+        self.characters = createCharacterView()
+    }
     
     func append(c: Character) -> CPAppendResult {
         
@@ -110,20 +126,9 @@ class _CPResultBase : CPAppendable {
     }
     
     private var skip = false
-    private var characters : [Character] = []
+    private var characters : String.CharacterView
     private var appendState : AppendState = .Append
     
-    private func createCharacterView() -> String.CharacterView {
-        var ret = String.CharacterView()
-        ret.reserveCapacity(CPBufferInitialLength)
-        return ret
-    }
-    
-    private func createCharacterView(initialCharacter : Character) -> String.CharacterView {
-        var ret = createCharacterView()
-        ret.append(initialCharacter)
-        return ret
-    }
 }
 
 /*! Base class for reserved-key and value pair line. You need to subclass me. */
@@ -132,6 +137,7 @@ class _CPResultReservedKeyValueBase : _CPResultBase {
     /** Anything after key is considered value. */
     init(key : [Character]) {
         self.key = key
+        self.value = createCharacterView()
     }
     
     // MARK: Overrides
@@ -143,12 +149,12 @@ class _CPResultReservedKeyValueBase : _CPResultBase {
     // MARK: Private
     
     private var key : [Character]
-    private var value : String = ""
+    private var value : String.CharacterView
     
     private func verify( index : Int , added c : Character ) -> CPAppendResult {
         if characters.count <= key.count {
             return verifyKey( index , added : c )
-        } else if value.characters.count == 0 && c == " " {
+        } else if value.count == 0 && c == " " {
             // handles space between keyword and selector name
             return .InProgress
         } else {
@@ -157,7 +163,7 @@ class _CPResultReservedKeyValueBase : _CPResultBase {
             case .InProgress:
                 self.processValue( index,added:c)
             case .Resolved:
-                if value.characters.count == 0 {
+                if value.count == 0 {
                     return .Invalid
                 }
             default:
@@ -175,7 +181,7 @@ class _CPResultReservedKeyValueBase : _CPResultBase {
     private func verifyValue( index : Int , added c : Character ) -> CPAppendResult {
 
         if c == ";" {
-            if value.characters.count == 0 {
+            if value.count == 0 {
                 return .Invalid
             }
             return .Resolved
@@ -212,11 +218,13 @@ class CPResultExtend : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
             }
             Static.keyword = keyword
         }
+        self.selector = createCharacterView()
         super.init(key: Static.keyword)
+        
     }
     
     func resolveType() -> CPResultType {
-        return .Extend(selector:selector, selectorType:selectorType, pseudoClass:pseudoClass)
+        return .Extend(selector:String(selector), selectorType:selectorType, pseudoClass:pseudoClass)
     }
     
     // MARK: Private
@@ -227,7 +235,7 @@ class CPResultExtend : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
         case PseudoClass
     }
     
-    private var selector = ""
+    private var selector : String.CharacterView
     private var selectorType : SelectorType = .UIKitElement
     private var pseudoClass : PseudoClass = .Normal
     private var parseState : ParseState = .SelectorType
@@ -276,11 +284,17 @@ class CPResultInclude : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
             }
             Static.keyword = keyword
         }
+        
+        self.currentArgument = createCharacterView()
+        self.selectorBuffer = createCharacterView()
         super.init(key: Static.keyword)
     }
     
     func resolveType() -> CPResultType {
-        return .Include(selector:selector, argumentValues : argumentValues)
+        let argVals = self.argumentValues.map { (charView) in
+            return String(charView).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        }
+        return .Include(selector:String(selectorBuffer), argumentValues : argVals)
     }
     
     // MARK: Override
@@ -293,7 +307,7 @@ class CPResultInclude : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
             if c == "(" {
                 argumentParseState = .In
             } else  {
-                selector.append(c)
+                selectorBuffer.append(c)
             }
             
         case .In:
@@ -306,13 +320,13 @@ class CPResultInclude : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
             
             if c == ")" {
                 argumentValues.append(currentArgument)
-                currentArgument = ""
+                currentArgument = createCharacterView()
                 
                 argumentParseState = .Post
                 
             } else if c  == "," && numOfParenthesis == 0 {
                 argumentValues.append(currentArgument)
-                currentArgument = ""
+                currentArgument = createCharacterView()
                 
             } else {
                 currentArgument.append(c)
@@ -327,10 +341,11 @@ class CPResultInclude : _CPResultReservedKeyValueBase , CPResultTypeResolvable {
     // MARK: Private
     
     private var argumentParseState : CPResultArgParseState = .Pre
-    private var currentArgument  = ""
-    private var selector  = ""
-    private var argumentValues:[String] = []
+    private var currentArgument : String.CharacterView
+    private var selectorBuffer : String.CharacterView
+    private var argumentValues:[String.CharacterView] = []
     private var numOfParenthesis = 0  // helps with distinguishing between arg and sub-arg
+    
 }
 
 class CPResultImport : _CPResultReservedKeyValueBase, CPResultTypeResolvable {
@@ -353,7 +368,7 @@ class CPResultImport : _CPResultReservedKeyValueBase, CPResultTypeResolvable {
     }
     
     func resolveType() -> CPResultType {
-        return .Import(fileName:value)
+        return .Import(fileName:String(value))
     }
     
     private override func processValue(index: Int, added c: Character) {
@@ -362,9 +377,15 @@ class CPResultImport : _CPResultReservedKeyValueBase, CPResultTypeResolvable {
 }
 
 class CPResultStyleDeclaration : _CPResultBase , CPResultTypeResolvable {
+    
+    override init() {
+        self.keyBuffer = createCharacterView()
+        self.valueBuffer = createCharacterView()
+        super.init()
+    }
 
     func resolveType() -> CPResultType {
-        return .StyleDeclaration(key:key,value:value)
+        return .StyleDeclaration(key:self.keyResult,value:self.valueResult)
     }
     
     // MARK: Override
@@ -377,13 +398,13 @@ class CPResultStyleDeclaration : _CPResultBase , CPResultTypeResolvable {
             if c  == ":" {
                 parseState = .Value
             } else {
-                key.append(c)
+                keyBuffer.append(c)
             }
         case .Value:
             if c == ";" {
-                key = key.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-                value = value.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-                if key.characters.count > 0 && value.characters.count > 0 {
+                self.keyResult = String(keyBuffer).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+                self.valueResult = String(valueBuffer).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+                if self.keyResult.characters.count > 0 && self.valueResult.characters.count > 0 {
                     return .Resolved
                 } else {
                     return .Invalid
@@ -391,7 +412,7 @@ class CPResultStyleDeclaration : _CPResultBase , CPResultTypeResolvable {
 //            } else if c == " " && value.characters.count == 0 {
 //                // Skip. Do not prepend spaces.
             } else {
-                value.append(c)
+                valueBuffer.append(c)
             }
         }
         
@@ -405,12 +426,11 @@ class CPResultStyleDeclaration : _CPResultBase , CPResultTypeResolvable {
         case Value
     }
     
-    private var key = ""
-    private var value = ""
+    private var keyBuffer : String.CharacterView
+    private var valueBuffer : String.CharacterView
     private var parseState : ParseState = .Key
-    
-    
-
+    private var keyResult : String = ""
+    private var valueResult : String = ""
 }
 
 class _CPResultBaseHeader : _CPResultBase {
@@ -419,8 +439,14 @@ class _CPResultBaseHeader : _CPResultBase {
 
 class CPResultRuleSetHeader : _CPResultBaseHeader , CPResultTypeResolvable {
     
+    override init() {
+        self.selectorBuffer = createCharacterView()
+        self.pseudoClassStringBuffer = createCharacterView()
+        super.init()
+    }
+    
     func resolveType() -> CPResultType {
-        return .RuleSetHeader(selector:selector, selectorType:selectorType, pseudoClass:pseudoClass)
+        return .RuleSetHeader(selector:selectorResult, selectorType:selectorType, pseudoClass:pseudoClass)
     }
     
     // MARK: Override
@@ -438,12 +464,13 @@ class CPResultRuleSetHeader : _CPResultBaseHeader , CPResultTypeResolvable {
         case PseudoClass
     }
     
-    private var selector : String = ""
-    private var pseudoClassString : String = ""
+    private var selectorBuffer : String.CharacterView
+    private var pseudoClassStringBuffer : String.CharacterView
     private var pseudoClass : PseudoClass = .Normal
     private var selectorType : SelectorType = .NXSSClass
     private var parseState : ParseState = .SelectorType
-
+    
+    private var selectorResult = ""
     
     private func verifyAndProcessValue( index : Int , added c : Character ) -> CPAppendResult {
         switch parseState {
@@ -466,7 +493,7 @@ class CPResultRuleSetHeader : _CPResultBaseHeader , CPResultTypeResolvable {
 //            } else if c == " " {
                 // handles space b/t selector name and open parenthesis
             } else {
-                selector.append(c)
+                selectorBuffer.append(c)
             }
             
         case .PseudoClass:
@@ -475,7 +502,7 @@ class CPResultRuleSetHeader : _CPResultBaseHeader , CPResultTypeResolvable {
 //            } else if c == " " {
                 // space in before and after pseudoClass.
             } else {
-                pseudoClassString.append(c)
+                pseudoClassStringBuffer.append(c)
             }
         }
         return .InProgress
@@ -485,16 +512,17 @@ class CPResultRuleSetHeader : _CPResultBaseHeader , CPResultTypeResolvable {
     private func finalize() -> CPAppendResult {
         // End of command. Let's process.
 
-        if pseudoClassString.characters.count > 0 {
-            if let pc = PseudoClass(rawValue: pseudoClassString) {
+        let pseudoClassStringResult = String(pseudoClassStringBuffer).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        if pseudoClassStringResult.characters.count > 0 {
+            if let pc = PseudoClass(rawValue: pseudoClassStringResult) {
                 self.pseudoClass = pc
             } else {
                 return .Invalid
             }
         }
         
-        selector = selector.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-        if selector.characters.count == 0 {
+        selectorResult = String(selectorBuffer).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        if selectorResult.characters.count == 0 {
             return .Invalid
         }
         
@@ -519,11 +547,13 @@ class CPResultMixinHeader:_CPResultBaseHeader , CPResultTypeResolvable {
             Static.keyword = keyword
         }
         self.keyword = Static.keyword
+        self.selectorBuffer = createCharacterView()
+        self.currentArgumentBuffer = createCharacterView()
         super.init()
     }
     
     func resolveType() -> CPResultType {
-        return .MixinHeader(selector:selector, argumentNames:argumentNames)
+        return .MixinHeader(selector:selectorResult, argumentNames:argumentNamesResult)
     }
  
     // MARK: Override
@@ -547,7 +577,7 @@ class CPResultMixinHeader:_CPResultBaseHeader , CPResultTypeResolvable {
 //            } else if c == " " {
                 // handles space b/t selector name and open parenthesis
             } else {
-                selector.append(c)
+                selectorBuffer.append(c)
             }
             
         } else if argumentParseState == .In  {
@@ -557,26 +587,26 @@ class CPResultMixinHeader:_CPResultBaseHeader , CPResultTypeResolvable {
 //            } else
                 if c == "," {
                 
-                argumentNames.append(currentArgument)
-                currentArgument = ""
+                argumentNamesBuffer.append(currentArgumentBuffer)
+                currentArgumentBuffer = createCharacterView()
                 
             } else if c == ")" {
                 
-                argumentNames.append(currentArgument)
-                currentArgument = ""
+                argumentNamesBuffer.append(currentArgumentBuffer)
+                currentArgumentBuffer = createCharacterView()
                 argumentParseState = .Post
                 
             } else {
                 
-                currentArgument.append(c)
+                currentArgumentBuffer.append(c)
                 
             }
             
         } else if c == "{" {
             if argumentParseState == .Pre || argumentParseState == .Post {
-                selector = selector.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-                argumentNames = argumentNames.map({ arg in
-                    return arg.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+                selectorResult = String(selectorBuffer).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+                argumentNamesResult = argumentNamesBuffer.map({ buffer in
+                    return String(buffer).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
                 })
                 return .Resolved
             } else {
@@ -591,11 +621,13 @@ class CPResultMixinHeader:_CPResultBaseHeader , CPResultTypeResolvable {
     // MARK: Private
     
     private var argumentParseState : CPResultArgParseState = .Pre
-    private var currentArgument : String = ""
-
-    private var argumentNames : [String] = []
-    private var selector : String = ""
+    private var currentArgumentBuffer : String.CharacterView
+    private var argumentNamesBuffer : [String.CharacterView] = []
+    private var selectorBuffer : String.CharacterView
     private var keyword : [Character] = []
+    
+    private var selectorResult = ""
+    private var argumentNamesResult : [String] = []
 }
 
 class CPResultBlockClosure:_CPResultBase , CPResultTypeResolvable  {
