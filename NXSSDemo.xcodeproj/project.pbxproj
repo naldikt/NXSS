@@ -86,6 +86,8 @@
 		20BADDE41C22686300984AE2 /* parsing_import_2_1.nxss in Resources */ = {isa = PBXBuildFile; fileRef = 20BADDE31C22686300984AE2 /* parsing_import_2_1.nxss */; };
 		20BEAF9F1C325ECD0059674D /* UINavigationBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BEAF9E1C325ECD0059674D /* UINavigationBarViewController.swift */; };
 		20BEAFA11C325EDC0059674D /* UINavigationBarViewController.nxss in Resources */ = {isa = PBXBuildFile; fileRef = 20BEAFA01C325EDC0059674D /* UINavigationBarViewController.nxss */; };
+		20DC7B3F1C9F5B44005A51C7 /* ParserResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DC7B3E1C9F5B44005A51C7 /* ParserResult.swift */; };
+		20DC7B411C9F5DD3005A51C7 /* NXSSParserResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DC7B401C9F5DD3005A51C7 /* NXSSParserResult.swift */; };
 		20F030401C30FFF200AE772F /* demo.css in Resources */ = {isa = PBXBuildFile; fileRef = 20F030351C30FFF200AE772F /* demo.css */; };
 		20F030411C30FFF200AE772F /* demo.js in Resources */ = {isa = PBXBuildFile; fileRef = 20F030361C30FFF200AE772F /* demo.js */; };
 		20F030421C30FFF200AE772F /* demo.html in Resources */ = {isa = PBXBuildFile; fileRef = 20F030371C30FFF200AE772F /* demo.html */; };
@@ -239,6 +241,8 @@
 		20BADDE31C22686300984AE2 /* parsing_import_2_1.nxss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = parsing_import_2_1.nxss; sourceTree = "<group>"; };
 		20BEAF9E1C325ECD0059674D /* UINavigationBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UINavigationBarViewController.swift; sourceTree = "<group>"; };
 		20BEAFA01C325EDC0059674D /* UINavigationBarViewController.nxss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = UINavigationBarViewController.nxss; sourceTree = "<group>"; };
+		20DC7B3E1C9F5B44005A51C7 /* ParserResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParserResult.swift; sourceTree = "<group>"; };
+		20DC7B401C9F5DD3005A51C7 /* NXSSParserResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NXSSParserResult.swift; sourceTree = "<group>"; };
 		20F030351C30FFF200AE772F /* demo.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = demo.css; sourceTree = "<group>"; };
 		20F030361C30FFF200AE772F /* demo.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = demo.js; sourceTree = "<group>"; };
 		20F030371C30FFF200AE772F /* demo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = demo.html; sourceTree = "<group>"; };
@@ -492,6 +496,7 @@
 				201D5C391C83FE020096F1B5 /* CommandParser */,
 				20958DE31BCB61A700C456A5 /* Helpers */,
 				20958DF01BCB61A700C456A5 /* Parser.swift */,
+				20DC7B3E1C9F5B44005A51C7 /* ParserResult.swift */,
 			);
 			path = Parser;
 			sourceTree = "<group>";
@@ -508,6 +513,7 @@
 				20A0D14D1C13FE4F00DB4065 /* Block */,
 				20958DE41BCB61A700C456A5 /* Compiled */,
 				20A814E61C193D9D006694D9 /* FunctionHeader.swift */,
+				20DC7B401C9F5DD3005A51C7 /* NXSSParserResult.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -859,8 +865,10 @@
 				201D5C3C1C83FE020096F1B5 /* CommandParser.swift in Sources */,
 				202D1D9A1C449175006F493E /* UIView+NXSS.swift in Sources */,
 				20A0D1531C13FE4F00DB4065 /* MixinBlock.swift in Sources */,
+				20DC7B3F1C9F5B44005A51C7 /* ParserResult.swift in Sources */,
 				202D1D971C449175006F493E /* UIControl+NXSS.swift in Sources */,
 				20958DFC1BCB61A700C456A5 /* CompiledRuleSet.swift in Sources */,
+				20DC7B411C9F5DD3005A51C7 /* NXSSParserResult.swift in Sources */,
 				20A0D1521C13FE4F00DB4065 /* RuleSetBlock.swift in Sources */,
 				205CBE891BF9881200A04047 /* Dictionary+Core.swift in Sources */,
 				2068B8261BC0BDA8005317B5 /* NXSS.swift in Sources */,

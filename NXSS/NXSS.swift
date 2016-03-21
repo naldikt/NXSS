@@ -33,7 +33,8 @@ public class NXSS {
             let startTime = NSDate()
             
             let parser = try Parser(fileName:fileName, bundle:bundle)
-            self.ruleSets = try parser.parse()
+            let parserResult = try parser.parse()
+            self.ruleSets = parserResult.ruleSets
             
             let diff = NSDate().timeIntervalSince1970 - startTime.timeIntervalSince1970
             self.lastParseDuration = diff
@@ -141,7 +142,6 @@ public class NXSS {
                 }
                 
             } else {
-                NSLog("RuleSets \(ruleSets)")
                 NSLog("NXSS.isStyleClassEqualToDictionary failed because selector \(selector) selectorType \(selectorType) pseudoClass \(pseudoClass) does not exist on self's")
             }
                 

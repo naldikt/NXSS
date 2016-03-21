@@ -29,8 +29,7 @@ class SuccessfulTests: XCTestCase {
         NXSS.sharedInstance.useFile(inputFileName, bundle: NSBundle(forClass: self.dynamicType ))
         
         if let res = try? NXSS.sharedInstance.isEqualRuleSets( outputDict) {
-            print("Parsed RuleSet")
-            print(NXSS.sharedInstance.ruleSets)
+//            print(NXSS.sharedInstance.ruleSets)
             XCTAssert( res )
         }
         
@@ -38,7 +37,7 @@ class SuccessfulTests: XCTestCase {
         
     }
     
-    /*
+    
     
     func testBasic() {
         test("parsing_basic.nxss",
@@ -131,8 +130,7 @@ class SuccessfulTests: XCTestCase {
                 ]
             ])
     }
-*/
-/*
+    
     func testSelector() {
         test("parsing_selector.nxss",
             outputDict: [
@@ -162,7 +160,7 @@ class SuccessfulTests: XCTestCase {
                 ]
             ])
     }
-*/
+
     
     func testImport() {
         test("parsing_import.nxss",

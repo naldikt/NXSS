@@ -16,60 +16,34 @@ class Parser {
         - parameters:
             - fileName
             - bundle    
-            - parentParser     Used internally during "import" to keep track of existing context and ruleSets.
+            - parserResult     Optional. This is passed during "@import" operation so this parser can use the knowledge from another parser.
 
     */
-    init( fileName : String , bundle : NSBundle? = nil , parentParser : Parser? = nil ) throws {
+    init( fileName : String , bundle : NSBundle? = nil , parserResult : ParserResult? = nil ) throws {
         
         self.fileName = fileName
         self.fileBundle = bundle
         
-        // TODO: at some point needs to refine these.
+        if let parserResult = parserResult {
+            self.parserResult = NXSSParserResult(parserResult:parserResult)  // Use parent's if available.
+        }
+
         guard let filePath = Parser.pathForFile(fileName, bundle:bundle) else {
-            self.blockQueue = Queue()
-            self.ruleSets = Dictionary()
-            self.mixins = Dictionary()
             self.fileContent = ""
             throw NXSSError.Require(msg: "FilePath does not exist", statement: fileName, line: nil)
         }
         guard let data = NSData(contentsOfFile:filePath) else {
-            self.blockQueue = Queue()
-            self.ruleSets = Dictionary()
-            self.mixins = Dictionary()
             self.fileContent = ""
             throw NXSSError.Require(msg: "Data from path is invalid", statement: filePath, line: nil)
         }
         guard let dataString = NSString(data: data, encoding: NSUTF8StringEncoding) as? String else {
-            self.blockQueue = Queue()
-            self.ruleSets = Dictionary()
-            self.mixins = Dictionary()
             self.fileContent = ""
             throw NXSSError.Require(msg: "Data cannot be converted to String", statement: "<cannot print data>", line: nil)
         }
         
         self.fileContent = dataString
         
-        if let blockQueue = parentParser?.blockQueue {
-            self.blockQueue = blockQueue
-        } else {
-            // If it's not passed, create a new one.
-            self.blockQueue = Queue()
-            self.blockQueue.push(Block())
-        }
-        
-        if let ruleSets = parentParser?.ruleSets {
-            self.ruleSets = ruleSets
-        } else {
-            // If it's not passed, create a new one.
-            self.ruleSets = Dictionary()
-        }
-        
-        if let mixins = parentParser?.mixins {
-            self.mixins = mixins
-        } else {
-            // If it's not passed, create a new one
-            self.mixins = Dictionary()
-        }
+
     }
     
 
@@ -79,11 +53,11 @@ class Parser {
 				String => Name of the style class.
 				StyleClass => Parsed, compiled entries.
 	*/
-	func parse() throws -> [String:CompiledRuleSet] {
+	func parse() throws -> ParserResult {
         do {
             
             try traverse()
-            return self.ruleSets
+            return self.parserResult
             
         } catch let error as NXSSError {
             
@@ -114,15 +88,13 @@ class Parser {
     
     // MARK: - Private
     
-    private var blockQueue : Queue<Block>
+    private var blockQueue : Queue<Block> = Queue()
     
-    private var ruleSets : [String:CompiledRuleSet]
+    private var parserResult : NXSSParserResult = NXSSParserResult()
     
     private let fileContent : String
     
     private let fileBundle : NSBundle?
-    
-    private var mixins : [String:CompiledMixin] // mixinName => StyleMixin
     
     private static let fileExtension = ".nxss"
     
@@ -160,7 +132,7 @@ class Parser {
     // MARK: - State Machine
     
     
-    private func traverse() throws -> [String:CompiledRuleSet] {
+    private func traverse() throws {
 
         var curLineNum = 1  // line num starts from 1-based
         var curLine : String.CharacterView = String.CharacterView()
@@ -168,8 +140,10 @@ class Parser {
         
         var commandParser = CommandParser()
         
-        let blockQueue = Queue<Block>()
-        blockQueue.push(Block(selector: nil, parentBlock: nil))
+        // Push MainBlock
+        let mainBlock = Block(selector: nil, parentBlock: nil)
+        mainBlock.addDeclarations(self.parserResult.variables)
+        blockQueue.push(mainBlock)
         
         let chars = self.fileContent.characters
         for c : Character in chars {
@@ -188,22 +162,25 @@ class Parser {
             // Run the Parser.
             if let resultType : CPResultType = commandParser.append(c) {
                 switch resultType {
+                    
+                    // MARK: InProgress
                 case .InProgress: continue    // Nothign todo.
                     
+                    // MARK: Extend
                 case .Extend(let selector, let selectorType, let pseudoClass):
-                    NSLog("extend \(selector) \(selectorType) \(pseudoClass)")
                     let compiledKey = CompiledRuleSet.getCompiledKey(selector,selectorType: selectorType, pseudoClass: pseudoClass)
                     
-                    guard let baseStyle = ruleSets[compiledKey] else {
+                    guard let baseStyle = parserResult.ruleSets[compiledKey] else {
                         throw NXSSError.Require(msg: "Cannot find class/element to extend from with name \"\(selector)\"", statement: String(curLine), line:curLineNum)
                     }
                     
                     curBlock.addDeclarations(baseStyle.declarations)
                     
                     
+                    // MARK: Include
                 case .Include(let selector, let argumentValues):
                     
-                    guard let mixin = mixins[selector] else {
+                    guard let mixin = parserResult.mixins[selector] else {
                         throw NXSSError.Require(msg: "Cannot find mixin named \(selector)", statement: String(curLine), line:curLineNum)
                     }
                     
@@ -211,22 +188,21 @@ class Parser {
                         try mixin.resolveArguments(argumentValues)
                     )
                     
+                    // MARK: Import
                 case .Import(let fileName):
                     // Let's start a new parser (recursive)
-                    let parser = try Parser(fileName: fileName, bundle: fileBundle , parentParser: self)
-                    try parser.parse()
+                    self.parserResult.addVariables(blockQueue.peek()!.getAllVariables())
+                    let parser = try Parser(fileName: fileName, bundle: fileBundle , parserResult: self.parserResult)
+                    let parserResult = try parser.parse()
+                    self.parserResult.mergeFrom(parserResult)
+                    blockQueue.peek()!.addDeclarations(parserResult.variables)
+
                     
-                    // Assign or Override the resulting ruleSet
-                    for (k,v) in parser.ruleSets {
-                        ruleSets[k] = v
-                    }
-                    
-                    // Assign or Override the Block
-                    self.blockQueue = parser.blockQueue
-                    
+                    // MARK: StyleDeclaration
                 case .StyleDeclaration(let key, let value):
                     curBlock.addDeclaration(key,value:value)
                     
+                    // MARK: RuleSetHeader
                 case .RuleSetHeader(let selector, let selectorType, let pseudoClass):
                     blockQueue.push(
                         RuleSetBlock(selector:selector,
@@ -235,7 +211,7 @@ class Parser {
                                 parentBlock:blockQueue.peek())
                     )
                  
-                    
+                    // MARK: MixinHeader
                 case .MixinHeader(let selector, let argumentNames):
                     blockQueue.push(
                         MixinBlock(selector:selector,
@@ -243,20 +219,20 @@ class Parser {
                                 parentBlock:blockQueue.peek())
                     )
                     
-                    
+                    // MARK: BlockClosure
                 case .BlockClosure:
                     
                     let oldContext = blockQueue.pop()
                     if let oldContext = oldContext as? MixinBlock {
                         
                         let styleMixin : CompiledMixin = try oldContext.compile()
-                        mixins[styleMixin.selector] = styleMixin
+                        self.parserResult.addMixin(styleMixin)
                         
                         
                     } else if let oldContext = oldContext as? RuleSetBlock {
                         
                         let styleClass : CompiledRuleSet = try oldContext.compile()
-                        ruleSets[styleClass.compiledKey] = styleClass
+                        self.parserResult.addRuleSet(styleClass)
                         
                     } else {
                         throw NXSSError.Parse(msg: "Too many close bracket.", statement: String(curLine), line: curLineNum)
@@ -272,6 +248,11 @@ class Parser {
                 NXSSError.Parse(msg: "Cannot parse line", statement: String(curLine), line: curLineNum)
             }
         } // end for loop
-        return ruleSets
+        
+        let block = blockQueue.pop()
+        assert( block === mainBlock , "There is something wrong. This popped block should've been the main block" )
+        self.parserResult.addVariables(mainBlock.getAllVariables())
+        
+
     } // end method
 }

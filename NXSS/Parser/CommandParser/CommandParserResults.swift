@@ -40,7 +40,7 @@ protocol CPResultTypeResolvable {
 class _CPResultBase : CPAppendable {
     
     func append(c: Character) -> CPAppendResult {
-    
+
         switch appendState {
         case .Append:
             if c == "/" {
@@ -60,8 +60,16 @@ class _CPResultBase : CPAppendable {
                 appendState = .Skip
             } else {
                 appendState = .Append
+                
+                // Attempt to restore
                 characters.append("/")
-                return characterAppended("/")
+                let ret1 = characterAppended("/")
+                if ret1 == .InProgress {
+                    characters.append(c)
+                    return characterAppended(c)
+                } else {
+                    return ret1
+                }
             }
         case .Skip:
             if c == "*" {
@@ -70,10 +78,14 @@ class _CPResultBase : CPAppendable {
         case .PossiblyEndSkip:
             if c == "/" {
                 appendState = .Append
+            } else if c == "*" {
+                // still same state
             } else {
-                characters.append("*")
+                // Still skipping!
                 appendState = .Skip
-                return characterAppended("*")
+//                characters.append("*")
+//                appendState = .Skip
+//                return characterAppended("*")
             }
         }
         return .InProgress
@@ -360,24 +372,26 @@ class CPResultStyleDeclaration : _CPResultBase , CPResultTypeResolvable {
     /*! Parses standard key-value style declaration e.g. "background-color: red;" */
     private override func characterAppended(c:Character) -> CPAppendResult {
 
-        if c != " " {
-            switch parseState {
-            case .Key:
-                if c  == ":" {
-                    parseState = .Value
+        switch parseState {
+        case .Key:
+            if c  == ":" {
+                parseState = .Value
+            } else {
+                key.append(c)
+            }
+        case .Value:
+            if c == ";" {
+                key = key.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+                value = value.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+                if key.characters.count > 0 && value.characters.count > 0 {
+                    return .Resolved
                 } else {
-                    key.append(c)
+                    return .Invalid
                 }
-            case .Value:
-                if c == ";" {
-                    if key.characters.count > 0 && value.characters.count > 0 {
-                        return .Resolved
-                    } else {
-                        return .Invalid
-                    }
-                } else {
-                    value.append(c)
-                }
+            } else if c == " " && value.characters.count == 0 {
+                // Skip. Do not prepend spaces.
+            } else {
+                value.append(c)
             }
         }
         

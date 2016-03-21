@@ -41,18 +41,18 @@ class Block {
 		self.selector = selector
 		self.parentBlock = parentBlock
 	}
-
+    
     /**
         Add the declaration.
-        Key can either be a property name or variable name.
+        Key can either be a property name or variable name (with $ prefix).
     */
 	func addDeclaration( key : String , value : String ) {
 		declarations[key] = value
 	}
     
     func addDeclarations( declarations : [String:String] ) {
-        for (k,v) in declarations {
-            addDeclaration(k,value:v)
+        for (key,val) in declarations {
+            addDeclaration(key,value:val)
         }
     }
 	
@@ -81,8 +81,23 @@ class Block {
         }
 	}
 	
-	
-	
+    /** Return all the variables declared within this AND parent's block */
+    func getAllVariables() -> Declarations {
+        var ret : Declarations = Dictionary()
+        if let parentBlock = parentBlock {
+            ret = parentBlock.getAllVariables()
+        }
+        
+        // as this writing there's no ordering. Just happens that self overrides parent's.
+        for (key,value) in declarations {
+            if isVariable(key) {
+                ret[key] = value
+            }
+        }
+        
+        return ret
+    }
+
 	
 	// MARK: - Protected
 	
@@ -110,4 +125,13 @@ class Block {
 	
 	private let parentBlock : Block?
 	private var declarations : Declarations = Dictionary()
+    
+    
+    private func isVariable(key:String) -> Bool {
+        if let first = key.first where first == "$" {
+            return true
+        } else {
+            return false
+        }
+    }
 }

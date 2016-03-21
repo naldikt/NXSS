@@ -43,6 +43,7 @@ class CommandParser {
     }
 
     func append(c : Character) -> CPResultType? {
+//        print("Append: \(c)")
         /*
         if runState( c ) {
             characters.append(c)
@@ -57,11 +58,15 @@ class CommandParser {
             switch parser.append(c) {
             case .InProgress: newParsers.append(parser)
             case .Invalid:  continue
-            case .Resolved: return parser.resolveType()   // Done.
+            case .Resolved:
+//                print("We've got a winnder: \(parser)")
+                return parser.resolveType()   // Done.
+            
             }
         }
         
         parsers = newParsers
+//        print("          left: \(parsers.count)")
         if parsers.count == 0 {
             return nil // Gave up.
         }
