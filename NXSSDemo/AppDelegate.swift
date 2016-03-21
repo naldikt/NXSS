@@ -18,11 +18,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
+        NSLog("NXSS Parsing times")
+        let total : Int = 20
+        var sum : NSTimeInterval = 0.0
+        for i in (0..<total) {
+            let startTime = NSDate()
+            NXSS.sharedInstance.useFile("DefaultX_nui")
+            let diff = NSDate().timeIntervalSince1970 - startTime.timeIntervalSince1970
+            NSLog("\(diff)")
+            sum += diff
+        }
+        let average : NSTimeInterval = sum / NSTimeInterval(total)
+        NSLog("Average = \(average)")
+        
+        /*
         
         NSLog("Start")
 //        NXSS.sharedInstance.useFile("DefaultX_nui")
         NXSS.sharedInstance.useFile("Main")        
         NSLog("End")
+*/
         
         return true
     }
