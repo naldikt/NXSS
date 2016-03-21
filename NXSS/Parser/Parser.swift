@@ -155,16 +155,18 @@ class Parser {
                 curLine.removeAll()
             }
             
-            guard let curBlock = blockQueue.peek() else {
-                throw NXSSError.Require(msg: "BlockQueue.peek() just failed", statement: "", line: nil)
-            }
+//            guard let curBlock = blockQueue.peek() else {
+//                throw NXSSError.Require(msg: "BlockQueue.peek() just failed", statement: "", line: nil)
+//            }
             
             // Run the Parser.
             if let resultType : CPResultType = commandParser.append(c) {
                 switch resultType {
                     
                     // MARK: InProgress
-                case .InProgress: continue    // Nothign todo.
+                case .InProgress:
+
+                    continue    // Nothign todo.
                     
                     // MARK: Extend
                 case .Extend(let selector, let selectorType, let pseudoClass):
@@ -174,7 +176,7 @@ class Parser {
                         throw NXSSError.Require(msg: "Cannot find class/element to extend from with name \"\(selector)\"", statement: String(curLine), line:curLineNum)
                     }
                     
-                    curBlock.addDeclarations(baseStyle.declarations)
+                    blockQueue.peek()!.addDeclarations(baseStyle.declarations)
                     
                     
                     // MARK: Include
@@ -184,7 +186,7 @@ class Parser {
                         throw NXSSError.Require(msg: "Cannot find mixin named \(selector)", statement: String(curLine), line:curLineNum)
                     }
                     
-                    curBlock.addDeclarations(
+                    blockQueue.peek()!.addDeclarations(
                         try mixin.resolveArguments(argumentValues)
                     )
                     
@@ -200,7 +202,7 @@ class Parser {
                     
                     // MARK: StyleDeclaration
                 case .StyleDeclaration(let key, let value):
-                    curBlock.addDeclaration(key,value:value)
+                    blockQueue.peek()!.addDeclaration(key,value:value)
                     
                     // MARK: RuleSetHeader
                 case .RuleSetHeader(let selector, let selectorType, let pseudoClass):
@@ -240,7 +242,6 @@ class Parser {
                     }
                 }
                 
-
                 commandParser = CommandParser(pastResult: resultType)
                 
             } else {

@@ -32,6 +32,9 @@ class CommandParser {
     
     init( pastResult : CPResultType? = nil ) {
         
+        parsers = CommandParser.defaultParsers()
+        
+        /*
         // Orders matter. The first resolved wins.
         if let pastResult = pastResult {
             
@@ -60,17 +63,20 @@ class CommandParser {
         } else {
             parsers = CommandParser.defaultParsers()
         }
+*/
     }
     
     class func defaultParsers() -> [CParser] {
         return [
-            CPResultExtend(),
-            CPResultInclude(),
-            CPResultImport(),
+
+            CPResultStyleDeclaration(),
             CPResultMixinHeader(),
             CPResultRuleSetHeader(),
-            CPResultStyleDeclaration(),
-            CPResultBlockClosure()
+            CPResultBlockClosure(),
+            CPResultExtend(),
+            CPResultInclude(),
+            CPResultImport()
+
         ]
     }
 
