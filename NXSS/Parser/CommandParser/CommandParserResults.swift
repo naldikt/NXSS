@@ -8,7 +8,7 @@
 
 import Foundation
 
-let CPBufferInitialLength : Int = 50
+let CPBufferInitialLength : Int = 150
 
 func createCharacterView() -> String.CharacterView {
     var ret = String.CharacterView()

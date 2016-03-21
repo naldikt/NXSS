@@ -241,7 +241,7 @@ class Parser {
                 }
                 
 
-                commandParser = CommandParser()
+                commandParser = CommandParser(pastResult: resultType)
                 
             } else {
                 // CommandParser doesn't have any idea what this line is.

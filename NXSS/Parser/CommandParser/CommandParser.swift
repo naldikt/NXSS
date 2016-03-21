@@ -26,12 +26,44 @@ enum CPState {
 
 }
 
+typealias CParser = protocol<CPAppendable,CPResultTypeResolvable>
+
 class CommandParser {
     
-    init() {
+    init( pastResult : CPResultType? = nil ) {
         
         // Orders matter. The first resolved wins.
-        parsers = [
+        if let pastResult = pastResult {
+            
+            switch pastResult {
+            case .InProgress,
+                .StyleDeclaration,
+                .BlockClosure:
+                
+                parsers = CommandParser.defaultParsers()
+                
+            case .Extend,
+                .Include:
+                
+                parsers = [CPResultStyleDeclaration(),CPResultInclude(),CPResultExtend(),CPResultBlockClosure()]
+                
+            case .Import:
+                
+                parsers = [CPResultRuleSetHeader(),CPResultMixinHeader(),CPResultStyleDeclaration()]
+                
+            case .MixinHeader,
+                .RuleSetHeader:
+                
+                parsers = [CPResultStyleDeclaration(),CPResultInclude(),CPResultExtend(),CPResultBlockClosure()]
+            }
+            
+        } else {
+            parsers = CommandParser.defaultParsers()
+        }
+    }
+    
+    class func defaultParsers() -> [CParser] {
+        return [
             CPResultExtend(),
             CPResultInclude(),
             CPResultImport(),
@@ -103,7 +135,7 @@ class CommandParser {
     
     // MARK: Private
     
-    private var parsers : [protocol<CPAppendable,CPResultTypeResolvable>] = []
+    private var parsers : [CParser] = []
 
     
     private enum AppendState {
