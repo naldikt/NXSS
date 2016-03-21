@@ -43,37 +43,59 @@ class CommandParser {
     }
 
     func append(c : Character) -> CPResultType? {
-//        print("Append: \(c)")
-        /*
-        if runState( c ) {
-            characters.append(c)
-        }
         
-        if state == .RunParsers {
-          */
-        
-        // Let's run the parser!
-        var newParsers : [protocol<CPAppendable,CPResultTypeResolvable>] = []
-        for parser in parsers {
-            switch parser.append(c) {
-            case .InProgress: newParsers.append(parser)
-            case .Invalid:  continue
-            case .Resolved:
-//                print("We've got a winnder: \(parser)")
-                return parser.resolveType()   // Done.
-            
+        switch appendState {
+        case .Append:
+            if c == "/" {
+                appendState = .PossiblyStartSkip
+                
+            } else if characters.count == 0 &&
+                (c == " " || c == "\t" || c == "\n" || c == "\r") {
+                    
+                    // Intentionally skip
+                    
+            } else {
+                return doAppend(c)
+            }
+        case .PossiblyStartSkip:
+            if c == "*" {
+                appendState = .Skip
+            } else {
+                appendState = .Append
+                
+                // Attempt to restore
+                if let cpAppendResult = doAppend("/") {
+                    return cpAppendResult
+                }
+                return doAppend(c)
+                
+//                characters.append("/")
+//                let ret1 = characterAppended("/")
+//                if ret1 == .InProgress {
+//                    characters.append(c)
+//                    return characterAppended(c)
+//                } else {
+//                    return ret1
+//                }
+            }
+        case .Skip:
+            if c == "*" {
+                appendState = .PossiblyEndSkip
+            }
+        case .PossiblyEndSkip:
+            if c == "/" {
+                appendState = .Append
+            } else if c == "*" {
+                // still same state
+            } else {
+                // Still skipping!
+                appendState = .Skip
+                //                characters.append("*")
+                //                appendState = .Skip
+                //                return characterAppended("*")
             }
         }
         
-        parsers = newParsers
-//        print("          left: \(parsers.count)")
-        if parsers.count == 0 {
-            return nil // Gave up.
-        }
-        
-            
-//        }
-
         return .InProgress
     }
     
@@ -83,46 +105,38 @@ class CommandParser {
     
     private var parsers : [protocol<CPAppendable,CPResultTypeResolvable>] = []
 
-//    private var state : CPState = .ScanForLeadingSpace
-
-//    private var characters : [Character] = []
     
-    /** @return whether should honor the character. */
-    /*
-    private func runState( newChar : Character ) -> Bool {
-        
-        let prevChar = characters.last
-        
-        switch state {
-        case .ScanForLeadingSpace:
-//            let isMember = NSCharacterSet.whitespaceAndNewlineCharacterSet().characterIsMember(newChar)
-            let isUselessChar = (newChar == " " || newChar == "\n" || newChar == "\r" || newChar == "\t")
-            if isUselessChar {
-
-            } else {
-                state = .RunParsers
-                runState( newChar )
-            }
-            
-        case .RunParsers:
-            if newChar == "*" && prevChar == "/" {
-                state = .SkipForComment
-                characters.removeLast()
+    private enum AppendState {
+        case Append
+        case PossiblyStartSkip
+        case Skip
+        case PossiblyEndSkip
+    }
+    
+    private var appendState : AppendState = .Append
+    private var characters : [Character] = []
+    
+    private func doAppend(c : Character) -> CPResultType? {
+        // Let's run the parser!
+        characters.append(c)
+        var newParsers : [protocol<CPAppendable,CPResultTypeResolvable>] = []
+        for parser in parsers {
+            switch parser.append(c) {
+            case .InProgress: newParsers.append(parser)
+            case .Invalid:  continue
+            case .Resolved:
+                //                print("We've got a winnder: \(parser)")
+                return parser.resolveType()   // Done.
                 
-            } else {
-                // We're good!
-                return true
-            }
-            
-        case .SkipForComment:
-            if newChar == "/" && prevChar == "*" {
-                state = .RunParsers // Done
-                characters.removeLast()
             }
         }
         
-        return false
+        parsers = newParsers
+        if parsers.count == 0 {
+            return nil // Gave up.
+        }
         
+        return .InProgress
     }
-*/
+
 }

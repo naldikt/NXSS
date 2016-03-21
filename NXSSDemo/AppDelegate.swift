@@ -27,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var sum : NSTimeInterval = 0.0
         for i in (0..<total) {
             let startTime = NSDate()
-            NXSS.sharedInstance.useFile("Main")
+            NXSS.sharedInstance.useFile("DefaultX_nui")
             let diff = NSDate().timeIntervalSince1970 - startTime.timeIntervalSince1970
             NSLog("\(diff)")
             sum += diff

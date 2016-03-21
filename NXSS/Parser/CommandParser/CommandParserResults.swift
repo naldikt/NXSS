@@ -40,55 +40,55 @@ protocol CPResultTypeResolvable {
 class _CPResultBase : CPAppendable {
     
     func append(c: Character) -> CPAppendResult {
+        
+        characters.append(c)
+        return characterAppended(c)
 
-        switch appendState {
-        case .Append:
-            if c == "/" {
-                appendState = .PossiblyStartSkip
-                
-            } else if characters.count == 0 &&
-                (c == " " || c == "\t" || c == "\n" || c == "\r") {
-                    
-                // Intentionally skip
-                    
-            } else {
-                characters.append(c)
-                return characterAppended(c)
-            }
-        case .PossiblyStartSkip:
-            if c == "*" {
-                appendState = .Skip
-            } else {
-                appendState = .Append
-                
-                // Attempt to restore
-                characters.append("/")
-                let ret1 = characterAppended("/")
-                if ret1 == .InProgress {
-                    characters.append(c)
-                    return characterAppended(c)
-                } else {
-                    return ret1
-                }
-            }
-        case .Skip:
-            if c == "*" {
-                appendState = .PossiblyEndSkip
-            }
-        case .PossiblyEndSkip:
-            if c == "/" {
-                appendState = .Append
-            } else if c == "*" {
-                // still same state
-            } else {
-                // Still skipping!
-                appendState = .Skip
-//                characters.append("*")
+//        switch appendState {
+//        case .Append:
+//            if c == "/" {
+//                appendState = .PossiblyStartSkip
+//                
+//            } else if characters.count == 0 &&
+//                (c == " " || c == "\t" || c == "\n" || c == "\r") {
+//                    
+//                // Intentionally skip
+//                    
+//            } else {
+//                characters.append(c)
+//                return characterAppended(c)
+//            }
+//        case .PossiblyStartSkip:
+//            if c == "*" {
 //                appendState = .Skip
-//                return characterAppended("*")
-            }
-        }
-        return .InProgress
+//            } else {
+//                appendState = .Append
+//                
+//                // Attempt to restore
+//                characters.append("/")
+//                let ret1 = characterAppended("/")
+//                if ret1 == .InProgress {
+//                    characters.append(c)
+//                    return characterAppended(c)
+//                } else {
+//                    return ret1
+//                }
+//            }
+//        case .Skip:
+//            if c == "*" {
+//                appendState = .PossiblyEndSkip
+//            }
+//        case .PossiblyEndSkip:
+//            if c == "/" {
+//                appendState = .Append
+//            } else if c == "*" {
+//                // still same state
+//            } else {
+//                // Still skipping!
+//                appendState = .Skip
+//            }
+//        }
+//        return .InProgress
         
     }
     
