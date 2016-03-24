@@ -19,6 +19,8 @@
 		2010F4751C2A4FB000212731 /* RootViewController.nxss in Resources */ = {isa = PBXBuildFile; fileRef = 2010F4741C2A4FB000212731 /* RootViewController.nxss */; };
 		2012A80B1C1E522C00D38DBE /* UIControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2012A80A1C1E522C00D38DBE /* UIControlTests.swift */; };
 		2012A80D1C1E52D700D38DBE /* UIControlTests.nxss in Resources */ = {isa = PBXBuildFile; fileRef = 2012A80C1C1E52D700D38DBE /* UIControlTests.nxss */; };
+		201D5C3C1C83FE020096F1B5 /* CommandParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201D5C3A1C83FE020096F1B5 /* CommandParser.swift */; };
+		201D5C3D1C83FE020096F1B5 /* CommandParserResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201D5C3B1C83FE020096F1B5 /* CommandParserResults.swift */; };
 		202D1D8F1C449175006F493E /* Applicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202D1D821C449175006F493E /* Applicator.swift */; };
 		202D1D901C449175006F493E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202D1D831C449175006F493E /* Constants.swift */; };
 		202D1D911C449175006F493E /* CAGradientLayer+Applicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202D1D851C449175006F493E /* CAGradientLayer+Applicator.swift */; };
@@ -64,11 +66,15 @@
 		20958E021BCB61A700C456A5 /* KeyValueParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20958DED1BCB61A700C456A5 /* KeyValueParser.swift */; };
 		20958E031BCB61A700C456A5 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20958DEE1BCB61A700C456A5 /* Queue.swift */; };
 		20958E051BCB61A700C456A5 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20958DF01BCB61A700C456A5 /* Parser.swift */; };
+		209A34C91CA10028000DB010 /* CPData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209A34C81CA10028000DB010 /* CPData.swift */; };
+		209A34CB1CA101A8000DB010 /* CPChar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209A34CA1CA101A8000DB010 /* CPChar.swift */; };
+		209A34CD1CA10E47000DB010 /* FileEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209A34CC1CA10E47000DB010 /* FileEvaluator.swift */; };
+		209A35251CA11980000DB010 /* UIViewController+NXSS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209A35241CA11980000DB010 /* UIViewController+NXSS.swift */; };
+		209B28C31CA3A5C200940BD2 /* VariableParseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209B28C21CA3A5C200940BD2 /* VariableParseTests.swift */; };
+		209B28CC1CA3A64900940BD2 /* variableparse_reading.nxss in Resources */ = {isa = PBXBuildFile; fileRef = 209B28CA1CA3A64900940BD2 /* variableparse_reading.nxss */; };
+		209B28CD1CA3A64900940BD2 /* variableparse_color.nxss in Resources */ = {isa = PBXBuildFile; fileRef = 209B28CB1CA3A64900940BD2 /* variableparse_color.nxss */; };
 		20A0D14A1C13F68C00DB4065 /* SelectorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A0D1491C13F68C00DB4065 /* SelectorType.swift */; };
 		20A0D14C1C13F87900DB4065 /* Declarations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A0D14B1C13F87900DB4065 /* Declarations.swift */; };
-		20A0D1511C13FE4F00DB4065 /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A0D14E1C13FE4F00DB4065 /* Block.swift */; };
-		20A0D1521C13FE4F00DB4065 /* RuleSetBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A0D14F1C13FE4F00DB4065 /* RuleSetBlock.swift */; };
-		20A0D1531C13FE4F00DB4065 /* MixinBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A0D1501C13FE4F00DB4065 /* MixinBlock.swift */; };
 		20A814E71C193D9D006694D9 /* FunctionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A814E61C193D9D006694D9 /* FunctionHeader.swift */; };
 		20A814E91C19455C006694D9 /* BlockHeaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A814E81C19455C006694D9 /* BlockHeaderTests.swift */; };
 		20BADDD61C22616900984AE2 /* parsing_basic.nxss in Resources */ = {isa = PBXBuildFile; fileRef = 20BADDCF1C22616900984AE2 /* parsing_basic.nxss */; };
@@ -84,6 +90,7 @@
 		20BADDE41C22686300984AE2 /* parsing_import_2_1.nxss in Resources */ = {isa = PBXBuildFile; fileRef = 20BADDE31C22686300984AE2 /* parsing_import_2_1.nxss */; };
 		20BEAF9F1C325ECD0059674D /* UINavigationBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BEAF9E1C325ECD0059674D /* UINavigationBarViewController.swift */; };
 		20BEAFA11C325EDC0059674D /* UINavigationBarViewController.nxss in Resources */ = {isa = PBXBuildFile; fileRef = 20BEAFA01C325EDC0059674D /* UINavigationBarViewController.nxss */; };
+		20DC7B3F1C9F5B44005A51C7 /* ParserResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DC7B3E1C9F5B44005A51C7 /* ParserResult.swift */; };
 		20F030401C30FFF200AE772F /* demo.css in Resources */ = {isa = PBXBuildFile; fileRef = 20F030351C30FFF200AE772F /* demo.css */; };
 		20F030411C30FFF200AE772F /* demo.js in Resources */ = {isa = PBXBuildFile; fileRef = 20F030361C30FFF200AE772F /* demo.js */; };
 		20F030421C30FFF200AE772F /* demo.html in Resources */ = {isa = PBXBuildFile; fileRef = 20F030371C30FFF200AE772F /* demo.html */; };
@@ -94,6 +101,9 @@
 		20F030471C30FFF200AE772F /* Read Me.txt in Resources */ = {isa = PBXBuildFile; fileRef = 20F0303D1C30FFF200AE772F /* Read Me.txt */; };
 		20F030481C30FFF200AE772F /* selection.json in Resources */ = {isa = PBXBuildFile; fileRef = 20F0303E1C30FFF200AE772F /* selection.json */; };
 		20F030491C30FFF200AE772F /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = 20F0303F1C30FFF200AE772F /* style.css */; };
+		20F744461CA256BD008EE951 /* MixinScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20F744431CA256BD008EE951 /* MixinScope.swift */; };
+		20F744471CA256BD008EE951 /* RuleSetScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20F744441CA256BD008EE951 /* RuleSetScope.swift */; };
+		20F744481CA256BD008EE951 /* Scope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20F744451CA256BD008EE951 /* Scope.swift */; };
 		20F7D11D1BF1DD8C007A192D /* PseudoClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20F7D11C1BF1DD8C007A192D /* PseudoClass.swift */; };
 /* End PBXBuildFile section */
 
@@ -162,6 +172,8 @@
 		2010F4741C2A4FB000212731 /* RootViewController.nxss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = RootViewController.nxss; sourceTree = "<group>"; };
 		2012A80A1C1E522C00D38DBE /* UIControlTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIControlTests.swift; sourceTree = "<group>"; };
 		2012A80C1C1E52D700D38DBE /* UIControlTests.nxss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = UIControlTests.nxss; sourceTree = "<group>"; };
+		201D5C3A1C83FE020096F1B5 /* CommandParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandParser.swift; sourceTree = "<group>"; };
+		201D5C3B1C83FE020096F1B5 /* CommandParserResults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandParserResults.swift; sourceTree = "<group>"; };
 		202D1D821C449175006F493E /* Applicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Applicator.swift; sourceTree = "<group>"; };
 		202D1D831C449175006F493E /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		202D1D851C449175006F493E /* CAGradientLayer+Applicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CAGradientLayer+Applicator.swift"; sourceTree = "<group>"; };
@@ -215,11 +227,15 @@
 		20958DED1BCB61A700C456A5 /* KeyValueParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyValueParser.swift; sourceTree = "<group>"; };
 		20958DEE1BCB61A700C456A5 /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		20958DF01BCB61A700C456A5 /* Parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
+		209A34C81CA10028000DB010 /* CPData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CPData.swift; sourceTree = "<group>"; };
+		209A34CA1CA101A8000DB010 /* CPChar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CPChar.swift; sourceTree = "<group>"; };
+		209A34CC1CA10E47000DB010 /* FileEvaluator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileEvaluator.swift; sourceTree = "<group>"; };
+		209A35241CA11980000DB010 /* UIViewController+NXSS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+NXSS.swift"; sourceTree = "<group>"; };
+		209B28C21CA3A5C200940BD2 /* VariableParseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VariableParseTests.swift; sourceTree = "<group>"; };
+		209B28CA1CA3A64900940BD2 /* variableparse_reading.nxss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = variableparse_reading.nxss; sourceTree = "<group>"; };
+		209B28CB1CA3A64900940BD2 /* variableparse_color.nxss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = variableparse_color.nxss; sourceTree = "<group>"; };
 		20A0D1491C13F68C00DB4065 /* SelectorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectorType.swift; sourceTree = "<group>"; };
 		20A0D14B1C13F87900DB4065 /* Declarations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Declarations.swift; sourceTree = "<group>"; };
-		20A0D14E1C13FE4F00DB4065 /* Block.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
-		20A0D14F1C13FE4F00DB4065 /* RuleSetBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RuleSetBlock.swift; sourceTree = "<group>"; };
-		20A0D1501C13FE4F00DB4065 /* MixinBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MixinBlock.swift; sourceTree = "<group>"; };
 		20A814E61C193D9D006694D9 /* FunctionHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FunctionHeader.swift; sourceTree = "<group>"; };
 		20A814E81C19455C006694D9 /* BlockHeaderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockHeaderTests.swift; sourceTree = "<group>"; };
 		20BADDCF1C22616900984AE2 /* parsing_basic.nxss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = parsing_basic.nxss; sourceTree = "<group>"; };
@@ -235,6 +251,7 @@
 		20BADDE31C22686300984AE2 /* parsing_import_2_1.nxss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = parsing_import_2_1.nxss; sourceTree = "<group>"; };
 		20BEAF9E1C325ECD0059674D /* UINavigationBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UINavigationBarViewController.swift; sourceTree = "<group>"; };
 		20BEAFA01C325EDC0059674D /* UINavigationBarViewController.nxss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = UINavigationBarViewController.nxss; sourceTree = "<group>"; };
+		20DC7B3E1C9F5B44005A51C7 /* ParserResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParserResult.swift; sourceTree = "<group>"; };
 		20F030351C30FFF200AE772F /* demo.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = demo.css; sourceTree = "<group>"; };
 		20F030361C30FFF200AE772F /* demo.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = demo.js; sourceTree = "<group>"; };
 		20F030371C30FFF200AE772F /* demo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = demo.html; sourceTree = "<group>"; };
@@ -245,6 +262,9 @@
 		20F0303D1C30FFF200AE772F /* Read Me.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Read Me.txt"; sourceTree = "<group>"; };
 		20F0303E1C30FFF200AE772F /* selection.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = selection.json; sourceTree = "<group>"; };
 		20F0303F1C30FFF200AE772F /* style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
+		20F744431CA256BD008EE951 /* MixinScope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MixinScope.swift; sourceTree = "<group>"; };
+		20F744441CA256BD008EE951 /* RuleSetScope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RuleSetScope.swift; sourceTree = "<group>"; };
+		20F744451CA256BD008EE951 /* Scope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scope.swift; sourceTree = "<group>"; };
 		20F7D11C1BF1DD8C007A192D /* PseudoClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PseudoClass.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -326,6 +346,17 @@
 			path = Applicator;
 			sourceTree = "<group>";
 		};
+		201D5C391C83FE020096F1B5 /* CommandParser */ = {
+			isa = PBXGroup;
+			children = (
+				201D5C3A1C83FE020096F1B5 /* CommandParser.swift */,
+				201D5C3B1C83FE020096F1B5 /* CommandParserResults.swift */,
+				209A34C81CA10028000DB010 /* CPData.swift */,
+				209A34CA1CA101A8000DB010 /* CPChar.swift */,
+			);
+			path = CommandParser;
+			sourceTree = "<group>";
+		};
 		202D1D801C449175006F493E /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -337,6 +368,7 @@
 				202D1D8E1C449175006F493E /* UIView+NXSS.swift */,
 				202D1D9B1C449185006F493E /* NXSSNavigationController.swift */,
 				202D1D9D1C449221006F493E /* UINavigationItem+NXSS.swift */,
+				209A35241CA11980000DB010 /* UIViewController+NXSS.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -447,8 +479,10 @@
 		202FA1441BC0953C00E91CF3 /* Parsing */ = {
 			isa = PBXGroup;
 			children = (
+				209B28C91CA3A64900940BD2 /* VariableParse */,
 				20BADDCE1C22616900984AE2 /* Parsing */,
 				20BADDD51C22616900984AE2 /* ParsingTests.swift */,
+				209B28C21CA3A5C200940BD2 /* VariableParseTests.swift */,
 				2088F6B81BC4C0E900036ABD /* FunctionHeaderTests.swift */,
 				20A814E81C19455C006694D9 /* BlockHeaderTests.swift */,
 			);
@@ -476,8 +510,10 @@
 		20958DE21BCB61A700C456A5 /* Parser */ = {
 			isa = PBXGroup;
 			children = (
+				201D5C391C83FE020096F1B5 /* CommandParser */,
 				20958DE31BCB61A700C456A5 /* Helpers */,
 				20958DF01BCB61A700C456A5 /* Parser.swift */,
+				20DC7B3E1C9F5B44005A51C7 /* ParserResult.swift */,
 			);
 			path = Parser;
 			sourceTree = "<group>";
@@ -491,9 +527,10 @@
 				20F7D11C1BF1DD8C007A192D /* PseudoClass.swift */,
 				20958DEE1BCB61A700C456A5 /* Queue.swift */,
 				20A0D1491C13F68C00DB4065 /* SelectorType.swift */,
-				20A0D14D1C13FE4F00DB4065 /* Block */,
+				20F744421CA256BD008EE951 /* Scope */,
 				20958DE41BCB61A700C456A5 /* Compiled */,
 				20A814E61C193D9D006694D9 /* FunctionHeader.swift */,
+				209A34CC1CA10E47000DB010 /* FileEvaluator.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -507,14 +544,13 @@
 			path = Compiled;
 			sourceTree = "<group>";
 		};
-		20A0D14D1C13FE4F00DB4065 /* Block */ = {
+		209B28C91CA3A64900940BD2 /* VariableParse */ = {
 			isa = PBXGroup;
 			children = (
-				20A0D14E1C13FE4F00DB4065 /* Block.swift */,
-				20A0D14F1C13FE4F00DB4065 /* RuleSetBlock.swift */,
-				20A0D1501C13FE4F00DB4065 /* MixinBlock.swift */,
+				209B28CA1CA3A64900940BD2 /* variableparse_reading.nxss */,
+				209B28CB1CA3A64900940BD2 /* variableparse_color.nxss */,
 			);
-			path = Block;
+			path = VariableParse;
 			sourceTree = "<group>";
 		};
 		20BADDCE1C22616900984AE2 /* Parsing */ = {
@@ -565,6 +601,16 @@
 				20F0303C1C30FFF200AE772F /* NapsterXFont.woff */,
 			);
 			path = fonts;
+			sourceTree = "<group>";
+		};
+		20F744421CA256BD008EE951 /* Scope */ = {
+			isa = PBXGroup;
+			children = (
+				20F744431CA256BD008EE951 /* MixinScope.swift */,
+				20F744441CA256BD008EE951 /* RuleSetScope.swift */,
+				20F744451CA256BD008EE951 /* Scope.swift */,
+			);
+			path = Scope;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -698,7 +744,6 @@
 					};
 					202FA1031BC093CD00E91CF3 = {
 						CreatedOnToolsVersion = 7.0;
-						TestTargetID = 202FA0C41BC093B800E91CF3;
 					};
 				};
 			};
@@ -789,7 +834,9 @@
 				20BADDDE1C22618F00984AE2 /* parsing_import.nxss in Resources */,
 				20BADDDB1C22616900984AE2 /* parsing_variables.nxss in Resources */,
 				2012A80D1C1E52D700D38DBE /* UIControlTests.nxss in Resources */,
+				209B28CD1CA3A64900940BD2 /* variableparse_color.nxss in Resources */,
 				20BADDD71C22616900984AE2 /* parsing_complex.nxss in Resources */,
+				209B28CC1CA3A64900940BD2 /* variableparse_reading.nxss in Resources */,
 				20BADDD61C22616900984AE2 /* parsing_basic.nxss in Resources */,
 				20BADDE21C2261D400984AE2 /* parsing_import_2.nxss in Resources */,
 				20BADDE01C2261C900984AE2 /* parsing_import_1.nxss in Resources */,
@@ -837,16 +884,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				20A0D1511C13FE4F00DB4065 /* Block.swift in Sources */,
+				209A34C91CA10028000DB010 /* CPData.swift in Sources */,
 				202D1D981C449175006F493E /* UILabel+NXSS.swift in Sources */,
 				202D1D901C449175006F493E /* Constants.swift in Sources */,
+				201D5C3D1C83FE020096F1B5 /* CommandParserResults.swift in Sources */,
 				20958DFA1BCB61A700C456A5 /* String+Core.swift in Sources */,
 				20A0D14C1C13F87900DB4065 /* Declarations.swift in Sources */,
+				201D5C3C1C83FE020096F1B5 /* CommandParser.swift in Sources */,
 				202D1D9A1C449175006F493E /* UIView+NXSS.swift in Sources */,
-				20A0D1531C13FE4F00DB4065 /* MixinBlock.swift in Sources */,
+				20DC7B3F1C9F5B44005A51C7 /* ParserResult.swift in Sources */,
+				209A34CD1CA10E47000DB010 /* FileEvaluator.swift in Sources */,
 				202D1D971C449175006F493E /* UIControl+NXSS.swift in Sources */,
 				20958DFC1BCB61A700C456A5 /* CompiledRuleSet.swift in Sources */,
-				20A0D1521C13FE4F00DB4065 /* RuleSetBlock.swift in Sources */,
 				205CBE891BF9881200A04047 /* Dictionary+Core.swift in Sources */,
 				2068B8261BC0BDA8005317B5 /* NXSS.swift in Sources */,
 				20958E051BCB61A700C456A5 /* Parser.swift in Sources */,
@@ -856,14 +905,19 @@
 				202D1D9E1C449221006F493E /* UINavigationItem+NXSS.swift in Sources */,
 				202D1D921C449175006F493E /* String+Applicator.swift in Sources */,
 				202D1D941C449175006F493E /* NXSSView.swift in Sources */,
+				209A35251CA11980000DB010 /* UIViewController+NXSS.swift in Sources */,
 				20A0D14A1C13F68C00DB4065 /* SelectorType.swift in Sources */,
+				20F744461CA256BD008EE951 /* MixinScope.swift in Sources */,
+				20F744481CA256BD008EE951 /* Scope.swift in Sources */,
 				202D1D931C449175006F493E /* UIColor+Applicator.swift in Sources */,
 				202D1D991C449175006F493E /* UINavigationBar+NXSS.swift in Sources */,
 				202D1D961C449175006F493E /* UIButton+NXSS.swift in Sources */,
 				20F7D11D1BF1DD8C007A192D /* PseudoClass.swift in Sources */,
 				20958E001BCB61A700C456A5 /* BlockHeader.swift in Sources */,
+				209A34CB1CA101A8000DB010 /* CPChar.swift in Sources */,
 				20958E031BCB61A700C456A5 /* Queue.swift in Sources */,
 				202D1D9C1C449185006F493E /* NXSSNavigationController.swift in Sources */,
+				20F744471CA256BD008EE951 /* RuleSetScope.swift in Sources */,
 				202D1D911C449175006F493E /* CAGradientLayer+Applicator.swift in Sources */,
 				20958DF91BCB61A700C456A5 /* NXSSError.swift in Sources */,
 				202D1D8F1C449175006F493E /* Applicator.swift in Sources */,
@@ -880,6 +934,7 @@
 				20A814E91C19455C006694D9 /* BlockHeaderTests.swift in Sources */,
 				2088F6B91BC4C0E900036ABD /* FunctionHeaderTests.swift in Sources */,
 				2012A80B1C1E522C00D38DBE /* UIControlTests.swift in Sources */,
+				209B28C31CA3A5C200940BD2 /* VariableParseTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1136,7 +1191,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.nkusuma.NXSSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NXSSDemo.app/NXSSDemo";
 			};
 			name = Debug;
 		};
@@ -1147,7 +1201,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.nkusuma.NXSSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NXSSDemo.app/NXSSDemo";
 			};
 			name = Release;
 		};

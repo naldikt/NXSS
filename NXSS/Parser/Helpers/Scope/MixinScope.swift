@@ -1,5 +1,5 @@
 //
-//  MixinBlock.swift
+//  MixinScope.swift
 //  NXSS
 //
 //  Created by Nalditya Kusuma on 9/27/15.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class MixinBlock : Block {
+class MixinScope : Scope {
     
     let argNames : [String]
     
@@ -16,9 +16,9 @@ class MixinBlock : Block {
         - parameters:
             - argNames  The argument names, including the prefix "$" for each name.
     */
-    init( selector:String , argNames : [String] , parentBlock :Block? = nil ) {
+    init( selector:String , argNames : [String] , parentScope :Scope? = nil ) {
         self.argNames = argNames
-        super.init( selector : selector , parentBlock : parentBlock  )
+        super.init( selector : selector , parentScope : parentScope  )
     }
     
     override func getDeclarationValue(key: String) -> String? {

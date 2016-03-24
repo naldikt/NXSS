@@ -1,14 +1,14 @@
-@mixin BlueButton($size) {
-    font-color: blue;
-    font-size: $size;
+@mixin BlueButton ( $size ) {
+    font-color: blue   ;
+    font-size: $size ;
 }
 
-@mixin  Circle() {
-    corner-radius: circle;
+@mixin  Circle ( ) {
+    corner-radius : circle;
 }
 
 BlueCircleButton {
-    @include    BlueButton(5);
+    @include    BlueButton(5)  ;
     @include    Circle();
-    background-color: white;
+    background-color: white ;
 }

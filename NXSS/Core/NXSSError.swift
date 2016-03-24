@@ -15,6 +15,7 @@ public enum NXSSError : ErrorType , CustomStringConvertible {
     */
     case Parse(msg : String , statement:String?, line : Int?)               // Parsing Error.
     case Require(msg : String, statement:String?, line : Int?)              // Failed some requirements.
+    case Logic(msg: String, statement:String?, line : Int?)                 // Unexpected Logic failure due to execution of the line.
     
     /**
         Creates a new error by forcing the line number to be the one you specified.
@@ -25,6 +26,8 @@ public enum NXSSError : ErrorType , CustomStringConvertible {
             return .Parse(msg:msg,statement:statement,line:line)
         case .Require(let msg, let statement, _):
             return .Require(msg:msg,statement:statement,line:line)
+        case .Logic(let msg, let statement, _):
+            return .Logic(msg:msg,statement:statement,line:line)
         }
     }
     
@@ -60,6 +63,11 @@ public enum NXSSError : ErrorType , CustomStringConvertible {
             return s
         case .Require(let msg, let statement , let line):
             var s = "[NXSS] Require Error: \(msg)\n"
+            s += "Statement: \(statement)\n"
+            s += "Line: \(line)\n"
+            return s
+        case .Logic(let msg, let statement , let line):
+            var s = "[NXSS] Logic Error: \(msg)\n"
             s += "Statement: \(statement)\n"
             s += "Line: \(line)\n"
             return s

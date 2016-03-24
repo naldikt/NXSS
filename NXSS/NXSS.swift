@@ -7,9 +7,9 @@
 //
 
 import Foundation
+import UIKit
 
 public typealias FilePath = String
-
 
 public class NXSS {
     
@@ -27,26 +27,30 @@ public class NXSS {
     */
     public func useFile( fileName : String , bundle : NSBundle? = nil ) -> Bool {
         
-        do {
-            
+        self.lastParseDuration = nil  // always clear out in case it fails.
         
+        do {
             let startTime = NSDate()
             
             let parser = try Parser(fileName:fileName, bundle:bundle)
-            self.ruleSets = try! parser.parse()
+            let parserResult = try parser.parse()
+            self.ruleSets = parserResult.ruleSets
+            self.variables = parserResult.variables
             
             let diff = NSDate().timeIntervalSince1970 - startTime.timeIntervalSince1970
-            NSLog("NXSS Parsing Time [\(fileName)] = \(diff) seconds")
+            self.lastParseDuration = diff
             
             return true
             
         } catch {
-            NSLog("Error in parsing NXSS")
+            print("Error in parsing NXSS")
             return false
         }
         
     }
     
+    /** The time it took to run useFile(). If nil means the last call failed or never been called at all. */
+    public var lastParseDuration : NSTimeInterval?
 
     
     /**
@@ -54,6 +58,26 @@ public class NXSS {
     */
     public func getStyleDeclarations( selector : String, selectorType: SelectorType, pseudoClass:PseudoClass? = .Normal ) -> Declarations? {
         return getStyleRuleSet(selector, selectorType: selectorType, pseudoClass:pseudoClass)?.declarations
+    }
+    
+    /**
+        Get the raw variable value (String), if exists.
+        :param: variableName        The name of the variable without the dollar sign prefix.
+    */
+    public func getVariableValue( variableName : String ) -> String? {
+        let ret = variables["$\(variableName)"] ?? nil
+        return ret
+    }
+    
+    /** 
+        Grab a color defined in the main context of the nxssfile.
+        :param: variableName        The name of the variable without the dollar sign prefix.
+    */
+    public func getUIColor( variableName : String ) -> UIColor? {
+        if let colorName = getVariableValue( variableName ) {
+            return try? UIColor.fromNXSS(colorName)
+        }
+        return nil
     }
     
     /**
@@ -89,6 +113,7 @@ public class NXSS {
     private static var _instance : NXSS?
     
     internal var ruleSets: [String:CompiledRuleSet] = Dictionary()
+    internal var variables : Declarations = Dictionary()
     
     init () {
         Swizzler.swizzle()
@@ -109,13 +134,13 @@ public class NXSS {
             return false
         }
         
-        for (blockHeaderString,declarations) in targetRuleSets {
+        for (scopeHeaderString,declarations) in targetRuleSets {
             
             var selector:String?
             var selectorType:SelectorType?
             var pseudoClass:PseudoClass?
             
-            switch try BlockHeader.parse(blockHeaderString) {
+            switch try BlockHeader.parse(scopeHeaderString) {
             case .Mixin(_,_):
                 assert(false,"Should never get here. We are meant to compare with endresults only.")
                 return false
@@ -139,8 +164,8 @@ public class NXSS {
                 }
                 
             } else {
-                NSLog("RuleSets \(ruleSets)")
                 NSLog("NXSS.isStyleClassEqualToDictionary failed because selector \(selector) selectorType \(selectorType) pseudoClass \(pseudoClass) does not exist on self's")
+                return false
             }
                 
         }

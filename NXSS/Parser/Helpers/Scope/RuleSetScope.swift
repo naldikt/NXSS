@@ -1,5 +1,5 @@
 //
-//  RuleSetBlock.swift
+//  RuleSetScope.swift
 //  NXSS
 //
 //  Created by Nalditya Kusuma on 9/27/15.
@@ -9,15 +9,15 @@
 import Foundation
 
 
-class RuleSetBlock : Block {
+class RuleSetScope : Scope {
 
     private(set) var pseudoClass : PseudoClass
     private let selectorType : SelectorType
     
-    init( selector:String  , selectorType : SelectorType , pseudoClass:PseudoClass ,  parentBlock:Block? = nil ) {
+    init( selector:String  , selectorType : SelectorType , pseudoClass:PseudoClass ,  parentScope:Scope? = nil ) {
         self.pseudoClass = pseudoClass
         self.selectorType = selectorType
-        super.init(selector:selector,parentBlock:parentBlock)
+        super.init(selector:selector,parentScope:parentScope)
     }
      
     

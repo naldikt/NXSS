@@ -1,8 +1,8 @@
-BlueButton {
-    font-name: blue;
+/** This is some comments **/ BlueButton {
+    font-name: blue ;
 }
 
 .BlueCircleButton {
-    font-name: blue;
-    corner-radius: circle;
+    font-name: blue;  /* This comment should be ignored *****/
+    corner-radius /** This comment ignored too brah **/: circle ;
 }
