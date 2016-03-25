@@ -30,7 +30,6 @@ extension UIView : NXSSView {
 
         } catch let error {
             let msg = "UIView.applyNXSS failed with error:\n\(error)"
-            NSLog(msg)
             assert(false,msg)
         }
     }

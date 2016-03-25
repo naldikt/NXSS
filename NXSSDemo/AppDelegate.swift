@@ -19,10 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         
-        NSLog("Start")
-//        NXSS.sharedInstance.useFile("DefaultX_nui")
-        NXSS.sharedInstance.useFile("Main")        
-        NSLog("End")
+//        self.runTimeTests()  // comment out when not needed
+        
+        NXSS.sharedInstance.useFile("Main")
         
         return true
     }
@@ -49,6 +48,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-
+    private func runTimeTests() {
+        NSLog("NXSS Parsing times")
+        let total : Int = 20
+        var sum : NSTimeInterval = 0.0
+        for _ in (0..<total) {
+            let startTime = NSDate()
+            NXSS.sharedInstance.useFile("DefaultX_nui")
+            let diff = NSDate().timeIntervalSince1970 - startTime.timeIntervalSince1970
+            NSLog("\(diff)")
+            sum += diff
+        }
+        let average : NSTimeInterval = sum / NSTimeInterval(total)
+        NSLog("Average = \(average)")
+    }
 }
 

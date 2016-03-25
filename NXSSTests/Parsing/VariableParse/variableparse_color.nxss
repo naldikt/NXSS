@@ -1,0 +1,6 @@
+
+$color1: red;
+$color2: rgb(255, 255 ,255);
+$color3: #AABBCC ;
+$invalidColor: naldi ;
+$invalidColorEmpty: ;

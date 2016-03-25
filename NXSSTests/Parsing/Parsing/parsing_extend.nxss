@@ -1,5 +1,5 @@
 
-.BaseClass {
+ .BaseClass {
     background-color: red;
     font-color:red;
     border-color: red;

@@ -9,7 +9,7 @@
 import Foundation
 
 
-class CompiledMixin {
+public class CompiledMixin {
     
     /**
         The name of the mixin.
@@ -25,8 +25,6 @@ class CompiledMixin {
         The declarations.
     */
     let declarations : Declarations
-    
-
     
     init( selector : String , argNames : [String] , declarations : Declarations ) {
         self.selector = selector

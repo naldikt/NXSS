@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension UIViewController : NXSSView {
     
@@ -38,13 +39,13 @@ extension UIViewController : NXSSView {
 extension UIViewController {
     
     func applyNXSS_styleElement() throws {
-        if let declarations =  NXSS.sharedInstance.getStyleDeclarations("UIViewController", selectorType:.Element) {
+        if let declarations =  NXSS.sharedInstance.getStyleDeclarations("UIViewController", selectorType:.UIKitElement) {
             try applyDeclarations(declarations)
         }
     }
     
     func applyNXSS_styleClass() throws  {
-        if let nxssClass = nxssClass, declarations = NXSS.sharedInstance.getStyleDeclarations(nxssClass, selectorType:.Class, pseudoClass: .Normal ) {
+        if let nxssClass = nxssClass, declarations = NXSS.sharedInstance.getStyleDeclarations(nxssClass, selectorType:.NXSSClass, pseudoClass: .Normal ) {
             try applyDeclarations(declarations)
         }
     }
