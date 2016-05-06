@@ -27,3 +27,11 @@
 .uiview-gradient-bottom {
     background-color: linear-gradient(to bottom,red,blue, yellow);
 }
+
+.uiview-gradient-bottom-right {
+    background-color: linear-gradient(to bottom right,red,blue, yellow);
+}
+
+.uiview-gradient-bottom-left {
+    background-color: linear-gradient(to bottom left,red,blue, yellow);
+}
