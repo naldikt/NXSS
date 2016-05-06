@@ -52,11 +52,11 @@ class FunctionHeader {
                     // This is opening parentesis of an arg. Let's just append to buf.
                     curBuffer.append(s)
                 }
-                numParenthesis++
+                numParenthesis += 1
                 
             } else if s == ")" {
                 
-                numParenthesis--
+                numParenthesis -= 1
                 if numParenthesis == 0 {
                     // We're back to normal. Let's bail.
                     let string = String(curBuffer)

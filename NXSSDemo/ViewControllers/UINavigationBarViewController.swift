@@ -20,7 +20,7 @@ class UINavigationBarViewController : UIViewController {
         
         let closeButton = UIButton(frame: CGRectMake(0,0,50,50))
         closeButton.nxssClass = "uinavigationbar-close-button"
-        closeButton.addTarget(self, action: "closeButtonTapped:", forControlEvents: .TouchUpInside)
+        closeButton.addTarget(self, action: #selector(UINavigationBarViewController.closeButtonTapped(_:)), forControlEvents: .TouchUpInside)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: closeButton)
 
     }

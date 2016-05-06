@@ -27,7 +27,7 @@ class CPData : CustomStringConvertible {
     }
     
     func stringWithRange( startIndex : CPCharViewIndex , endIndex : CPCharViewIndex ) -> String {
-        let range = Range(start: startIndex, end: endIndex)
+        let range = startIndex ..< endIndex
         let string = String(characters[range])
         return string
     }

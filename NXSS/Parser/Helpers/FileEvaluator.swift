@@ -62,7 +62,7 @@ class FileEvaluator {
             // Debugging purpose. Keep track of the lines.
             curLine.append(c)
             if c == "\n" {
-                curLineNum++
+                curLineNum += 1
                 curLine.removeAll()
             }
             
@@ -181,10 +181,8 @@ class FileEvaluator {
         var fileNameToLookUp = fileName
         if fileNameToLookUp.hasSuffix(self.fileExtension) {
             fileNameToLookUp.removeRange(
-                Range(
-                    start: fileNameToLookUp.endIndex.advancedBy(-self.fileExtension.characters.count),
-                    end: fileNameToLookUp.endIndex
-                )
+                fileNameToLookUp.endIndex.advancedBy(-self.fileExtension.characters.count) ..<
+                fileNameToLookUp.endIndex
             )
         }
         
